@@ -1,195 +1,127 @@
-<?php 
-require_once 'views/includes/SideBarView.php'; 
+<?php
+require_once 'views/includes/SideBarView.php';
 require_once 'views/includes/NavBarView.php';
+
+$ocupados = (int) ($panelData['occupancy']['occupied'] ?? 0);
+$disponibles = (int) ($panelData['occupancy']['available'] ?? 0);
+$totalEspacios = $ocupados + $disponibles;
 ?>
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tracto Pensión</title>
-    <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/vendors/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="public/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dashboard | Tracto Pensión</title>
+  <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+  <link rel="shortcut icon" href="public/assets/images/favicon.png">
+</head>
+<body class="app-dashboard">
+  <div class="container-scroller">
+    <?= NavBarView(); ?>
+    <div class="container-fluid page-body-wrapper">
+      <?= SideBarView(); ?>
+      <main class="main-panel">
+        <div class="content-wrapper">
+          <section class="dashboard-hero">
+            <div class="dashboard-hero-copy">
+              <span class="dashboard-kicker"><i class="mdi mdi-shield-check"></i> CENTRO DE CONTROL</span>
+              <h1>Tracto Pensión<br><strong>San Leonardo</strong></h1>
+              <p>Control y administración de tu pensión de tractocamiones</p>
+            </div>
+            <img src="public/assets/images/truck-banner.svg" alt="Tractocamión de transporte" class="dashboard-truck">
+          </section>
 
-      <?= NavBarView(); ?>
+          <section class="dashboard-heading">
+            <div>
+              <span class="dashboard-section-icon"><i class="mdi mdi-chart-bar"></i></span>
+              <div>
+                <h2>Dashboard</h2>
+                <p>Resumen general del estado del sistema</p>
+              </div>
+            </div>
+            <div class="dashboard-welcome"><i class="mdi mdi-check-circle"></i><span><strong>Bienvenido</strong><small>Tracto Pensión San Leonardo</small></span></div>
+          </section>
 
-      <div class="container-fluid page-body-wrapper">
-        <div id="settings-trigger"><i class="mdi mdi-settings"></i></div>
+          <section class="dashboard-stat-grid">
+            <?php
+            $statStyles = ['blue', 'green', 'orange', 'purple', 'cyan'];
+            foreach ($panelData['stats'] as $index => $stat):
+              $style = $statStyles[$index % count($statStyles)];
+            ?>
+              <article class="dashboard-stat <?= $style ?>">
+                <div class="dashboard-stat-icon"><i class="mdi <?= htmlspecialchars($stat['icon']) ?>"></i></div>
+                <div class="dashboard-stat-copy">
+                  <span><?= htmlspecialchars($stat['title']) ?></span>
+                  <strong><?= htmlspecialchars($stat['value']) ?></strong>
+                  <small><i class="mdi mdi-information-outline"></i> <?= htmlspecialchars($stat['subtitle']) ?></small>
+                </div>
+              </article>
+            <?php endforeach; ?>
+          </section>
 
-        <?= SideBarView(); ?>
-
-        <div class="main-panel">
-          <div class="content-wrapper">
-
-            <div class="row">
-              <div class="col-12">
-                <div class="card border-0 shadow-sm mb-4">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap">
-                      <div>
-                        <h3 class="text-dark font-weight-bold mb-1">Dashboard</h3>
-                        <p class="text-muted mb-0">Resumen general del estado del sistema</p>
-                      </div>
-                      <div class="text-right">
-                        <h4 class="text-primary mb-0">Bienvenido</h4>
-                        <small class="text-muted">Tracto Pensión San Leonardo</small>
-                      </div>
-                    </div>
-                  </div>
+          <section class="dashboard-chart-grid">
+            <article class="dashboard-panel-card occupancy-card">
+              <header><h3><i class="mdi mdi-chart-donut"></i> Ocupación Actual</h3></header>
+              <div class="occupancy-content">
+                <div class="occupancy-doughnut">
+                  <canvas id="ocupacionChart" width="190" height="190"></canvas>
+                  <div><strong><?= $totalEspacios ?></strong><span>Espacios</span></div>
+                </div>
+                <div class="occupancy-legend">
+                  <p><i class="legend-dot occupied"></i><span>Ocupado</span><strong><?= $ocupados ?></strong></p>
+                  <p><i class="legend-dot available"></i><span>Disponible</span><strong><?= $disponibles ?></strong></p>
+                  <hr>
+                  <small><i class="mdi mdi-layers"></i> Total de espacios <b><?= $totalEspacios ?></b></small>
                 </div>
               </div>
-            </div>
+            </article>
 
-            <div class="row">
-              <?php
-              $colorMap = [
-                'primary' => ['color' => '#0d6efd'],
-                'success' => ['color' => '#35c93f'],
-                'warning' => ['color' => '#ffbf3f'],
-                'info' => ['color' => '#a45bd1'],
-              ];
-              foreach ($panelData['stats'] as $stat):
-                $colors = $colorMap[$stat['color']] ?? $colorMap['primary'];
-              ?>
-              <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                      <div>
-                        <h6 class="text-muted mb-2"><?= htmlspecialchars($stat['title']) ?></h6>
-                        <h2 class="font-weight-bold text-dark mb-0"><?= htmlspecialchars($stat['value']) ?></h2>
-                      </div>
-                      <div class="icon-box rounded-circle d-flex align-items-center justify-content-center" style="width:64px;height:64px;background-color:<?= htmlspecialchars($colors['color']) ?>;">
-                        <i class="mdi <?= htmlspecialchars($stat['icon']) ?> text-white mdi-24px"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <?php endforeach; ?>
-            </div>
+            <article class="dashboard-panel-card activity-card">
+              <header>
+                <h3><i class="mdi mdi-chart-line"></i> Actividad Reciente</h3>
+                <div class="chart-filter"><span class="active">Últimos 7 días</span><span>30 días</span><span>Trimestre</span></div>
+              </header>
+              <div class="activity-chart"><canvas id="actividadChart"></canvas></div>
+            </article>
+          </section>
 
-            <div class="row">
-              <div class="col-12 mb-4">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body">
-                    <h4 class="card-title mb-3">Ocupación Actual</h4>
-                    <div class="d-flex align-items-center justify-content-center">
-                      <div class="position-relative" style="width:220px;height:220px;">
-                        <canvas id="ocupacionChart" width="220" height="220" style="display:block;width:220px;height:220px;"></canvas>
-                        <div class="position-absolute text-center" style="top:50%;left:50%;width:max-content;transform:translate(-50%,-50%);">
-                          <small class="text-muted d-block" style="font-size:12px;">Total de espacios</small>
-                          <strong class="text-dark" style="font-size:24px;"><?= (int) $panelData['occupancy']['occupied'] + (int) $panelData['occupancy']['available'] ?></strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 mb-4">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body">
-                    <h4 class="card-title mb-3">Actividad Reciente</h4>
-                    <div class="table-responsive">
-                      <table class="table table-hover mb-0">
-                        <thead>
-                          <tr>
-                            <th>Fecha</th>
-                            <th>Línea</th>
-                            <th>Nombre del operador</th>
-                            <th>Pensionado</th>
-                            <th>Movimiento</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php foreach ($panelData['activity'] as $row): ?>
-                          <?php $isEntry = strtolower($row['tipo']) === 'entrada'; ?>
-                          <tr>
-                            <td><?= htmlspecialchars($row['fecha']) ?></td>
-                            <td><?= htmlspecialchars($row['linea']) ?></td>
-                            <td><?= htmlspecialchars($row['operador']) ?></td>
-                            <td><?= htmlspecialchars($row['pensionado']) ?></td>
-                            <td>
-                              <span class="badge badge-<?= $isEntry ? 'success' : 'danger' ?>">
-                                <?= $isEntry ? 'Entrada' : 'Salida' ?>
-                              </span>
-                            </td>
-                          </tr>
-                          <?php endforeach; ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <!-- content-wrapper ends -->
-
-          <footer class="footer">
-            <div class="footer-inner-wraper">
-              <div class="d-flex justify-content-start">
-                <span class="text-muted text-left d-block">
-                  Copyright © 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.
-                </span>
-              </div>
-            </div>
-          </footer>
-
+          <section class="dashboard-bottom">
+            <div><i class="mdi mdi-calendar-month"></i><strong><?= date('d') ?></strong><span><?= date('F Y') ?><small>Fecha actual</small></span></div>
+            <div><i class="mdi mdi-clock-outline"></i><strong><?= date('H:i') ?></strong><span>Hora del sistema</span></div>
+            <div><i class="mdi mdi-circle"></i><strong>Sistema en línea</strong><span>Sin incidencias</span></div>
+            <div class="dashboard-bottom-message">Tu pensión,<br><strong>nuestra prioridad</strong></div>
+          </section>
         </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
+      </main>
     </div>
-    <!-- container-scroller -->
-
-    <script src="public/assets/vendors/js/vendor.bundle.base.js"></script>
-    <script src="public/assets/vendors/chart.js/Chart.min.js"></script>
-    <script src="public/assets/js/off-canvas.js"></script>
-    <script src="public/assets/js/hoverable-collapse.js"></script>
-    <script src="public/assets/js/misc.js"></script>
-    <script src="public/assets/js/settings.js"></script>
-    <script src="public/assets/js/todolist.js"></script>
-    <script>
-      new Chart(document.getElementById('ocupacionChart'), {
-        type: 'doughnut',
-        data: {
-          labels: ['Ocupado', 'Disponible'],
-          datasets: [{
-            data: [<?= (int) $panelData['occupancy']['occupied'] ?>, <?= (int) $panelData['occupancy']['available'] ?>],
-            backgroundColor: ['#7ed321', '#e8edf2'],
-            borderColor: ['#7ed321', '#e8edf2'],
-            borderWidth: 1,
-            hoverOffset: 6
-          }]
-        },
-        options: {
-          responsive: false,
-          cutoutPercentage: 66,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return ' ' + context.label + ': ' + context.raw;
-                }
-              }
-            }
-          }
-        }
-      });
-    </script>
-  </body>
+  </div>
+  <script src="public/assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="public/assets/vendors/chart.js/Chart.min.js"></script>
+  <script src="public/assets/js/off-canvas.js"></script>
+  <script src="public/assets/js/hoverable-collapse.js"></script>
+  <script src="public/assets/js/misc.js"></script>
+  <script>
+    new Chart(document.getElementById('ocupacionChart'), {
+      type: 'doughnut',
+      data: { datasets: [{ data: [<?= $ocupados ?>, <?= $disponibles ?>], backgroundColor: ['#16dbc3', '#1974e8'], borderWidth: 0 }] },
+      options: { responsive: false, cutoutPercentage: 72, legend: { display: false }, tooltips: { enabled: true } }
+    });
+    new Chart(document.getElementById('actividadChart'), {
+      type: 'line',
+      data: { labels: <?= json_encode($panelData['activity']['labels'] ?? [], JSON_THROW_ON_ERROR) ?>, datasets: [{
+        data: <?= json_encode($panelData['activity']['values'] ?? [], JSON_THROW_ON_ERROR) ?>, borderColor: '#13b9ff', backgroundColor: 'rgba(19,185,255,.16)',
+        borderWidth: 3, pointBackgroundColor: '#ffffff', pointBorderColor: '#13b9ff', pointBorderWidth: 3, pointRadius: 4, fill: true, tension: .4
+      }] },
+      options: {
+        responsive: true, maintainAspectRatio: false, legend: { display: false },
+        scales: { yAxes: [{ ticks: { fontColor: '#8fa7c5', beginAtZero: true }, gridLines: { color: 'rgba(143,167,197,.16)' } }],
+          xAxes: [{ ticks: { fontColor: '#8fa7c5' }, gridLines: { color: 'rgba(143,167,197,.08)' } }] },
+        tooltips: { displayColors: false }
+      }
+    });
+  </script>
+</body>
 </html>

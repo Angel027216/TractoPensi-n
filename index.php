@@ -190,7 +190,7 @@ else if ($menu=='registro'){
     include 'views/RegistroLoginView.php';
 }
 else if ($menu=='panel'){
-    $panelModel = new PanelModel();
+    $panelModel = new PanelModel((new Database())->getConnection());
     $panelController = new PanelController($panelModel);
     $panelData = $panelController->getDashboardData();
     include 'views/PanelView.php';

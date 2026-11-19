@@ -2,6 +2,9 @@
   'use strict';
   $(function() {
     var body = $('body');
+    if (window.localStorage.getItem('tractopension-sidebar-icon-only') === '1') {
+      body.addClass('sidebar-icon-only');
+    }
     var contentWrapper = $('.content-wrapper');
     var scroller = $('.container-scroller');
     var footer = $('.footer');
@@ -80,6 +83,7 @@
         body.toggleClass('sidebar-hidden');
       } else {
         body.toggleClass('sidebar-icon-only');
+        localStorage.setItem('tractopension-sidebar-icon-only', body.hasClass('sidebar-icon-only') ? '1' : '0');
       }
     });
 

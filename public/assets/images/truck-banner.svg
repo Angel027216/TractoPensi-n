@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">Tractocamion de transporte</title>
+  <desc id="desc">Ilustracion vectorial de un tractocamion azul</desc>
+  <defs>
+    <linearGradient id="cab" x1="0" x2="1">
+      <stop offset="0" stop-color="#1b73e8"/>
+      <stop offset="1" stop-color="#70c8ff"/>
+    </linearGradient>
+    <linearGradient id="trailer" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#eaf7ff"/>
+      <stop offset="1" stop-color="#8faeca"/>
+    </linearGradient>
+  </defs>
+  <g stroke="#071a33" stroke-linejoin="round">
+    <path fill="url(#trailer)" stroke-width="8" d="M338 57h407l28 146H338z"/>
+    <path fill="#d2e8f7" stroke-width="5" d="M372 78h330v104H372z"/>
+    <path fill="none" stroke="#88a8c4" stroke-width="4" d="M410 78v104m50-104v104m50-104v104m50-104v104m50-104v104m50-104v104"/>
+    <path fill="url(#cab)" stroke-width="8" d="M123 101h207l49 39v63H92v-49z"/>
+    <path fill="#b8e4ff" stroke-width="6" d="M158 112h112l54 40H152z"/>
+    <path fill="#0b2f59" stroke-width="4" d="M171 120h91l33 25h-119z"/>
+    <path fill="#f3bd38" stroke-width="4" d="M100 169h42v18h-49z"/>
+    <path fill="#ebf8ff" stroke-width="4" d="M288 169h58v18h-58z"/>
+    <path fill="#0e315b" stroke-width="8" d="M93 204h684"/>
+    <circle fill="#101d32" stroke="#76a4ce" stroke-width="7" cx="174" cy="220" r="35"/>
+    <circle fill="#101d32" stroke="#76a4ce" stroke-width="7" cx="322" cy="220" r="35"/>
+    <circle fill="#101d32" stroke="#76a4ce" stroke-width="7" cx="664" cy="220" r="35"/>
+    <circle fill="#8bc8ee" stroke="none" cx="174" cy="220" r="12"/>
+    <circle fill="#8bc8ee" stroke="none" cx="322" cy="220" r="12"/>
+    <circle fill="#8bc8ee" stroke="none" cx="664" cy="220" r="12"/>
+  </g>
+</svg>

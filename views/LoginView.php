@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Connect Plus</title>
+    <title>Iniciar sesión | Tracto Pensión</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
@@ -19,7 +19,7 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
   </head>
-  <body>
+  <body class="app-auth-page">
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
@@ -27,7 +27,7 @@
             <div class="col-lg-6 d-flex align-items-center justify-content-center">
               <div class="auth-form-transparent text-left p-3">
                 <div class="brand-logo">
-                  <img src="public/assets/images/logo-dark.svg" alt="logo">
+                  <img src="public/assets/images/logotractopension.png" alt="Tracto Pensión">
                 </div>
                 <h4>Bienvenido a Tracto Pension San Leonardo!</h4>
                 <h6 class="font-weight-light">Acceso al sistema!</h6>
@@ -80,7 +80,12 @@
                 </form>
               </div>
             </div>
-            <div class="col-lg-6 login-half-bg d-flex flex-row"></div>
+            <div class="col-lg-6 login-half-bg d-flex flex-row">
+              <div class="auth-truck-panel">
+                <span>CONTROL Y ADMINISTRACIÓN</span>
+                <strong>Tracto Pensión<br>San Leonardo</strong>
+              </div>
+            </div>
           </div>
           <footer class="footer position-fixed fixed-bottom">
             <div class="footer-inner-wraper">

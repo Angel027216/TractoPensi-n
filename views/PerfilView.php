@@ -29,7 +29,7 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
 
 </head>
 
-<body>
+<body class="app-profile-page">
 
     <div class="container-scroller">
 

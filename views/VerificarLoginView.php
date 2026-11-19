@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
   </head>
-  <body>
+  <body class="app-auth-page">
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
@@ -16,7 +16,7 @@
             <div class="col-lg-6 d-flex align-items-center justify-content-center">
               <div class="auth-form-transparent text-left p-3">
                 <div class="brand-logo">
-                  <img src="public/assets/images/logo-dark.svg" alt="logo">
+                  <img src="public/assets/images/logotractopension.png" alt="Tracto Pensión">
                 </div>
                 <h4>Verifica tu inicio de sesión</h4>
                 <h6 class="font-weight-light">Enviamos un código de 6 dígitos a tu correo electrónico.</h6>

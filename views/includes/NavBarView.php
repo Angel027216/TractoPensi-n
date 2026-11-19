@@ -8,8 +8,8 @@ function NavBarView()
   return "
     <nav class='navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row'>
         <div class='text-center navbar-brand-wrapper d-flex align-items-center justify-content-center'>
-          <a class='navbar-brand brand-logo' href='index.html'><img src='public/assets/images/logotractopension.png' alt='logo' /></a>
-          <a class='navbar-brand brand-logo-mini' href='index.html'><img src='public/assets/images/logo-mini.svg' alt='logo' /></a>
+          <a class='navbar-brand brand-logo' href='index.php?menu=panel'><img src='public/assets/images/logotractopension.png' alt='Tracto Pensión' /></a>
+          <a class='navbar-brand brand-logo-mini' href='index.php?menu=panel'><img src='public/assets/images/logotractopension.png' alt='Tracto Pensión' /></a>
         </div>
         <div class='navbar-menu-wrapper d-flex align-items-stretch'>
           <button class='navbar-toggler navbar-toggler align-self-center' type='button' data-toggle='minimize'>
@@ -17,6 +17,20 @@ function NavBarView()
           </button>
           
           <ul class='navbar-nav navbar-nav-right'>
+            <li class='nav-item dropdown app-notification'>
+              <a class='nav-link count-indicator' id='notificationDropdown' href='#' data-toggle='dropdown' aria-expanded='false'>
+                <i class='mdi mdi-bell-outline'></i>
+                <span class='count-symbol'>3</span>
+              </a>
+              <div class='dropdown-menu dropdown-menu-right navbar-dropdown preview-list' aria-labelledby='notificationDropdown'>
+                <h6 class='p-3 mb-0'>Notificaciones</h6>
+                <div class='dropdown-divider'></div>
+                <a class='dropdown-item preview-item'>
+                  <i class='mdi mdi-cash-multiple mr-2 text-warning'></i>
+                  <span class='preview-item-content'><span>Pagos pendientes</span></span>
+                </a>
+              </div>
+            </li>
             <li class='nav-item  dropdown d-none d-md-block'>
               <a class='nav-link dropdown-toggle' id='reportDropdown' href='#' data-toggle='dropdown' aria-expanded='false'> Reportes </a>
               <div class='dropdown-menu navbar-dropdown' aria-labelledby='reportDropdown'>
