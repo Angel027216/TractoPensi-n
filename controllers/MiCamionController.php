@@ -19,7 +19,26 @@ class MiCamionController {
         }
 
         $camiones = $this->micamionmodel->obtenerPorUsuario($id_usuario);
-        $lineas = $this->micamionmodel->obtenerLineas();
+        $seccionSolicitada = $_GET['seccion'] ?? 'visualizar';
+        $seccionCamiones = is_string($seccionSolicitada)
+            && in_array($seccionSolicitada, ['registrar', 'visualizar'], true)
+            ? $seccionSolicitada
+            : 'visualizar';
+        $mensajeCamion = '';
+        $camionRegistradoQuery = $_GET['camion_registrado'] ?? null;
+        $idCamionRegistrado = is_string($camionRegistradoQuery)
+            ? filter_var($camionRegistradoQuery, FILTER_VALIDATE_INT)
+            : false;
+
+        if ($idCamionRegistrado !== false && $idCamionRegistrado !== null) {
+            foreach ($camiones as $camionRegistrado) {
+                if ((int) $camionRegistrado['id_camion'] === $idCamionRegistrado) {
+                    $mensajeCamion = 'El camión se guardó y ya aparece en tu lista.';
+                    break;
+                }
+            }
+        }
+
         include "views/MiCamionView.php";
     }
 
@@ -41,35 +60,123 @@ class MiCamionController {
      * Guarda un nuevo camión
      */
     public function guardar(): void {
+        header('Content-Type: application/json; charset=utf-8');
         $id_usuario = $_SESSION['usuario_id'] ?? null;
         if (!$id_usuario) {
-            echo json_encode(['exito' => false, 'mensaje' => 'No autorizado']);
-            exit;
+            $this->responderJson(['exito' => false, 'mensaje' => 'No autorizado'], 401);
         }
 
-        $placa = $_POST['placa'] ?? '';
-        $id_linea = (int) ($_POST['id_linea'] ?? 0);
-        $marca = $_POST['marca'] ?? '';
-        $modelo = $_POST['modelo'] ?? '';
-        $fecha = $_POST['fecha'] ?? null;
-        $hora = $_POST['hora'] ?? null;
-        $estado = $_POST['estado'] ?? 'en_pension';
-        $color = $_POST['color'] ?? '';
-        $anio = $_POST['anio'] ?? '';
+        $leerCampo = static function (string $campo): string {
+            $valor = $_POST[$campo] ?? '';
 
-        // Validar campos
-        if (empty($placa) || empty($modelo) || $id_linea <= 0) {
-            echo json_encode(['exito' => false, 'mensaje' => 'Faltan campos requeridos']);
-            exit;
+            return is_string($valor) ? trim($valor) : '';
+        };
+
+        $placa = strtoupper($leerCampo('placa'));
+        $operadorEmpresa = $leerCampo('operador_empresa');
+        $marca = $leerCampo('marca');
+        $modelo = $leerCampo('modelo');
+        $color = $leerCampo('color');
+        $fechaEntrada = $leerCampo('fecha');
+        $horaEntrada = $leerCampo('hora');
+        $estado = $leerCampo('estado') ?: 'en_pension';
+
+        if (
+            !preg_match('/^(?:\d{2}-\d{2}-[A-Z]{2}|\d{3}-[A-Z]{2}-\d)$/', $placa)
+            || $operadorEmpresa === ''
+            || mb_strlen($operadorEmpresa, 'UTF-8') > 150
+            || !in_array($marca, MiCamionModel::MARCAS_COMUNES, true)
+            || $modelo === ''
+            || mb_strlen($modelo, 'UTF-8') > 100
+            || !in_array($color, MiCamionModel::COLORES_COMUNES, true)
+        ) {
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'Verifica operador o empresa, placa, marca, modelo y color. La placa debe tener formato 23-45-TX o 345-RT-6.',
+            ], 422);
         }
 
-        $idCamion = $this->micamionmodel->guardar($id_usuario, $id_linea, $placa, $marca, $modelo, $color, $anio, $fecha, $hora, $estado);
-        if ($idCamion > 0) {
-            logger($_SESSION['usuario_id'], "Registro de camión", "camiones", null, "Placa: $placa");
-            echo json_encode(['exito' => true, 'mensaje' => 'Camión registrado correctamente', 'id_camion' => $idCamion]);
+        if ($fechaEntrada !== '') {
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaEntrada)) {
+                $this->responderJson([
+                    'exito' => false,
+                    'mensaje' => 'La fecha de entrada no es válida.',
+                ], 422);
+            }
+
+            [$anioFecha, $mesFecha, $diaFecha] = array_map('intval', explode('-', $fechaEntrada));
+            if (!checkdate($mesFecha, $diaFecha, $anioFecha)) {
+                $this->responderJson([
+                    'exito' => false,
+                    'mensaje' => 'La fecha de entrada no es válida.',
+                ], 422);
+            }
         } else {
-            echo json_encode(['exito' => false, 'mensaje' => 'Error al registrar el camión']);
+            $fechaEntrada = null;
         }
+
+        if ($horaEntrada !== '' && !preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $horaEntrada)) {
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'La hora de entrada no es válida.',
+            ], 422);
+        }
+        $hora = $horaEntrada !== '' ? $horaEntrada : null;
+
+        if (!in_array($estado, ['en_pension', 'fuera_de_pension'], true)) {
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'Selecciona un estado válido.',
+            ], 422);
+        }
+
+        try {
+            $idCamion = $this->micamionmodel->guardar(
+                (int) $id_usuario,
+                $placa,
+                $operadorEmpresa,
+                $marca,
+                $modelo,
+                $color,
+                $fechaEntrada,
+                $hora,
+                $estado
+            );
+        } catch (PDOException $e) {
+            logger('Error al registrar un camión.', [
+                'usuario_id' => (int) $id_usuario,
+                'error' => $e->getMessage(),
+            ]);
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'No fue posible guardar el camión. Revisa los datos e inténtalo nuevamente.',
+            ], 500);
+        }
+
+        if ($idCamion <= 0) {
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'No fue posible guardar el camión.',
+            ], 500);
+        }
+
+        logger('Registro de camión.', [
+            'usuario_id' => (int) $id_usuario,
+            'id_camion' => $idCamion,
+            'placa' => $placa,
+        ]);
+        $this->responderJson([
+            'exito' => true,
+            'mensaje' => 'Camión registrado correctamente.',
+            'id_camion' => $idCamion,
+        ]);
+    }
+
+    private function responderJson(array $respuesta, int $codigoHttp = 200): void
+    {
+        http_response_code($codigoHttp);
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        exit;
     }
 
     /**
