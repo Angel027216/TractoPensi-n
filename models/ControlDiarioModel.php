@@ -55,7 +55,7 @@ class ControlDiarioModel
         $stmt = $this->db->prepare(
             'SELECT e.id_egreso, e.concepto, e.monto, e.fecha_hora, u.nombre AS usuario
              FROM fondo_egresos e
-             INNER JOIN usuarios u ON u.id = e.usuario_id
+             INNER JOIN usuarios u ON u.id_usuario = e.usuario_id
              WHERE e.fecha_hora >= ? AND e.fecha_hora < ?
              ORDER BY e.fecha_hora DESC, e.id_egreso DESC'
         );
@@ -195,7 +195,7 @@ class ControlDiarioModel
         $stmt = $this->db->query(
             "SELECT t.id_turno, t.fecha_hora_inicio, t.usuario_inicio, u.nombre AS usuario_inicio_nombre
              FROM turnos t
-             INNER JOIN usuarios u ON u.id = t.usuario_inicio
+             INNER JOIN usuarios u ON u.id_usuario = t.usuario_inicio
              WHERE t.estado = 'ABIERTO'
              ORDER BY t.id_turno DESC
              LIMIT 1"
@@ -684,8 +684,8 @@ class ControlDiarioModel
                         ELSE 0
                     END AS alerta
              FROM turnos t
-             INNER JOIN usuarios ui ON ui.id = t.usuario_inicio
-             LEFT JOIN usuarios uc ON uc.id = t.usuario_cierre
+             INNER JOIN usuarios ui ON ui.id_usuario = t.usuario_inicio
+             LEFT JOIN usuarios uc ON uc.id_usuario = t.usuario_cierre
              LEFT JOIN turno_materiales tm ON tm.id_turno = t.id_turno
              LEFT JOIN materiales m ON m.id_material = tm.id_material
              WHERE t.fecha_hora_inicio < ?
