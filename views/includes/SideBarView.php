@@ -24,15 +24,6 @@ function SideBarView(){
             </li>
 
             <li class='nav-item'>
-              <a class='nav-link' href='?menu=miespacio'>
-                <span class='icon-bg'>
-                  <i class='mdi mdi-parking menu-icon'></i>
-                </span>
-                <span class='menu-title'>Mi espacio</span>
-              </a>
-            </li>
-
-            <li class='nav-item'>
               <a class='nav-link' href='?menu=pagos'>
                 <span class='icon-bg'>
                   <i class='mdi mdi-cash-multiple menu-icon'></i>

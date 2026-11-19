@@ -91,12 +91,6 @@ $camion = null;
                                         <h3 class="text-dark font-weight-bold mb-1">Mi Camión</h3>
                                         <p class="text-muted mb-0">Información general del vehículo registrado</p>
                                     </div>
-                                    <?php if ($camion): ?>
-                                        <a href="index.php?menu=miespacio&id_camion=<?= (int) $camion['id_camion'] ?>" class="btn btn-primary rounded-pill ml-2">
-                                            <i class="mdi mdi-arrow-right"></i>
-                                            Continuar con espacio
-                                        </a>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +201,7 @@ document.getElementById('formCamion').addEventListener('submit', async function(
 
     alert(resultado.mensaje);
     if (resultado.exito) {
-        window.location.href = 'index.php?menu=miespacio&id_camion=' + (resultado.id_camion || '');
+        window.location.reload();
     }
 });
 

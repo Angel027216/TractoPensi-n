@@ -72,16 +72,5 @@ class MiCamionModel {
         return $stmt->execute([$id_camion]);
     }
 
-    /**
-     * Obtiene el apartado activo del camión
-     */
-    public function obtenerApartadoActivo($id_camion) {
-        $sql = "SELECT a.*, e.numero_espacio, e.terreno FROM apartados a 
-                JOIN espacios e ON a.id_espacio = e.id_espacio
-                WHERE a.id_camion = ? AND a.estado = 'activo' LIMIT 1";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$id_camion]);
-        return $stmt->fetch();
-    }
 }
 ?>

@@ -113,7 +113,7 @@ if ($menu === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$menusProtegidos = ['panel', 'micamion', 'miespacio', 'apartarespacio', 'pagos', 'respaldo', 'historial', 'accesos', 'pensionados', 'linea', 'control_diario', 'perfil', 'password'];
+$menusProtegidos = ['panel', 'micamion', 'apartarespacio', 'pagos', 'respaldo', 'historial', 'accesos', 'pensionados', 'linea', 'control_diario', 'perfil', 'password'];
 if (in_array($menu, $menusProtegidos, true) && !isset($_SESSION['usuario_id'])) {
     redirect('index.php?menu=login');
 }
@@ -213,31 +213,6 @@ else if ($menu=='micamion'){
     }
     $miCamionController->index();
 
-}
-else if ($menu=='miespacio'){
-    require_once 'models/MiEspacioModel.php';
-    require_once 'controllers/MiEspacioController.php';
-
-    $conexion = (new Database())->getConnection();
-    if (!tabla_disponible($conexion, 'apartados')) {
-        $apartados = [];
-        $estadisticas = [];
-        include 'views/MiEspacioview.php';
-    } else {
-        $miEspacioController = new MiEspacioController($conexion);
-        $accionEspacio = (string) ($_POST['accion'] ?? '');
-        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-            verify_csrf_token();
-            if ($accionEspacio === 'guardar') {
-                $miEspacioController->guardar();
-            } elseif ($accionEspacio === 'actualizar') {
-                $miEspacioController->actualizar();
-            } elseif ($accionEspacio === 'finalizar') {
-                $miEspacioController->finalizar();
-            }
-        }
-        $miEspacioController->index();
-    }
 }
 else if ($menu=='apartarespacio'){
     redirect('index.php?menu=panel');

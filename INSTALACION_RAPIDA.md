@@ -15,6 +15,11 @@ CREATE TABLE IF NOT EXISTS apartados_espacios (
 );
 ```
 
+Para habilitar el módulo **Control diario**, ejecuta una vez el archivo
+`bases de datos/control_diario.sql` usando la misma base configurada en
+`env.php` o `env.local.php`. Este paso crea las tablas de permisos, tarifas,
+boletos, turnos, fondo y auditoría.
+
 ## Paso 2: Acceder
 ```
 http://localhost/tractopension/index.php?menu=apartarespacio
