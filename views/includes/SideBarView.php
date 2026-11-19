@@ -19,7 +19,7 @@ function SideBarView(){
                 <span class='icon-bg'>
                   <i class='mdi mdi-truck menu-icon'></i>
                 </span>
-                <span class='menu-title'>Mi camión</span>
+                <span class='menu-title'>Camiones</span>
               </a>
             </li>
 

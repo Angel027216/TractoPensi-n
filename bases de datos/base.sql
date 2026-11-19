@@ -93,10 +93,17 @@ CREATE TABLE camiones (
                 usuarios_id_usuario INT NOT NULL,
                 roles_id_rol INT NOT NULL,
                 linea_id_linea INT NOT NULL,
+                operador_empresa VARCHAR(150) NOT NULL DEFAULT '',
                 placa VARCHAR(20) NOT NULL,
+                marca VARCHAR(80),
                 modelo VARCHAR(60) NOT NULL,
+                color VARCHAR(50),
+                anio SMALLINT UNSIGNED,
+                fecha_entrada DATE,
+                hora_entrada TIME,
+                estado VARCHAR(50) DEFAULT 'en_pension' NOT NULL,
                 id_usuario INT NOT NULL,
-                id_linea INT NOT NULL,
+                id_linea INT,
                 PRIMARY KEY (id_camiones, usuarios_id_usuario, roles_id_rol, linea_id_linea)
 );
 
