@@ -25,7 +25,7 @@ $camion = null;
     <!-- Layout styles -->
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
     <link rel="stylesheet" href="public/assets/css/dashboard.css?v=nav-20261121">
-    <link rel="stylesheet" href="public/assets/css/camiones.css">
+    <link rel="stylesheet" href="public/assets/css/camiones.css?v=nav-20261121">
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
 </head>
 

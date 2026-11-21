@@ -1209,3 +1209,233 @@ label {
     width: calc(100% - 70px) !important;
   }
 }
+
+/* Dashboard visual treatment - original modules, reference-inspired blue style */
+.app-dashboard,
+.app-dashboard .container-scroller,
+.app-dashboard .page-body-wrapper,
+.app-dashboard .main-panel,
+.app-dashboard .content-wrapper {
+  background: #071629 !important;
+}
+
+.app-dashboard .navbar.default-layout-navbar {
+  background: #08172b !important;
+  border-bottom: 1px solid rgba(111, 174, 238, 0.18) !important;
+  box-shadow: 0 5px 20px rgba(2, 13, 28, 0.35) !important;
+}
+
+.app-dashboard .navbar .nav-link,
+.app-dashboard .navbar .nav-profile-text p {
+  color: #e7f1ff !important;
+}
+
+.app-dashboard .sidebar {
+  background: linear-gradient(180deg, #102a49 0%, #09182b 100%) !important;
+  box-shadow: 10px 0 28px rgba(2, 13, 28, 0.32) !important;
+}
+
+.app-dashboard .navbar-brand-wrapper {
+  background: #102a49 !important;
+}
+
+.app-dashboard .dashboard-welcome-card {
+  background:
+    linear-gradient(100deg, rgba(12, 55, 110, 0.98) 0%, rgba(14, 74, 137, 0.82) 58%, rgba(7, 22, 41, 0.72) 100%),
+    url("../images/truck-banner.svg") right 45% / 38% auto no-repeat !important;
+  border: 1px solid rgba(72, 169, 255, 0.42) !important;
+  min-height: 108px;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-dashboard .dashboard-welcome-card:before {
+  background: linear-gradient(135deg, rgba(35, 137, 255, 0.65), transparent 38%);
+  clip-path: polygon(0 100%, 14% 0, 23% 0, 9% 100%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.app-dashboard .dashboard-welcome-card .card-body {
+  position: relative;
+  z-index: 2;
+}
+
+.app-dashboard .dashboard-welcome-card h3,
+.app-dashboard .dashboard-welcome-card h4,
+.app-dashboard .dashboard-welcome-card .text-dark {
+  color: #f7fbff !important;
+}
+
+.app-dashboard .dashboard-welcome-card p,
+.app-dashboard .dashboard-welcome-card small,
+.app-dashboard .dashboard-welcome-card .text-muted {
+  color: #aec7e3 !important;
+}
+
+.app-dashboard .dashboard-welcome-card h4 {
+  color: #45b2ff !important;
+}
+
+.app-dashboard .dashboard-stat-card {
+  background: linear-gradient(145deg, #0d2d50 0%, #09213d 100%) !important;
+  border: 1px solid rgba(92, 172, 242, 0.28) !important;
+  box-shadow: 0 14px 28px rgba(2, 13, 28, 0.24) !important;
+  min-height: 112px;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-dashboard .dashboard-stat-card:after {
+  background: radial-gradient(circle at 100% 100%, rgba(49, 164, 255, 0.13), transparent 68%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.app-dashboard .dashboard-stat-card .card-body {
+  position: relative;
+  z-index: 2;
+}
+
+.app-dashboard .dashboard-stat-card h6,
+.app-dashboard .dashboard-stat-card .text-muted {
+  color: #9fb6d1 !important;
+  font-weight: 800;
+}
+
+.app-dashboard .dashboard-stat-card h2 {
+  color: #f7fbff !important;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.dashboard-stat-icon {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 58px;
+  height: 58px;
+  justify-content: center;
+  position: relative;
+  width: 58px;
+  z-index: 2;
+}
+
+.dashboard-stat-icon i {
+  color: #ffffff;
+  font-size: 1.8rem;
+}
+
+.dashboard-stat-primary .dashboard-stat-icon { background: linear-gradient(145deg, #1c87ff, #115bc2); box-shadow: 0 8px 20px rgba(28, 135, 255, 0.32); }
+.dashboard-stat-success .dashboard-stat-icon { background: linear-gradient(145deg, #25d18b, #0e9665); box-shadow: 0 8px 20px rgba(37, 209, 139, 0.26); }
+.dashboard-stat-warning .dashboard-stat-icon { background: linear-gradient(145deg, #ffb52c, #d87516); box-shadow: 0 8px 20px rgba(255, 181, 44, 0.24); }
+.dashboard-stat-info .dashboard-stat-icon { background: linear-gradient(145deg, #9d61e8, #6541b6); box-shadow: 0 8px 20px rgba(157, 97, 232, 0.28); }
+
+.app-dashboard .dashboard-occupancy-card,
+.app-dashboard .dashboard-activity-card {
+  background: linear-gradient(145deg, #0c2a49 0%, #091c33 100%) !important;
+  border: 1px solid rgba(92, 172, 242, 0.24) !important;
+  box-shadow: 0 16px 34px rgba(2, 13, 28, 0.28) !important;
+}
+
+.app-dashboard .dashboard-occupancy-card .card-title,
+.app-dashboard .dashboard-activity-card .card-title {
+  color: #f5faff !important;
+  font-weight: 900;
+}
+
+.dashboard-doughnut {
+  height: 220px;
+  width: 220px;
+}
+
+.dashboard-doughnut canvas {
+  height: 220px !important;
+  width: 220px !important;
+}
+
+.dashboard-doughnut-center {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dashboard-doughnut-center small,
+.dashboard-doughnut-center span {
+  color: #91a9c6;
+  font-size: 0.68rem;
+}
+
+.dashboard-doughnut-center strong {
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.app-dashboard .dashboard-activity-card .table {
+  color: #c9d8ea;
+}
+
+.app-dashboard .dashboard-activity-card .table thead th {
+  background: rgba(20, 57, 94, 0.75) !important;
+  border-bottom: 1px solid rgba(111, 174, 238, 0.18) !important;
+  color: #91a9c6 !important;
+}
+
+.app-dashboard .dashboard-activity-card .table td,
+.app-dashboard .dashboard-activity-card .table th {
+  border-color: rgba(111, 174, 238, 0.10) !important;
+}
+
+.app-dashboard .dashboard-activity-card .table-hover tbody tr:hover {
+  background: rgba(42, 126, 200, 0.10) !important;
+}
+
+.app-dashboard .dashboard-settings-button {
+  align-items: center;
+  background: linear-gradient(145deg, #168cff, #0a60c5);
+  border: 0;
+  border-radius: 50%;
+  bottom: 24px;
+  box-shadow: 0 10px 24px rgba(22, 140, 255, 0.34);
+  color: #ffffff;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  position: fixed;
+  right: 24px;
+  width: 48px;
+  z-index: 1200;
+}
+
+.app-dashboard .footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(111, 174, 238, 0.12) !important;
+}
+
+.app-dashboard .footer span {
+  color: #7f96b1 !important;
+}
+
+.app-dashboard .dashboard-welcome-card .text-primary {
+  color: #57b5ff !important;
+}
+
+@media (max-width: 991px) {
+  .app-dashboard .dashboard-doughnut {
+    height: 190px;
+    width: 190px;
+  }
+  .app-dashboard .dashboard-doughnut canvas {
+    height: 190px !important;
+    width: 190px !important;
+  }
+}
