@@ -291,9 +291,11 @@
 .app-auth-page .login-visual-no-truck {
   background-color: #06152d;
   background-image:
-    radial-gradient(ellipse at 74% 24%, rgba(24, 137, 255, .32), transparent 34rem),
-    radial-gradient(ellipse at 18% 82%, rgba(0, 197, 255, .13), transparent 28rem),
-    linear-gradient(145deg, #07152b 0%, #0a2749 58%, #0a3655 100%);
+    linear-gradient(180deg, rgba(3, 17, 40, .68) 0%, rgba(4, 20, 43, .3) 34%, rgba(3, 13, 30, .38) 61%, rgba(3, 13, 30, .8) 100%),
+    linear-gradient(145deg, rgba(7, 21, 43, .45), rgba(10, 54, 85, .55)),
+    url("../images/auth/crearcuenta.jpg");
+  background-position: center, center, center 58%;
+  background-size: cover;
 }
 
 .app-loading-overlay[hidden] {
