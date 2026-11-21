@@ -12,6 +12,7 @@ require_once 'views/includes/NavBarView.php';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Cambiar Contraseña</title>
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 
     <!-- plugins:css -->
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">

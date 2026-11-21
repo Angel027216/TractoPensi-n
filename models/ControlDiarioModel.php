@@ -452,8 +452,41 @@ class ControlDiarioModel
                 throw new DomainException('Esta placa pertenece a un camión pensionado; no se puede registrar como boleto.');
             }
 
-            $stmt = $this->db->prepare(
-                'INSERT INTO boletos_diarios (
+            $placaCaja1 = $boleto['placa_caja_1'] !== '' ? $boleto['placa_caja_1'] : null;
+            $placaCaja2 = $boleto['placa_caja_2'] !== '' ? $boleto['placa_caja_2'] : null;
+
+            if (!empty($boleto['folio'])) {
+                $stmt = $this->db->prepare(
+                    'INSERT INTO boletos_diarios (
+                    folio,
+                    operador_empresa,
+                    marca_trailer,
+                    placa_tracto,
+                    placa_caja_1,
+                    placa_caja_2,
+                    tipo_unidad,
+                    categoria_tarifa,
+                    id_tarifa,
+                    descripcion_tarifa_aplicada,
+                    monto_tarifa_aplicada
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                );
+                $parametros = [
+                    (int) $boleto['folio'],
+                    $boleto['operador_empresa'],
+                    $boleto['marca_trailer'],
+                    $boleto['placa_tracto'],
+                    $placaCaja1,
+                    $placaCaja2,
+                    $boleto['tipo_unidad'],
+                    $boleto['categoria_tarifa'],
+                    $tarifa['id_tarifa'],
+                    $tarifa['descripcion'],
+                    $tarifa['monto'],
+                ];
+            } else {
+                $stmt = $this->db->prepare(
+                    'INSERT INTO boletos_diarios (
                     operador_empresa,
                     marca_trailer,
                     placa_tracto,
@@ -465,21 +498,25 @@ class ControlDiarioModel
                     descripcion_tarifa_aplicada,
                     monto_tarifa_aplicada
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-            );
-            $stmt->execute([
-                $boleto['operador_empresa'],
-                $boleto['marca_trailer'],
-                $boleto['placa_tracto'],
-                $boleto['placa_caja_1'],
-                $boleto['placa_caja_2'],
-                $boleto['tipo_unidad'],
-                $boleto['categoria_tarifa'],
-                $tarifa['id_tarifa'],
-                $tarifa['descripcion'],
-                $tarifa['monto'],
-            ]);
+                );
+                $parametros = [
+                    $boleto['operador_empresa'],
+                    $boleto['marca_trailer'],
+                    $boleto['placa_tracto'],
+                    $placaCaja1,
+                    $placaCaja2,
+                    $boleto['tipo_unidad'],
+                    $boleto['categoria_tarifa'],
+                    $tarifa['id_tarifa'],
+                    $tarifa['descripcion'],
+                    $tarifa['monto'],
+                ];
+            }
+            $stmt->execute($parametros);
 
-            $folio = (int) $this->db->lastInsertId();
+            $folio = !empty($boleto['folio'])
+                ? (int) $boleto['folio']
+                : (int) $this->db->lastInsertId();
             $registro = $this->obtenerBoleto($folio);
             if (!$registro) {
                 throw new RuntimeException('No fue posible recuperar el boleto recién registrado.');
@@ -503,7 +540,7 @@ class ControlDiarioModel
         }
     }
 
-    public function registrarSalida(int $folio, int $usuarioId): void
+    public function registrarSalida(int $folio, int $usuarioId, string $fechaHoraSalida): void
     {
         $this->db->beginTransaction();
 
@@ -521,12 +558,30 @@ class ControlDiarioModel
                 throw new DomainException('Este boleto ya fue cobrado y no tiene una salida pendiente.');
             }
 
+            $entrada = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', (string) $anterior['fecha_hora_entrada']);
+            $salida = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $fechaHoraSalida);
+            if (!$entrada || !$salida) {
+                throw new DomainException('La fecha de salida no es válida.');
+            }
+            if ($salida < $entrada) {
+                throw new DomainException('La salida no puede ser anterior a la entrada del boleto.');
+            }
+
+            $segundos = $salida->getTimestamp() - $entrada->getTimestamp();
+            $periodos = max(1, (int) ceil($segundos / 86400));
+            $tarifaBaseCentavos = $this->montoEnCentavos((string) number_format((float) $anterior['monto_tarifa_aplicada'], 2, '.', ''));
+            $montoCobradoCentavos = $tarifaBaseCentavos * $periodos;
+            $montoCobrado = $this->formatearCentavos($montoCobradoCentavos);
+
             $stmt = $this->db->prepare(
                 "UPDATE boletos_diarios
-                 SET estado = 'COBRADO', fecha_hora_salida = CURRENT_TIMESTAMP
+                 SET estado = 'COBRADO',
+                     fecha_hora_salida = ?,
+                     monto_tarifa_aplicada = ?,
+                     descripcion_tarifa_aplicada = CONCAT(descripcion_tarifa_aplicada, ' (', ?, ' período(s) de 24 h)')
                  WHERE folio = ? AND estado = 'ACTIVO'"
             );
-            $stmt->execute([$folio]);
+            $stmt->execute([$fechaHoraSalida, $montoCobrado, (string) $periodos, $folio]);
 
             if ($stmt->rowCount() !== 1) {
                 throw new DomainException('No se pudo registrar la salida; actualiza la página e inténtalo nuevamente.');
@@ -715,6 +770,15 @@ class ControlDiarioModel
         $boleto = $stmt->fetch();
 
         return $boleto ?: null;
+    }
+
+    public function obtenerSiguienteFolio(): int
+    {
+        $maximo = (int) $this->db->query(
+            'SELECT COALESCE(MAX(folio), 0) FROM boletos_diarios'
+        )->fetchColumn();
+
+        return $maximo >= 9999 ? 9999 : $maximo + 1;
     }
 
     private function obtenerRangoDia(string $fecha): array

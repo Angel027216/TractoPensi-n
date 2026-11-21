@@ -5,7 +5,7 @@ require_once 'views/includes/NavBarView.php';
 $usuario = $_SESSION['usuario'] ?? [];
 $usuario['nombre'] = $usuario['nombre'] ?? 'Usuario';
 $usuario['correo'] = $usuario['correo'] ?? $usuario['email'] ?? '';
-$usuario['telefono'] = $usuario['telefono'] ?? 'No registrado';
+$usuario['telefono'] = trim((string) ($usuario['telefono'] ?? ''));
 $usuario['rol'] = $usuario['rol'] ?? 'Usuario';
 $usuario['foto'] = $usuario['foto'] ?? 'public/assets/images/faces/face28.png';
 $mensajePerfil = $_SESSION['mensaje_perfil'] ?? '';
@@ -22,6 +22,7 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Perfil</title>
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
@@ -106,6 +107,7 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
                                             </label>
 
                                             <input type="text"
+                                                name="nombre"
                                                 class="form-control"
                                                 value="<?= e($usuario['nombre']) ?>">
 
@@ -118,6 +120,7 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
                                             </label>
 
                                             <input type="email"
+                                                name="email"
                                                 class="form-control"
                                                 value="<?= e($usuario['correo']) ?>">
 
@@ -130,7 +133,13 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
                                             </label>
 
                                             <input type="text"
+                                                name="telefono"
+                                                id="telefono"
                                                 class="form-control"
+                                                inputmode="tel"
+                                                maxlength="20"
+                                                placeholder="Ej. 834 123 4567"
+                                                autocomplete="tel"
                                                 value="<?= e($usuario['telefono']) ?>">
 
                                         </div>

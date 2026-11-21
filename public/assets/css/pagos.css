@@ -1,0 +1,399 @@
+.app-pagos .content-wrapper {
+  min-height: calc(100vh - 70px);
+  background:
+    radial-gradient(ellipse at 86% 0%, rgba(27, 92, 180, .12), transparent 31rem),
+    #071426;
+  color: #dbe8f8;
+  padding-top: 20px;
+}
+
+.app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 {
+  min-height: 126px;
+  margin-bottom: 17px !important;
+  padding: 22px clamp(22px, 3.8vw, 48px);
+  border: 1px solid rgba(48, 116, 193, .38);
+  border-radius: 15px;
+  background: linear-gradient(105deg, rgba(9, 34, 68, .96), rgba(7, 24, 44, .98));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .16);
+}
+
+.app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 h2 {
+  margin: 0;
+  color: #edf5ff !important;
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.03;
+}
+
+.app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 p {
+  margin: 7px 0 0;
+  color: #91a7c3;
+  font-size: .82rem;
+}
+
+.app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 > .btn,
+.app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 > a {
+  min-height: 42px;
+  margin-top: 0;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+.app-pagos .footer {
+  border-top: 1px solid rgba(139, 173, 216, .16);
+  background: #071426;
+  color: #91a7c3;
+}
+
+.app-pagos .content-wrapper h2,
+.app-pagos .content-wrapper h3,
+.app-pagos .content-wrapper h4,
+.app-pagos .content-wrapper h5 {
+  color: #edf5ff;
+}
+
+.app-pagos .content-wrapper .text-dark,
+.app-pagos .content-wrapper .text-muted {
+  color: #9fb1c8 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card {
+  min-height: 96px !important;
+  height: 96px !important;
+  border: 1px solid rgba(91, 169, 238, .58) !important;
+  border-left: 1px solid rgba(91, 169, 238, .58) !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #163967 0%, #0d2a50 58%, #0b2443 100%) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .28) !important;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.app-pagos .payment-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(97, 171, 255, .72);
+}
+
+.app-pagos .row.mb-4 .payment-card.stat-card-warning {
+  background: linear-gradient(135deg, #51401f 0%, #3b3221 58%, #2e2b24 100%) !important;
+  border-color: rgba(206, 155, 59, .58) !important;
+}
+
+.app-pagos .row.mb-4 .payment-card.stat-card-danger {
+  background: linear-gradient(135deg, #653249 0%, #4c2944 58%, #38253e 100%) !important;
+  border-color: rgba(233, 85, 112, .58) !important;
+}
+
+.app-pagos .row.mb-4 .payment-card.stat-card-success {
+  background: linear-gradient(135deg, #174c58 0%, #123e59 58%, #10334f 100%) !important;
+  border-color: rgba(56, 190, 181, .58) !important;
+}
+
+.app-pagos .payment-card.stat-card-primary {
+  border-left: 1px solid rgba(61, 137, 224, .46);
+}
+
+.app-pagos .row.mb-4 .payment-card .card-body {
+  display: flex;
+  align-items: center;
+  height: 94px !important;
+  padding: 12px 14px !important;
+}
+
+.app-pagos .payment-card .d-flex {
+  width: 100%;
+}
+
+.app-pagos .row.mb-4 .payment-card h5,
+.app-pagos .row.mb-4 .payment-card .card-title {
+  color: #d9e8f8 !important;
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card h3 {
+  margin-top: 5px;
+  color: #ffffff !important;
+  font-size: 1.26rem !important;
+  font-weight: 800 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card small {
+  color: #b8cae0 !important;
+  font-size: .74rem !important;
+}
+
+.app-pagos .row.mb-4 .payment-card .icon-lg {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .10) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06) !important;
+  font-size: 1.4rem !important;
+  opacity: 1 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card .mdi-cash-multiple {
+  color: #62aaf7 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card .mdi-clock-outline {
+  color: #ffc65a !important;
+}
+
+.app-pagos .row.mb-4 .payment-card .mdi-check-circle {
+  color: #55cda5 !important;
+}
+
+.app-pagos .row.mb-4 .payment-card .mdi-alert-circle {
+  color: #ff6678 !important;
+}
+
+.app-pagos .pagos-tabs {
+  gap: 8px;
+  border: 1px solid rgba(76, 145, 220, .44) !important;
+  border-radius: 8px;
+  background: #091b32 !important;
+  padding: 5px;
+}
+
+.app-pagos .pagos-tabs .nav-link {
+  border: 0 !important;
+  border-radius: 6px;
+  color: #bfd1e6 !important;
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.app-pagos .pagos-tabs .nav-link.active {
+  background: #1687ff !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(22, 135, 255, .24);
+}
+
+.app-pagos .tab-content .card,
+.app-pagos .content-wrapper > .row:last-child .card {
+  border: 1px solid rgba(76, 145, 220, .48) !important;
+  border-radius: 8px;
+  background: #091b32 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .16);
+}
+
+.app-pagos .card-header {
+  min-height: 54px;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(93, 145, 207, .18) !important;
+  background: #1d4a78 !important;
+}
+
+.app-pagos .card-header.bg-danger {
+  background: rgba(122, 39, 58, .88) !important;
+}
+
+.app-pagos .card-title {
+  color: #eef6ff !important;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.app-pagos .table {
+  margin: 0;
+  color: #c8d9ec !important;
+  background: #091b32 !important;
+}
+
+.app-pagos .table thead th {
+  border: 0;
+  border-bottom: 1px solid rgba(84, 140, 203, .24);
+  background: #091b32 !important;
+  color: #91b9e8 !important;
+  font-size: .78rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.app-pagos .table td {
+  border-color: rgba(116, 151, 195, .12);
+  color: #d2dfed !important;
+  background: #091b32 !important;
+  font-size: .88rem;
+  vertical-align: middle;
+}
+
+.app-pagos .card-body {
+  background: #091b32 !important;
+}
+
+.app-pagos .table-responsive {
+  background: #091b32 !important;
+}
+
+.app-pagos .table td strong {
+  color: #f2f7ff;
+  font-size: .92rem;
+}
+
+.app-pagos .table-hover tbody tr:hover {
+  background: rgba(21, 112, 198, .18) !important;
+}
+
+.app-pagos .table .text-dark {
+  color: #edf5ff !important;
+}
+
+.app-pagos .pagination .page-link {
+  border-color: rgba(68, 130, 201, .28);
+  background: #09203b;
+  color: #9ec4ef !important;
+}
+
+.app-pagos .pagination .page-item.active .page-link {
+  border-color: #1687ff;
+  background: #1687ff !important;
+  color: #fff !important;
+}
+
+.app-pagos .pagination .page-link {
+  min-width: 38px;
+  min-height: 38px;
+  font-size: .86rem;
+  text-align: center;
+}
+
+.app-pagos .badge-pending,
+.app-pagos .badge-completed,
+.app-pagos .badge-overdue {
+  min-width: 82px;
+  padding: 7px 9px;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.app-pagos .badge-pending {
+  background: #b97805;
+  color: #fff7df;
+}
+
+.app-pagos .badge-completed {
+  background: #087f50;
+  color: #e7fff3;
+}
+
+.app-pagos .badge-overdue {
+  background: #b92d4b;
+  color: #fff;
+}
+
+.app-pagos .modal-content {
+  border: 1px solid rgba(67, 139, 215, .48);
+  background: #0a1d35;
+  color: #dbe8f8;
+}
+
+.app-pagos .modal-header,
+.app-pagos .modal-footer {
+  border-color: rgba(93, 145, 207, .22);
+}
+
+.app-pagos .modal-header {
+  background: linear-gradient(105deg, #0877f9, #0864db) !important;
+}
+
+.app-pagos .modal .form-control {
+  border-color: rgba(104, 147, 196, .28);
+  background: #07182b;
+  color: #e5effc;
+}
+
+.app-pagos .row.mb-4 {
+  margin-bottom: 14px !important;
+}
+
+.app-pagos .row.mb-4 .mb-3 {
+  margin-bottom: 0 !important;
+}
+
+.app-pagos .row.mb-3 {
+  margin-bottom: 12px !important;
+}
+
+.app-pagos .modal label {
+  color: #dceaff;
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .card {
+  min-height: 150px;
+  border: 1px solid rgba(76, 145, 220, .48) !important;
+  border-radius: 8px !important;
+  background: #091b32 !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .18) !important;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .card-body {
+  padding: 20px 22px !important;
+  background: #091b32 !important;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .card-title,
+.app-pagos .content-wrapper > .row.mt-5 h5 {
+  color: #eef6ff !important;
+  font-size: 1.02rem !important;
+  font-weight: 800 !important;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .card-text,
+.app-pagos .content-wrapper > .row.mt-5 ul,
+.app-pagos .content-wrapper > .row.mt-5 li,
+.app-pagos .content-wrapper > .row.mt-5 strong {
+  color: #bed0e4 !important;
+  font-size: .86rem;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .card-title i,
+.app-pagos .content-wrapper > .row.mt-5 li strong {
+  color: #78b7f7 !important;
+}
+
+.app-pagos .content-wrapper > .row.mt-5 .btn-outline-primary {
+  border-color: #1687ff !important;
+  color: #70b2fa !important;
+  background: rgba(22, 135, 255, .08) !important;
+}
+
+.app-pagos .table td.text-muted,
+.app-pagos .table td .text-muted {
+  color: #9fb5cd !important;
+  background: #091b32 !important;
+}
+
+.app-pagos .table td .mdi {
+  color: #72aef0;
+}
+
+@media (max-width: 767px) {
+  .app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 > .btn,
+  .app-pagos .d-xl-flex.justify-content-between.align-items-start.mb-4 > a {
+    margin-top: 12px;
+  }
+
+  .app-pagos .pagos-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .app-pagos .pagos-tabs .nav-item {
+    flex: 0 0 auto;
+  }
+}

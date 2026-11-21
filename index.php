@@ -198,9 +198,25 @@ if ($menu === 'perfil' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     verify_csrf_token();
 
+    $errores = [];
+    $usuarioModel = new Usuario((new Database())->getConnection());
+
+    if (array_key_exists('telefono', $_POST)) {
+        $telefono = trim((string) $_POST['telefono']);
+        if ($telefono === '') {
+            $errores[] = 'El número de teléfono no puede quedar vacío.';
+        } elseif (!preg_match('/^\+?[0-9 ()-]{7,20}$/', $telefono)) {
+            $errores[] = 'Ingresa un número de teléfono válido.';
+        } elseif (!$usuarioModel->actualizarTelefono((int) $_SESSION['usuario_id'], $telefono)) {
+            $errores[] = 'No fue posible guardar el número de teléfono.';
+        } else {
+            $_SESSION['usuario']['telefono'] = $telefono;
+            $_SESSION['mensaje_perfil'] = 'Número de teléfono guardado correctamente.';
+        }
+    }
+
     $archivo = $_FILES['foto'] ?? null;
     if (is_array($archivo) && ($archivo['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
-        $errores = [];
         $tiposPermitidos = [
             'image/jpeg' => 'jpg',
             'image/png' => 'png',
@@ -426,6 +442,12 @@ else if ($menu === 'control_diario') {
     if (!$controlDiarioModel->tieneAcceso($usuarioControlDiario)) {
         abort(403, 'No tienes permiso para acceder a Control diario.');
     }
+    $siguienteFolioControlDiario = str_pad(
+        (string) $controlDiarioModel->obtenerSiguienteFolio(),
+        4,
+        '0',
+        STR_PAD_LEFT
+    );
 
     $vistaControlDiario = $_GET['vista'] ?? 'entrada';
     if (!is_string($vistaControlDiario) || !in_array($vistaControlDiario, ['entrada', 'salida', 'listado', 'reporte', 'fondo', 'material', 'imprimir'], true)) {

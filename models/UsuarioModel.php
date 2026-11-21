@@ -172,6 +172,23 @@ class Usuario
         return $stmt->execute([$foto, $id]);
     }
 
+    public function actualizarTelefono(int $id, string $telefono): bool
+    {
+        $columna = $this->db->query("SHOW COLUMNS FROM usuarios LIKE 'telefono'")->fetch();
+        if (!$columna) {
+            $this->db->exec("ALTER TABLE usuarios ADD COLUMN telefono VARCHAR(20) NULL");
+        }
+
+        $columnaId = $this->db->query("SHOW COLUMNS FROM usuarios LIKE 'id'")->fetch()
+            ? 'id'
+            : 'id_usuario';
+
+        $stmt = $this->db->prepare("UPDATE usuarios SET telefono = ? WHERE {$columnaId} = ?");
+        $resultado = $stmt->execute([trim($telefono), $id]);
+
+        return $resultado && $stmt->rowCount() >= 0;
+    }
+
     public function actualizar(int $id, string $nombre, string $email): bool
     {
         $sql = "UPDATE usuarios SET nombre = ?, email = ? WHERE id = ?";

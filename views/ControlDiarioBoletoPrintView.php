@@ -1,5 +1,6 @@
 <?php
 $tipoUnidadImpresion = [
+    'CAMIONETA' => 'Camioneta',
     'TRAILER_SENCILLO' => 'Tráiler sencillo',
     'TORTON' => 'Tortón',
     'TRAILER_FULL_DOBLE' => 'Tráiler full / doble remolque',
@@ -14,6 +15,7 @@ $fechaImpresion = static function (?string $fecha): string {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Boleto #<?= (int) $boletoImpresion['folio'] ?> - Tracto Pensión</title>
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
     <style>
         body { color: #222; font: 15px Arial, sans-serif; margin: 24px auto; max-width: 720px; padding: 0 20px; }
         h1, h2 { margin: 0 0 12px; }

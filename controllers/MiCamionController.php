@@ -74,6 +74,7 @@ class MiCamionController {
         };
 
         $placa = strtoupper($leerCampo('placa'));
+        $placaCaja = strtoupper($leerCampo('placa_caja'));
         $operadorEmpresa = $leerCampo('operador_empresa');
         $marca = $leerCampo('marca');
         $modelo = $leerCampo('modelo');
@@ -83,7 +84,8 @@ class MiCamionController {
         $estado = $leerCampo('estado') ?: 'en_pension';
 
         if (
-            !preg_match('/^(?:\d{2}-\d{2}-[A-Z]{2}|\d{3}-[A-Z]{2}-\d)$/', $placa)
+            !preg_match('/^\d{2}-[A-Z]{2}-\d[A-Z]$/', $placa)
+            || !preg_match('/^(?:\d{3}-[A-Z]{2}-\d|\d{2}-[A-Z]{2}-\d[A-Z])$/', $placaCaja)
             || $operadorEmpresa === ''
             || mb_strlen($operadorEmpresa, 'UTF-8') > 150
             || !in_array($marca, MiCamionModel::MARCAS_COMUNES, true)
@@ -93,7 +95,7 @@ class MiCamionController {
         ) {
             $this->responderJson([
                 'exito' => false,
-                'mensaje' => 'Verifica operador o empresa, placa, marca, modelo y color. La placa debe tener formato 23-45-TX o 345-RT-6.',
+                'mensaje' => 'Verifica operador o empresa, placas, marca, modelo y color. El tracto debe usar 00-AA-0A y la caja 000-AA-0 o 00-AA-0A.',
             ], 422);
         }
 
@@ -113,16 +115,19 @@ class MiCamionController {
                 ], 422);
             }
         } else {
-            $fechaEntrada = null;
+            $this->responderJson([
+                'exito' => false,
+                'mensaje' => 'Indica la fecha de entrada del camión.',
+            ], 422);
         }
 
-        if ($horaEntrada !== '' && !preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $horaEntrada)) {
+        if (!preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $horaEntrada)) {
             $this->responderJson([
                 'exito' => false,
                 'mensaje' => 'La hora de entrada no es válida.',
             ], 422);
         }
-        $hora = $horaEntrada !== '' ? $horaEntrada : null;
+        $hora = $horaEntrada;
 
         if (!in_array($estado, ['en_pension', 'fuera_de_pension'], true)) {
             $this->responderJson([
@@ -135,6 +140,7 @@ class MiCamionController {
             $idCamion = $this->micamionmodel->guardar(
                 (int) $id_usuario,
                 $placa,
+                $placaCaja,
                 $operadorEmpresa,
                 $marca,
                 $modelo,

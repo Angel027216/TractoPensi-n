@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
     <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
   </head>
   <body class="app-auth-page">
     <div class="login-layout">

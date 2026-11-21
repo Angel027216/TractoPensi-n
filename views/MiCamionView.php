@@ -23,10 +23,10 @@ $camion = null;
     <link rel="stylesheet" href="public/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=nav-20261121">
-    <link rel="stylesheet" href="public/assets/css/camiones.css?v=nav-20261121">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" />
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=table-text-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=table-text-20261121">
+    <link rel="stylesheet" href="public/assets/css/camiones.css?v=table-text-20261121">
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
 </head>
 
 <body class="app-dashboard app-camiones">
@@ -104,7 +104,11 @@ $camion = null;
                                         </div>
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Placa del tracto</label>
-                                            <input type="text" name="placa" class="form-control" placeholder="23-45-TX o 345-RT-6" pattern="(?:[0-9]{2}-[0-9]{2}-[A-Za-z]{2}|[0-9]{3}-[A-Za-z]{2}-[0-9])" title="Usa el formato 23-45-TX o 345-RT-6" maxlength="10" autocapitalize="characters" required>
+                                            <input type="text" name="placa" class="form-control text-uppercase" placeholder="26-AA-4U" pattern="[0-9]{2}-[A-Za-z]{2}-[0-9][A-Za-z]" title="Formato: 00-AA-0A, por ejemplo 26-AA-4U" maxlength="8" autocapitalize="characters" required>
+                                        </div>
+                                        <div class="camiones-field">
+                                            <label class="font-weight-bold">Placa de caja</label>
+                                            <input type="text" name="placa_caja" class="form-control text-uppercase" placeholder="000-AA-0 o 00-AA-0A" pattern="(?:[0-9]{3}-[A-Za-z]{2}-[0-9]|[0-9]{2}-[A-Za-z]{2}-[0-9][A-Za-z])" title="Formato: 000-AA-0 o 00-AA-0A" maxlength="9" autocapitalize="characters" required>
                                         </div>
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Marca</label>
@@ -130,11 +134,11 @@ $camion = null;
                                         </div>
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Fecha de Entrada</label>
-                                            <input type="date" name="fecha" class="form-control">
+                                            <input type="date" name="fecha" class="form-control" required>
                                         </div>
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Hora de Entrada</label>
-                                            <input type="time" name="hora" class="form-control">
+                                            <input type="time" name="hora" class="form-control" required>
                                         </div>
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Estado</label>
@@ -171,6 +175,7 @@ $camion = null;
                                     <tr>
                                         <th>#</th>
                                         <th>Placa</th>
+                                        <th>Placa de caja</th>
                                         <th>Operador / Empresa</th>
                                         <th>Marca y modelo</th>
                                         <th>Línea</th>
@@ -201,6 +206,7 @@ $camion = null;
                                         >
                                             <td><?= $indiceCamion + 1 ?></td>
                                             <td><strong><?= e((string) $camionRegistrado['placa']) ?></strong></td>
+                                            <td><?= e((string) ($camionRegistrado['placa_caja'] ?? '—')) ?></td>
                                             <td><?= e((string) ($camionRegistrado['operador_empresa'] ?? '—')) ?></td>
                                             <td><?= e(trim((string) ($camionRegistrado['marca'] ?? '') . ' ' . (string) $camionRegistrado['modelo'])) ?></td>
                                             <td><?= e((string) ($camionRegistrado['nom_linea'] ?? '—')) ?></td>

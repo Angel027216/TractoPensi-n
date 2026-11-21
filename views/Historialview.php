@@ -33,7 +33,7 @@ if(!isset($historial) || !is_array($historial)){
     <!-- Layout styles -->
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" />
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
   </head>
   <body>
     <div class="container-scroller">

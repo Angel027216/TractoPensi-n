@@ -159,11 +159,12 @@
   outline: 0;
   background: transparent;
   color: #e4efff;
-  font-size: .75rem;
+  font-size: .88rem;
 }
 
 .app-camiones .camiones-search input::placeholder {
   color: #7993b3;
+  font-size: .88rem;
   opacity: 1;
 }
 
@@ -209,7 +210,7 @@
 .app-camiones .camiones-card-header h2 {
   margin: 0;
   color: #edf5ff;
-  font-size: .98rem;
+  font-size: 1.08rem;
   font-weight: 750;
 }
 
@@ -223,7 +224,7 @@
 
 .app-camiones .camiones-table-header > div:first-child > span {
   color: #91aac9;
-  font-size: .7rem;
+  font-size: .82rem;
 }
 
 .app-camiones .camiones-card-header p {
@@ -245,18 +246,18 @@
 .app-camiones .camiones-field label {
   display: block;
   margin-bottom: 7px;
-  color: #c6d8ee;
-  font-size: .77rem;
-  font-weight: 650;
+  color: #dceaff !important;
+  font-size: .88rem !important;
+  font-weight: 700 !important;
 }
 
 .app-camiones .camiones-field .form-control {
   min-height: 42px;
-  border: 1px solid rgba(104, 147, 196, .27);
+  border: 1px solid rgba(104, 147, 196, .27) !important;
   border-radius: 8px;
-  background: #081a2e;
-  color: #e5effc;
-  font-size: .82rem;
+  background: #081a2e !important;
+  color: #e5effc !important;
+  font-size: .88rem !important;
 }
 
 .app-camiones .camiones-field .form-control:focus {
@@ -265,7 +266,9 @@
 }
 
 .app-camiones .camiones-field .form-control::placeholder {
-  color: #7189a6;
+  color: #a1b8d3 !important;
+  font-size: .88rem !important;
+  opacity: 1;
 }
 
 .app-camiones .camiones-field option {
@@ -296,7 +299,7 @@
   margin: 0;
   border-collapse: collapse;
   color: #b6c8df;
-  font-size: .73rem;
+  font-size: .84rem;
 }
 
 .app-camiones .camiones-table thead th {
@@ -304,7 +307,7 @@
   border-bottom: 1px solid rgba(71, 133, 201, .23);
   background: rgba(5, 20, 38, .55);
   color: #7db7f7;
-  font-size: .66rem;
+  font-size: .78rem;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -335,7 +338,7 @@
   align-items: center;
   padding: 4px 8px;
   border-radius: 6px;
-  font-size: .65rem;
+  font-size: .76rem;
   font-weight: 700;
 }
 
@@ -363,7 +366,7 @@
   padding: 9px 15px;
   border-top: 1px solid var(--camiones-border);
   color: #92a9c5;
-  font-size: .7rem;
+  font-size: .82rem;
 }
 
 .app-camiones .camiones-pagination {
@@ -380,7 +383,7 @@
   border-radius: 6px;
   background: #091a2e;
   color: #b5c8e0;
-  font-size: .7rem;
+  font-size: .78rem;
 }
 
 .app-camiones .camiones-page-button:hover:not(:disabled),

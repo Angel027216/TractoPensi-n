@@ -13,6 +13,7 @@ $materialesTurnoReporte = is_array($reporteControlDiario['materiales_turno'] ?? 
 $fondoReporte = is_array($reporteControlDiario['fondo'] ?? null) ? $reporteControlDiario['fondo'] : null;
 
 $tipoUnidadReporte = [
+    'CAMIONETA' => 'Camioneta',
     'TRAILER_SENCILLO' => 'Tráiler sencillo',
     'TORTON' => 'Tortón',
     'TRAILER_FULL_DOBLE' => 'Tráiler full / doble remolque',
@@ -37,7 +38,7 @@ $gastosFondoDelDia = array_sum(array_map(
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
     <style>
         @media print {
             .no-print, .sidebar, .navbar, #settings-trigger, .footer {
@@ -94,7 +95,7 @@ $gastosFondoDelDia = array_sum(array_map(
 
                 <ul class="nav nav-tabs mb-4 no-print">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=entrada">Registrar entrada</a>
+                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=entrada">Registrar boleto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?menu=control_diario&amp;vista=salida">Salida y cobro</a>

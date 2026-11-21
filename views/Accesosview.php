@@ -2,20 +2,8 @@
 require_once 'views/includes/SideBarView.php';
 require_once 'views/includes/NavBarView.php';
 
-// Datos de ejemplo para la vista de accesos si el controlador no setea `$accesos`
-if(!isset($accesos) || !is_array($accesos)){
-  $accesos = [
-    ['fecha'=>'12/03/2026','hora'=>'01:54','estado'=>'Entrada'],
-    ['fecha'=>'13/03/2026','hora'=>'13:20','estado'=>'Salida'],
-    ['fecha'=>'16/03/2026','hora'=>'07:14','estado'=>'Entrada'],
-    ['fecha'=>'18/03/2026','hora'=>'06:56','estado'=>'Salida'],
-    ['fecha'=>'20/03/2026','hora'=>'15:20','estado'=>'Entrada'],
-    ['fecha'=>'21/03/2026','hora'=>'11:35','estado'=>'Salida'],
-    ['fecha'=>'26/03/2026','hora'=>'21:15','estado'=>'Entrada'],
-    ['fecha'=>'27/03/2026','hora'=>'20:10','estado'=>'Salida'],
-    ['fecha'=>'01/04/2026','hora'=>'18:55','estado'=>'Entrada'],
-    ['fecha'=>'02/04/2026','hora'=>'22:18','estado'=>'Salida'],
-  ];
+if (!isset($accesos) || !is_array($accesos)) {
+  $accesos = [];
 }
 ?>
 
@@ -29,7 +17,7 @@ if(!isset($accesos) || !is_array($accesos)){
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/vendors/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" />
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
     <style>
       body.custom-bg { background:#e9ecef; }
       .access-card { max-width:980px; margin:40px auto; }
@@ -61,23 +49,43 @@ if(!isset($accesos) || !is_array($accesos)){
                               <tr>
                                 <th>Fecha</th>
                                 <th>Hora</th>
+                                <th>Camión</th>
                                 <th>Entrada / Salida</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <?php foreach($accesos as $row): ?>
+                              <?php if (empty($accesos)): ?>
                                 <tr>
-                                  <td><?= htmlspecialchars($row['fecha']) ?></td>
-                                  <td><?= htmlspecialchars($row['hora']) ?></td>
-                                  <td>
-                                    <?php if(strtolower($row['estado']) === 'entrada'): ?>
-                                      <span class="badge badge-success">Entrada</span>
-                                    <?php else: ?>
-                                      <span class="badge badge-danger">Salida</span>
-                                    <?php endif; ?>
-                                  </td>
+                                  <td colspan="4" class="text-muted py-4">Aún no hay accesos registrados.</td>
                                 </tr>
-                              <?php endforeach; ?>
+                              <?php else: ?>
+                                <?php foreach ($accesos as $row): ?>
+                                  <?php
+                                    $fechaAcceso = (string) ($row['fecha'] ?? '');
+                                    $horaAcceso = substr((string) ($row['hora'] ?? ''), 0, 5);
+                                    $tipoAcceso = strtolower((string) ($row['tipo'] ?? $row['estado'] ?? 'entrada'));
+                                    $placaAcceso = (string) ($row['placa'] ?? '—');
+                                    if ($fechaAcceso !== '') {
+                                      $fechaObjeto = DateTime::createFromFormat('Y-m-d', $fechaAcceso);
+                                      if ($fechaObjeto) {
+                                        $fechaAcceso = $fechaObjeto->format('d/m/Y');
+                                      }
+                                    }
+                                  ?>
+                                  <tr>
+                                    <td><?= htmlspecialchars($fechaAcceso ?: '—') ?></td>
+                                    <td><?= htmlspecialchars($horaAcceso ?: '—') ?></td>
+                                    <td><strong><?= htmlspecialchars($placaAcceso) ?></strong></td>
+                                    <td>
+                                      <?php if ($tipoAcceso === 'entrada'): ?>
+                                        <span class="badge badge-success">Entrada</span>
+                                      <?php else: ?>
+                                        <span class="badge badge-danger">Salida</span>
+                                      <?php endif; ?>
+                                    </td>
+                                  </tr>
+                                <?php endforeach; ?>
+                              <?php endif; ?>
                             </tbody>
                           </table>
                         </div>

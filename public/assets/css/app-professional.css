@@ -437,8 +437,20 @@ body.sidebar-icon-only .page-body-wrapper {
 
 label {
   color: var(--app-ink) !important;
-  font-size: 0.8rem !important;
+  font-size: 0.88rem !important;
   font-weight: 900 !important;
+}
+
+.form-control,
+.custom-select {
+  font-size: 0.88rem !important;
+}
+
+.form-control::placeholder,
+.custom-select::placeholder {
+  color: #667d99 !important;
+  font-size: 0.88rem !important;
+  opacity: 1;
 }
 
 .table {

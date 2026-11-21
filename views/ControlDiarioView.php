@@ -18,11 +18,26 @@ $materialesTurnoAbierto = is_array($turnoAbiertoControlDiario['materiales'] ?? n
     : [];
 $folioCreadoControlDiario = (int) ($folioCreadoControlDiario ?? 0);
 $folioSalidaControlDiario = (int) ($folioSalidaControlDiario ?? 0);
+$formatoFolioControlDiario = static fn(int $folio): string =>
+    str_pad((string) $folio, 4, '0', STR_PAD_LEFT);
 
 $tiposUnidadControlDiario = [
+    'CAMIONETA' => 'Camioneta',
     'TRAILER_SENCILLO' => 'Tráiler sencillo',
     'TORTON' => 'Tortón',
     'TRAILER_FULL_DOBLE' => 'Tráiler full / doble remolque',
+];
+$marcasUnidadControlDiario = [
+    'Freightliner',
+    'Kenworth',
+    'International',
+    'Peterbilt',
+    'Volvo',
+    'Mack',
+    'Western Star',
+    'Scania',
+    'Hino',
+    'Otra',
 ];
 $categoriasControlDiario = [
     'ESPECIAL' => 'Especial',
@@ -43,7 +58,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-    <link rel="shortcut icon" href="public/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 </head>
 <body>
 <div class="container-scroller">
@@ -87,7 +102,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                 <ul class="nav nav-tabs mb-4">
                     <li class="nav-item">
                         <a class="nav-link <?= $vistaControlDiario === 'entrada' ? 'active' : '' ?>"
-                           href="index.php?menu=control_diario&amp;vista=entrada">Registrar entrada</a>
+                           href="index.php?menu=control_diario&amp;vista=entrada">Registrar boleto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= $vistaControlDiario === 'salida' ? 'active' : '' ?>"
@@ -114,36 +129,22 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                 <?php if ($vistaControlDiario === 'entrada'): ?>
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
-                            <h4 class="card-title">Registrar entrada</h4>
+                            <h4 class="card-title">Registrar boleto</h4>
                             <form method="post" action="index.php?menu=control_diario&amp;vista=entrada">
                                 <?= csrf_input(); ?>
                                 <input type="hidden" name="accion" value="registrar_entrada">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
+                                        <label for="folio">No. de folio</label>
+                                        <input class="form-control" type="text" id="folio" name="folio"
+                                               inputmode="numeric" pattern="[0-9]{4}" maxlength="4"
+                                               placeholder="<?= e($siguienteFolioControlDiario ?? '0001') ?>">
+                                        <small class="form-text text-muted">Formato de 4 dígitos. Puedes cambiar el primero; los siguientes serán consecutivos.</small>
+                                    </div>
+                                    <div class="form-group col-md-6">
                                         <label for="operador_empresa">Operador o empresa</label>
                                         <input class="form-control" id="operador_empresa" name="operador_empresa"
                                                maxlength="150" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="marca_trailer">Marca del tráiler o unidad</label>
-                                        <input class="form-control" id="marca_trailer" name="marca_trailer"
-                                               maxlength="80" required>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="placa_tracto">Placa del tracto</label>
-                                        <input class="form-control text-uppercase" id="placa_tracto" name="placa_tracto"
-                                               maxlength="20" required>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="placa_caja_1">Placa de caja 1</label>
-                                        <input class="form-control text-uppercase" id="placa_caja_1" name="placa_caja_1"
-                                               maxlength="20" required>
-                                    </div>
-                                    <div class="form-group col-md-4" id="grupo_placa_caja_2">
-                                        <label for="placa_caja_2">Placa de caja 2</label>
-                                        <input class="form-control text-uppercase" id="placa_caja_2" name="placa_caja_2"
-                                               maxlength="20">
-                                        <small class="form-text text-muted">Obligatoria para full o doble remolque.</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="tipo_unidad">Tipo de unidad</label>
@@ -153,6 +154,41 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                                 <option value="<?= e($valor) ?>"><?= e($etiqueta) ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="marca_trailer">Marca del tráiler o unidad</label>
+                                        <select class="form-control" id="marca_trailer" name="marca_trailer" required>
+                                            <option value="">Selecciona una marca</option>
+                                            <?php foreach ($marcasUnidadControlDiario as $marcaUnidad): ?>
+                                                <option value="<?= e($marcaUnidad) ?>"><?= e($marcaUnidad) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 d-none" id="grupo_placa_tracto">
+                                        <label for="placa_tracto">Placa principal</label>
+                                        <input class="form-control text-uppercase" id="placa_tracto" name="placa_tracto"
+                                               placeholder="26-AA-4U" pattern="[0-9]{2}-[A-Za-z]{2}-[0-9][A-Za-z]"
+                                               title="Formato: 00-AA-0A, por ejemplo 26-AA-4U"
+                                               maxlength="8">
+                                        <small class="form-text text-muted" id="ayuda_placa_principal">Ejemplo: 26-AA-4U</small>
+                                    </div>
+                                    <div class="form-group col-md-6 d-none" id="grupo_placa_caja_1">
+                                        <label for="placa_caja_1">Placa de caja 1</label>
+                                        <input class="form-control text-uppercase" id="placa_caja_1" name="placa_caja_1"
+                                               placeholder="000-AA-0 o 00-AA-0A"
+                                               pattern="(?:[0-9]{3}-[A-Za-z]{2}-[0-9]|[0-9]{2}-[A-Za-z]{2}-[0-9][A-Za-z])"
+                                               title="Formato: 000-AA-0 o 00-AA-0A"
+                                               maxlength="9">
+                                        <small class="form-text text-muted">Ejemplo: 123-AA-4 o 26-AA-4U</small>
+                                    </div>
+                                    <div class="form-group col-md-6 d-none" id="grupo_placa_caja_2">
+                                        <label for="placa_caja_2">Placa de caja 2</label>
+                                        <input class="form-control text-uppercase" id="placa_caja_2" name="placa_caja_2"
+                                               placeholder="000-AA-0 o 00-AA-0A"
+                                               pattern="(?:[0-9]{3}-[A-Za-z]{2}-[0-9]|[0-9]{2}-[A-Za-z]{2}-[0-9][A-Za-z])"
+                                               title="Formato: 000-AA-0 o 00-AA-0A"
+                                               maxlength="9">
+                                        <small class="form-text text-muted">Ejemplo: 123-AA-4 o 26-AA-4U. Obligatoria para full o doble remolque.</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="categoria_tarifa">Categoría de tarifa</label>
@@ -171,7 +207,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="mdi mdi-truck-plus mr-1"></i>Registrar entrada y generar boleto
+                                    <i class="mdi mdi-truck-plus mr-1"></i>Registrar boleto
                                 </button>
                             </form>
                         </div>
@@ -209,7 +245,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                     <tbody>
                                     <?php foreach ($activosControlDiario as $boleto): ?>
                                         <tr>
-                                            <td><strong>#<?= (int) $boleto['folio'] ?></strong></td>
+                                            <td><strong>#<?= e($formatoFolioControlDiario((int) $boleto['folio'])) ?></strong></td>
                                             <td><?= e($formatoFechaControlDiario((string) $boleto['fecha_hora_entrada'])) ?></td>
                                             <td><?= e((string) $boleto['operador_empresa']) ?></td>
                                             <td>
@@ -225,10 +261,35 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                             </td>
                                             <td>
                                                 <form method="post" action="index.php?menu=control_diario&amp;vista=salida"
-                                                      onsubmit="return confirm('¿Confirmas la salida y el cobro del boleto #<?= (int) $boleto['folio'] ?> por $<?= e(number_format((float) $boleto['monto_tarifa_aplicada'], 2)) ?>?');">
+                                                      data-salida-form
+                                                      data-entrada="<?= e((string) $boleto['fecha_hora_entrada']) ?>"
+                                                      data-tarifa="<?= e(number_format((float) $boleto['monto_tarifa_aplicada'], 2, '.', '')) ?>"
+                                                      onsubmit="return validarConfirmacionSalida(this, <?= (int) $boleto['folio'] ?>);">
                                                     <?= csrf_input(); ?>
                                                     <input type="hidden" name="accion" value="registrar_salida">
                                                     <input type="hidden" name="folio" value="<?= (int) $boleto['folio'] ?>">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6 mb-2">
+                                                            <label for="fecha_salida_<?= (int) $boleto['folio'] ?>">Fecha de salida</label>
+                                                            <input type="date" class="form-control form-control-sm"
+                                                                   id="fecha_salida_<?= (int) $boleto['folio'] ?>"
+                                                                   name="fecha_salida" required
+                                                                   data-fecha-salida
+                                                                   value="<?= e(date('Y-m-d')) ?>">
+                                                        </div>
+                                                        <div class="form-group col-md-6 mb-2">
+                                                            <label for="hora_salida_<?= (int) $boleto['folio'] ?>">Hora de salida</label>
+                                                            <input type="time" class="form-control form-control-sm"
+                                                                   id="hora_salida_<?= (int) $boleto['folio'] ?>"
+                                                                   name="hora_salida" required
+                                                                   data-hora-salida
+                                                                   value="<?= e(date('H:i')) ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        Cobro estimado:
+                                                        <strong data-cobro-estimado>$<?= e(number_format((float) $boleto['monto_tarifa_aplicada'], 2)) ?></strong>
+                                                    </div>
                                                     <button type="submit" class="btn btn-sm btn-success">
                                                         Registrar salida y cobrar
                                                     </button>
@@ -522,7 +583,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                     <tbody>
                                     <?php foreach ($boletosControlDiario as $boleto): ?>
                                         <tr>
-                                            <td><strong>#<?= (int) $boleto['folio'] ?></strong></td>
+                                            <td><strong>#<?= e($formatoFolioControlDiario((int) $boleto['folio'])) ?></strong></td>
                                             <td><?= e((string) $boleto['operador_empresa']) ?></td>
                                             <td>
                                                 <?= e((string) $boleto['placa_tracto']) ?><br>
@@ -575,19 +636,110 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
 <script src="public/assets/js/misc.js"></script>
 <script src="public/assets/js/settings.js"></script>
 <script>
+    function calcularCobroSalida(formulario) {
+        const entrada = new Date(formulario.dataset.entrada.replace(' ', 'T'));
+        const fecha = formulario.querySelector('[data-fecha-salida]').value;
+        const hora = formulario.querySelector('[data-hora-salida]').value;
+        const salida = new Date(fecha + 'T' + (hora || '00:00') + ':00');
+        const tarifa = Number(formulario.dataset.tarifa);
+        if (Number.isNaN(salida.getTime()) || Number.isNaN(tarifa) || salida < entrada) {
+            return null;
+        }
+        const periodos = Math.max(1, Math.ceil((salida.getTime() - entrada.getTime()) / 86400000));
+        return { periodos: periodos, monto: tarifa * periodos };
+    }
+
+    function actualizarCobroEstimado(formulario) {
+        const resultado = calcularCobroSalida(formulario);
+        const destino = formulario.querySelector('[data-cobro-estimado]');
+        if (!destino) {
+            return;
+        }
+        if (!resultado) {
+            destino.textContent = 'Revisa la fecha y hora';
+            return;
+        }
+        destino.textContent = '$' + resultado.monto.toLocaleString('es-MX', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function validarConfirmacionSalida(formulario, folio) {
+        const resultado = calcularCobroSalida(formulario);
+        if (!resultado) {
+            alert('La salida debe ser posterior a la entrada.');
+            return false;
+        }
+        return confirm(
+            '¿Confirmas la salida del boleto #' + folio
+            + ' por $' + resultado.monto.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+            + ' (' + resultado.periodos + ' período(s) de 24 h)?'
+        );
+    }
+
+    document.querySelectorAll('[data-salida-form]').forEach(function (formulario) {
+        formulario.querySelectorAll('[data-fecha-salida], [data-hora-salida]').forEach(function (campo) {
+            campo.addEventListener('change', function () {
+                actualizarCobroEstimado(formulario);
+            });
+        });
+        actualizarCobroEstimado(formulario);
+    });
+
     (function () {
         const tipo = document.getElementById('tipo_unidad');
         const categoria = document.getElementById('categoria_tarifa');
+        const tracto = document.getElementById('placa_tracto');
+        const grupoTracto = document.getElementById('grupo_placa_tracto');
+        const caja1 = document.getElementById('placa_caja_1');
+        const grupoCaja1 = document.getElementById('grupo_placa_caja_1');
         const caja2 = document.getElementById('placa_caja_2');
         const grupoCaja2 = document.getElementById('grupo_placa_caja_2');
         const tarifaSeleccionada = document.getElementById('tarifa_seleccionada');
 
-        if (!tipo || !categoria || !caja2 || !grupoCaja2 || !tarifaSeleccionada) {
+        if (!tipo || !categoria || !tracto || !grupoTracto || !caja1 || !grupoCaja1 || !caja2 || !grupoCaja2 || !tarifaSeleccionada) {
             return;
         }
 
         function actualizarOpciones() {
+            const esCamioneta = tipo.value === 'CAMIONETA';
+            const esTorton = tipo.value === 'TORTON';
+            const esTrailerSencillo = tipo.value === 'TRAILER_SENCILLO';
             const requiereCaja2 = tipo.value === 'TRAILER_FULL_DOBLE';
+            const requiereCaja1 = esTrailerSencillo || requiereCaja2;
+
+            grupoTracto.classList.toggle('d-none', tipo.value === '');
+            tracto.required = tipo.value !== '';
+            if (tipo.value === '') {
+                tracto.value = '';
+                caja1.value = '';
+                caja2.value = '';
+                caja1.required = false;
+                caja2.required = false;
+            }
+            tracto.closest('.form-group').className = requiereCaja1 || requiereCaja2
+                ? 'form-group col-md-6'
+                : 'form-group col-md-6';
+
+            const etiquetaTracto = grupoTracto.querySelector('label');
+            const ayudaTracto = document.getElementById('ayuda_placa_principal');
+            etiquetaTracto.textContent = esCamioneta
+                ? 'Placa de la camioneta'
+                : (esTorton ? 'Placa del torton' : 'Placa del tracto');
+            tracto.placeholder = '26-AA-4U';
+            if (ayudaTracto) {
+                ayudaTracto.textContent = esCamioneta
+                    ? 'Ejemplo camioneta: 26-AA-4U'
+                    : (esTorton ? 'Ejemplo torton: 26-AA-4U' : 'Ejemplo tracto: 26-AA-4U');
+            }
+
+            grupoCaja1.classList.toggle('d-none', !requiereCaja1);
+            caja1.required = requiereCaja1;
+            if (!requiereCaja1) {
+                caja1.value = '';
+            }
+
             grupoCaja2.classList.toggle('d-none', !requiereCaja2);
             caja2.required = requiereCaja2;
             if (!requiereCaja2) {

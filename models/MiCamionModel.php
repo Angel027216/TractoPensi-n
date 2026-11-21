@@ -63,6 +63,7 @@ class MiCamionModel {
     public function guardar(
         int $id_usuario,
         string $placa,
+        string $placaCaja,
         string $operadorEmpresa,
         string $marca,
         string $modelo,
@@ -71,14 +72,20 @@ class MiCamionModel {
         ?string $hora,
         string $estado
     ): int {
+        $columnaCaja = $this->db->query("SHOW COLUMNS FROM camiones LIKE 'placa_caja'")->fetch();
+        if (!$columnaCaja) {
+            $this->db->exec("ALTER TABLE camiones ADD COLUMN placa_caja VARCHAR(20) NULL AFTER placa");
+        }
+
         $sql = "INSERT INTO camiones
-                    (id_usuario, id_linea, operador_empresa, placa, marca, modelo, color, anio, fecha_entrada, hora_entrada, estado)
-                VALUES (?, NULL, ?, ?, ?, ?, ?, NULL, ?, ?, ?)";
+                    (id_usuario, id_linea, operador_empresa, placa, placa_caja, marca, modelo, color, anio, fecha_entrada, hora_entrada, estado)
+                VALUES (?, NULL, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         if (!$stmt->execute([
             $id_usuario,
             $operadorEmpresa,
             strtoupper($placa),
+            strtoupper($placaCaja),
             $marca,
             $modelo,
             $color,
@@ -89,7 +96,39 @@ class MiCamionModel {
             return 0;
         }
 
-        return (int) $this->db->lastInsertId();
+        $idCamion = (int) $this->db->lastInsertId();
+        $this->registrarEntradaInicial($id_usuario, $idCamion, $fecha, $hora);
+
+        return $idCamion;
+    }
+
+    private function registrarEntradaInicial(int $idUsuario, int $idCamion, ?string $fecha, ?string $hora): void
+    {
+        $tablaAccesos = $this->db->query("SHOW TABLES LIKE 'accesos'")->fetch();
+        if (!$tablaAccesos) {
+            $this->db->exec(
+                "CREATE TABLE accesos (
+                    id_acceso INT AUTO_INCREMENT PRIMARY KEY,
+                    id_usuario INT NOT NULL,
+                    id_camion INT NOT NULL,
+                    tipo VARCHAR(10) NOT NULL,
+                    fecha DATE NOT NULL,
+                    hora TIME NOT NULL,
+                    observaciones VARCHAR(255) NULL,
+                    KEY idx_accesos_usuario (id_usuario),
+                    KEY idx_accesos_camion (id_camion),
+                    CONSTRAINT fk_accesos_camion_micamion
+                        FOREIGN KEY (id_camion) REFERENCES camiones(id_camion)
+                        ON UPDATE RESTRICT ON DELETE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+            );
+        }
+
+        $stmt = $this->db->prepare(
+            "INSERT INTO accesos (id_usuario, id_camion, tipo, fecha, hora, observaciones)
+             VALUES (?, ?, 'entrada', ?, ?, 'Entrada registrada al guardar el camión')"
+        );
+        $stmt->execute([$idUsuario, $idCamion, $fecha, $hora]);
     }
 
     /**

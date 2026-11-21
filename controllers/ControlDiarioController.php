@@ -16,6 +16,7 @@ class ControlDiarioController
         };
 
         $boleto = [
+            'folio' => $texto('folio'),
             'operador_empresa' => $texto('operador_empresa'),
             'marca_trailer' => $texto('marca_trailer'),
             'placa_tracto' => strtoupper($texto('placa_tracto')),
@@ -34,11 +35,62 @@ class ControlDiarioController
             'placa_caja_2' => 20,
         ];
 
-        foreach (['operador_empresa', 'marca_trailer', 'placa_tracto', 'placa_caja_1'] as $campo) {
-            if ($boleto[$campo] === '') {
-                $errores[] = 'Completa todos los campos obligatorios.';
-                break;
+        $folioInicio = null;
+        if ($boleto['folio'] !== '') {
+            if (!preg_match('/^\d{4}$/', $boleto['folio'])) {
+                $errores[] = 'El número de folio debe tener exactamente 4 dígitos.';
+            } else {
+                $folioInicio = (int) $boleto['folio'];
             }
+        }
+        $boleto['folio'] = $folioInicio;
+
+        $marcasPermitidas = [
+            'Freightliner',
+            'Kenworth',
+            'International',
+            'Peterbilt',
+            'Volvo',
+            'Mack',
+            'Western Star',
+            'Scania',
+            'Hino',
+            'Otra',
+        ];
+        if (!in_array($boleto['marca_trailer'], $marcasPermitidas, true)) {
+            $errores[] = 'Selecciona una marca válida.';
+        }
+
+        if ($boleto['operador_empresa'] === '' || $boleto['marca_trailer'] === '' || $boleto['placa_tracto'] === '') {
+            $errores[] = 'Completa todos los campos obligatorios.';
+        }
+
+        $esTrailerSencillo = $boleto['tipo_unidad'] === 'TRAILER_SENCILLO';
+        $esFull = $boleto['tipo_unidad'] === 'TRAILER_FULL_DOBLE';
+        $esUnidadSimple = in_array($boleto['tipo_unidad'], ['CAMIONETA', 'TORTON'], true);
+        $formatoCaja = '/^(?:\d{3}-[A-Z]{2}-\d|\d{2}-[A-Z]{2}-\d[A-Z])$/';
+
+        if ($boleto['placa_tracto'] !== '' && !preg_match('/^\d{2}-[A-Z]{2}-\d[A-Z]$/', $boleto['placa_tracto'])) {
+            $errores[] = 'La placa principal debe usar el formato 00-AA-0A.';
+        }
+
+        if ($esTrailerSencillo && $boleto['placa_caja_1'] === '') {
+            $errores[] = 'La placa de caja es obligatoria para tráiler sencillo.';
+        }
+        if ($esTrailerSencillo || $esFull) {
+            if ($boleto['placa_caja_1'] !== '' && !preg_match($formatoCaja, $boleto['placa_caja_1'])) {
+                $errores[] = 'La placa de caja debe usar 000-AA-0 o 00-AA-0A.';
+            }
+        }
+        if ($esFull && ($boleto['placa_caja_1'] === '' || $boleto['placa_caja_2'] === '')) {
+            $errores[] = 'Las placas de las dos cajas son obligatorias para tráiler full.';
+        }
+        if ($esFull && $boleto['placa_caja_2'] !== '' && !preg_match($formatoCaja, $boleto['placa_caja_2'])) {
+            $errores[] = 'La segunda placa de caja debe usar 000-AA-0 o 00-AA-0A.';
+        }
+        if ($esUnidadSimple) {
+            $boleto['placa_caja_1'] = '';
+            $boleto['placa_caja_2'] = '';
         }
 
         foreach ($longitudes as $campo => $maximo) {
@@ -49,9 +101,10 @@ class ControlDiarioController
         }
 
         $categoriasPermitidas = [
-            'TRAILER_SENCILLO' => ['ESPECIAL', 'CASA'],
-            'TORTON' => ['GENERAL'],
-            'TRAILER_FULL_DOBLE' => ['GENERAL', 'CASA'],
+            'CAMIONETA' => ['CASA', 'ESPECIAL'],
+            'TRAILER_SENCILLO' => ['CASA', 'ESPECIAL'],
+            'TORTON' => ['CASA', 'ESPECIAL'],
+            'TRAILER_FULL_DOBLE' => ['CASA', 'ESPECIAL'],
         ];
         if (
             !isset($categoriasPermitidas[$boleto['tipo_unidad']])
@@ -60,10 +113,7 @@ class ControlDiarioController
             $errores[] = 'Selecciona un tipo de unidad y una tarifa válidos.';
         }
 
-        $esFull = $boleto['tipo_unidad'] === 'TRAILER_FULL_DOBLE';
-        if ($esFull && $boleto['placa_caja_2'] === '') {
-            $errores[] = 'La placa de caja 2 es obligatoria para full o doble remolque.';
-        } elseif (!$esFull && $boleto['placa_caja_2'] !== '') {
+        if (!$esFull && $boleto['placa_caja_2'] !== '') {
             $errores[] = 'La placa de caja 2 solo aplica para full o doble remolque.';
         }
 
@@ -75,6 +125,11 @@ class ControlDiarioController
             $folio = $this->modelo->registrarEntrada($boleto, $usuarioId);
         } catch (DomainException $e) {
             return ['tipo' => 'warning', 'mensaje' => $e->getMessage()];
+        } catch (PDOException $e) {
+            if ((int) $e->errorInfo[1] === 1062) {
+                return ['tipo' => 'danger', 'mensaje' => 'Ese número de folio ya existe. Usa otro folio o déjalo vacío para continuar consecutivamente.'];
+            }
+            throw $e;
         }
 
         return [
@@ -95,8 +150,22 @@ class ControlDiarioController
             return ['tipo' => 'danger', 'mensaje' => 'Selecciona un folio válido para registrar la salida.'];
         }
 
+        $fechaSalida = is_string($datos['fecha_salida'] ?? null) ? trim($datos['fecha_salida']) : '';
+        $horaSalida = is_string($datos['hora_salida'] ?? null) ? trim($datos['hora_salida']) : '';
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaSalida)
+            || !preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $horaSalida)) {
+            return ['tipo' => 'danger', 'mensaje' => 'Ingresa una fecha y hora de salida válidas.'];
+        }
+
+        $fechaHoraSalida = $fechaSalida . ' ' . $horaSalida . ':00';
+        $salida = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $fechaHoraSalida);
+        $erroresFecha = DateTimeImmutable::getLastErrors();
+        if (!$salida || ($erroresFecha !== false && ($erroresFecha['warning_count'] > 0 || $erroresFecha['error_count'] > 0))) {
+            return ['tipo' => 'danger', 'mensaje' => 'La fecha de salida no es válida.'];
+        }
+
         try {
-            $this->modelo->registrarSalida((int) $folio, $usuarioId);
+            $this->modelo->registrarSalida((int) $folio, $usuarioId, $fechaHoraSalida);
         } catch (DomainException $e) {
             return ['tipo' => 'warning', 'mensaje' => $e->getMessage()];
         }

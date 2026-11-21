@@ -104,6 +104,7 @@ CREATE TABLE camiones (
                 linea_id_linea INT NOT NULL,
                 operador_empresa VARCHAR(150) NOT NULL DEFAULT '',
                 placa VARCHAR(20) NOT NULL,
+                placa_caja VARCHAR(20),
                 marca VARCHAR(80),
                 modelo VARCHAR(60) NOT NULL,
                 color VARCHAR(50),
@@ -119,15 +120,15 @@ CREATE TABLE camiones (
 
 CREATE TABLE accesos (
                 id_acceso INT AUTO_INCREMENT NOT NULL,
-                camiones_id_camiones INT NOT NULL,
-                usuarios_id_usuario INT NOT NULL,
-                roles_id_rol INT NOT NULL,
-                linea_id_linea INT NOT NULL,
                 id_usuario INT NOT NULL,
-                id_camiones INT NOT NULL,
-                fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                id_camion INT NOT NULL,
                 tipo VARCHAR(10) NOT NULL,
-                PRIMARY KEY (id_acceso, camiones_id_camiones, usuarios_id_usuario, roles_id_rol, linea_id_linea)
+                fecha DATE NOT NULL,
+                hora TIME NOT NULL,
+                observaciones VARCHAR(255) NULL,
+                PRIMARY KEY (id_acceso),
+                KEY idx_accesos_usuario (id_usuario),
+                KEY idx_accesos_camion (id_camion)
 );
 
 ALTER TABLE accesos MODIFY COLUMN tipo VARCHAR(10) COMMENT 'entrada,salida';
@@ -290,14 +291,8 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE accesos ADD CONSTRAINT fk_accesos_camiones
-FOREIGN KEY (id_camiones)
-REFERENCES camiones (id_camiones)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE accesos ADD CONSTRAINT camiones_accesos_fk
-FOREIGN KEY (camiones_id_camiones, usuarios_id_usuario, roles_id_rol, linea_id_linea)
-REFERENCES camiones (id_camiones, usuarios_id_usuario, roles_id_rol, linea_id_linea)
+FOREIGN KEY (id_camion)
+REFERENCES camiones (id_camion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
@@ -354,6 +349,7 @@ INNER JOIN control_diario_roles r ON r.codigo = 'SUPERPATRON';
 CREATE TABLE tarifas_diarias (
     id_tarifa SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     tipo_unidad ENUM(
+        'CAMIONETA',
         'TRAILER_SENCILLO',
         'TORTON',
         'TRAILER_FULL_DOBLE'
@@ -367,22 +363,27 @@ CREATE TABLE tarifas_diarias (
     UNIQUE KEY uq_tarifa_relacion (id_tarifa, tipo_unidad, categoria),
     CONSTRAINT chk_tarifa_monto CHECK (monto >= 0),
     CONSTRAINT chk_tarifa_categoria CHECK (
+        (tipo_unidad = 'CAMIONETA' AND categoria IN ('CASA', 'ESPECIAL'))
+        OR
         (tipo_unidad = 'TRAILER_SENCILLO'
             AND categoria IN ('ESPECIAL', 'CASA'))
         OR
-        (tipo_unidad = 'TORTON' AND categoria = 'GENERAL')
+        (tipo_unidad = 'TORTON' AND categoria IN ('CASA', 'ESPECIAL'))
         OR
         (tipo_unidad = 'TRAILER_FULL_DOBLE'
-            AND categoria IN ('GENERAL', 'CASA'))
+            AND categoria IN ('CASA', 'ESPECIAL'))
     )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO tarifas_diarias (tipo_unidad, categoria, descripcion, monto) VALUES
+    ('CAMIONETA', 'CASA', 'Camioneta - Casa', 100.00),
+    ('CAMIONETA', 'ESPECIAL', 'Camioneta - Especial', 150.00),
     ('TRAILER_SENCILLO', 'ESPECIAL', 'Tráiler sencillo - Especial', 150.00),
     ('TRAILER_SENCILLO', 'CASA', 'Tráiler sencillo - Casa', 100.00),
-    ('TORTON', 'GENERAL', 'Tortón en general', 150.00),
-    ('TRAILER_FULL_DOBLE', 'GENERAL', 'Tráiler full / doble remolque', 300.00),
-    ('TRAILER_FULL_DOBLE', 'CASA', 'Tráiler full / doble remolque de casa', 250.00);
+    ('TORTON', 'CASA', 'Tortón - Casa', 100.00),
+    ('TORTON', 'ESPECIAL', 'Tortón - Especial', 150.00),
+    ('TRAILER_FULL_DOBLE', 'ESPECIAL', 'Tráiler full / doble remolque - Especial', 300.00),
+    ('TRAILER_FULL_DOBLE', 'CASA', 'Tráiler full / doble remolque - Casa', 250.00);
 
 CREATE TABLE boletos_diarios (
     folio BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -391,9 +392,10 @@ CREATE TABLE boletos_diarios (
     fecha_hora_salida DATETIME NULL DEFAULT NULL,
     marca_trailer VARCHAR(80) NOT NULL,
     placa_tracto VARCHAR(20) NOT NULL,
-    placa_caja_1 VARCHAR(20) NOT NULL,
+    placa_caja_1 VARCHAR(20) NULL,
     placa_caja_2 VARCHAR(20) NULL DEFAULT NULL,
     tipo_unidad ENUM(
+        'CAMIONETA',
         'TRAILER_SENCILLO',
         'TORTON',
         'TRAILER_FULL_DOBLE'
@@ -426,6 +428,11 @@ CREATE TABLE boletos_diarios (
         (tipo_unidad = 'TRAILER_FULL_DOBLE' AND placa_caja_2 IS NOT NULL)
         OR
         (tipo_unidad <> 'TRAILER_FULL_DOBLE' AND placa_caja_2 IS NULL)
+    ),
+    CONSTRAINT chk_boleto_caja_1 CHECK (
+        (tipo_unidad IN ('TRAILER_SENCILLO', 'TRAILER_FULL_DOBLE') AND placa_caja_1 IS NOT NULL)
+        OR
+        (tipo_unidad IN ('CAMIONETA', 'TORTON') AND placa_caja_1 IS NULL)
     ),
     CONSTRAINT chk_boleto_monto CHECK (monto_tarifa_aplicada >= 0)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

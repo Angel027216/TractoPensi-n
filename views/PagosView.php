@@ -7,6 +7,10 @@ $totalPagado = (float) ($resumen['pagado'] ?? 0);
 $totalPendiente = (float) ($resumen['pendiente'] ?? 0);
 $totalRechazado = (float) ($resumen['rechazado'] ?? 0);
 $pagosRegistrados = (int) ($resumen['total'] ?? 0);
+$pagos = is_array($pagos ?? null) ? $pagos : [];
+$pagosRealizados = array_values(array_filter($pagos, static fn($pago) => ($pago['estado'] ?? '') === 'pagado'));
+$pagosPendientes = array_values(array_filter($pagos, static fn($pago) => ($pago['estado'] ?? '') === 'pendiente'));
+$pagosVencidos = array_values(array_filter($pagos, static fn($pago) => ($pago['estado'] ?? '') === 'rechazado'));
 ?>
 
 <!DOCTYPE html>
@@ -29,21 +33,12 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=pagos-20261121">
+    <link rel="stylesheet" href="public/assets/css/pagos.css?v=pagos-exacto-20261121">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="public/assets/images/favicon.png" />
-    <style>
-      .badge-pending { background-color: #FFC107; color: #000; }
-      .badge-completed { background-color: #28A745; color: #fff; }
-      .badge-overdue { background-color: #DC3545; color: #fff; }
-      .payment-card { transition: all 0.3s ease; }
-      .payment-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-      .stat-card-primary { border-left: 4px solid #007BFF; }
-      .stat-card-success { border-left: 4px solid #28A745; }
-      .stat-card-danger { border-left: 4px solid #DC3545; }
-      .stat-card-warning { border-left: 4px solid #FFC107; }
-    </style>
+    <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
   </head>
-  <body>
+  <body class="app-dashboard app-pagos">
     <div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
       
@@ -140,7 +135,7 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
             <!-- Tabs Navigation -->
             <div class="row mb-3">
               <div class="col-12">
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs pagos-tabs" role="tablist">
                   <li class="nav-item">
                     <a class="nav-link active" id="pagos-realizados-tab" data-toggle="tab" href="#pagos-realizados" role="tab">
                       <i class="mdi mdi-check-circle mr-2"></i>Pagos Realizados
@@ -165,13 +160,13 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
               <!-- Pagos Realizados -->
               <div class="tab-pane fade show active" id="pagos-realizados" role="tabpanel">
                 <div class="card">
-                  <div class="card-header bg-light">
-                    <h4 class="card-title mb-0">Historial de Pagos Realizados</h4>
+                  <div class="card-header">
+                    <h4 class="card-title mb-0"><i class="mdi mdi-calendar-text mr-2"></i>Historial de Pagos Realizados</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
                       <table class="table table-hover">
-                        <thead class="table-light">
+                        <thead>
                           <tr>
                             <th>Folio</th>
                             <th>Concepto</th>
@@ -183,42 +178,36 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
                           </tr>
                         </thead>
                         <tbody>
-                          <?php if(!empty($pagos)): ?>
-                            <?php foreach($pagos as $pago): ?>
+                          <?php if (!empty($pagosRealizados)): ?>
+                            <?php foreach ($pagosRealizados as $pago): ?>
                             <tr>
-                              <td><strong><?= $pago['id_pago'] ?></strong></td>
-                              <td><?= $pago['concepto'] ?></td>
-                              <td><span class="font-weight-bold text-dark">$<?= number_format($pago['monto'], 2) ?></span></td>
-                              <td><?= $pago['fecha_pago'] ? date('d/m/Y', strtotime($pago['fecha_pago'])) : '-' ?></td>
+                              <td><strong><?= e((string) $pago['id_pago']) ?></strong></td>
+                              <td><?= e((string) $pago['concepto']) ?></td>
+                              <td><span class="font-weight-bold text-dark">$<?= number_format((float) $pago['monto'], 2) ?></span></td>
+                              <td><?= !empty($pago['fecha_pago']) ? date('d/m/Y', strtotime((string) $pago['fecha_pago'])) : '-' ?></td>
                               <td>
-                                <span class="badge <?= $pago['metodo_pago'] == 'transferencia' ? 'badge-info' : ($pago['metodo_pago'] == 'efectivo' ? 'badge-success' : 'badge-warning') ?>">
-                                  <?= ucfirst($pago['metodo_pago']) ?>
+                                <span class="badge <?= ($pago['metodo_pago'] ?? '') == 'transferencia' ? 'badge-info' : (($pago['metodo_pago'] ?? '') == 'efectivo' ? 'badge-success' : 'badge-warning') ?>">
+                                  <?= e(ucfirst((string) ($pago['metodo_pago'] ?? 'Sin definir'))) ?>
                                 </span>
                               </td>
                               <td>
-                                <span class="badge <?= $pago['estado'] == 'pagado' ? 'badge-completed' : ($pago['estado'] == 'pendiente' ? 'badge-warning' : 'badge-danger') ?>">
-                                  <?= ucfirst($pago['estado']) ?>
-                                </span>
+                                <span class="badge badge-completed">Confirmado</span>
                               </td>
                               <td>
-                                <?php if($pago['estado'] == 'pendiente'): ?>
-                                <button class="btn btn-sm btn-outline-success" onclick="marcarPagado(<?= $pago['id_pago'] ?>)" title="Marcar como pagado">
-                                  <i class="mdi mdi-check"></i>
+                                <button class="btn btn-sm btn-outline-primary" title="Ver comprobante">
+                                  <i class="mdi mdi-eye"></i>
                                 </button>
-                                <?php endif; ?>
                               </td>
                             </tr>
                             <?php endforeach; ?>
                           <?php else: ?>
                           <tr>
-                            <td colspan="7" class="text-center text-muted">Sin pagos registrados</td>
-                          </tr>
-                          <?php endif; ?>
-                        </tbody>
-                                <i class="mdi mdi-download"></i>
-                              </button>
+                            <td colspan="7" class="text-center text-muted py-5">
+                              <i class="mdi mdi-file-search-outline d-block" style="font-size:2.8rem"></i>
+                              Sin pagos registrados
                             </td>
                           </tr>
+                          <?php endif; ?>
                         </tbody>
                       </table>
                     </div>
@@ -238,13 +227,13 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
               <!-- Pagos Pendientes -->
               <div class="tab-pane fade" id="pagos-pendientes" role="tabpanel">
                 <div class="card">
-                  <div class="card-header bg-light">
-                    <h4 class="card-title mb-0">Pagos Pendientes de Realizar</h4>
+                  <div class="card-header">
+                    <h4 class="card-title mb-0"><i class="mdi mdi-clock-outline mr-2"></i>Pagos Pendientes de Realizar</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
                       <table class="table table-hover">
-                        <thead class="table-light">
+                        <thead>
                           <tr>
                             <th>Concepto</th>
                             <th>Monto</th>
@@ -255,42 +244,33 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td><strong>Renta Espacio - Junio</strong></td>
-                            <td><span class="font-weight-bold text-dark">$2,500.00</span></td>
-                            <td>05/06/2026</td>
-                            <td><span class="badge badge-info">12 días</span></td>
-                            <td><span class="badge badge-pending">Pendiente</span></td>
-                            <td>
-                              <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#registrarPagoModal" title="Pagar ahora">
-                                <i class="mdi mdi-check"></i> Pagar
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td><strong>Renta Espacio - Julio</strong></td>
-                            <td><span class="font-weight-bold text-dark">$2,500.00</span></td>
-                            <td>05/07/2026</td>
-                            <td><span class="badge badge-light">22 días</span></td>
-                            <td><span class="badge badge-pending">Pendiente</span></td>
-                            <td>
-                              <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#registrarPagoModal" title="Pagar ahora">
-                                <i class="mdi mdi-check"></i> Pagar
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td><strong>Cuota Mantenimiento - Junio</strong></td>
-                            <td><span class="font-weight-bold text-dark">$500.00</span></td>
-                            <td>10/06/2026</td>
-                            <td><span class="badge badge-info">7 días</span></td>
-                            <td><span class="badge badge-pending">Pendiente</span></td>
-                            <td>
-                              <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#registrarPagoModal" title="Pagar ahora">
-                                <i class="mdi mdi-check"></i> Pagar
-                              </button>
-                            </td>
-                          </tr>
+                          <?php if (!empty($pagosPendientes)): ?>
+                            <?php foreach ($pagosPendientes as $pago): ?>
+                              <?php
+                                $limite = !empty($pago['fecha_vencimiento']) ? strtotime((string) $pago['fecha_vencimiento']) : false;
+                                $diasRestantes = $limite ? (int) ceil(($limite - strtotime('today')) / 86400) : null;
+                              ?>
+                              <tr>
+                                <td><strong><?= e((string) $pago['concepto']) ?></strong></td>
+                                <td><span class="font-weight-bold text-dark">$<?= number_format((float) $pago['monto'], 2) ?></span></td>
+                                <td><?= $limite ? date('d/m/Y', $limite) : '-' ?></td>
+                                <td><span class="badge badge-info"><?= $diasRestantes === null ? '-' : max($diasRestantes, 0) . ' días' ?></span></td>
+                                <td><span class="badge badge-pending">Pendiente</span></td>
+                                <td>
+                                  <button class="btn btn-sm btn-primary" onclick="marcarPagado(<?= (int) $pago['id_pago'] ?>)" title="Pagar ahora">
+                                    <i class="mdi mdi-check"></i> Pagar
+                                  </button>
+                                </td>
+                              </tr>
+                            <?php endforeach; ?>
+                          <?php else: ?>
+                            <tr>
+                              <td colspan="6" class="text-center text-muted py-5">
+                                <i class="mdi mdi-check-circle-outline d-block" style="font-size:2.8rem"></i>
+                                No tienes pagos pendientes
+                              </td>
+                            </tr>
+                          <?php endif; ?>
                         </tbody>
                       </table>
                     </div>
@@ -302,16 +282,12 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
               <div class="tab-pane fade" id="pagos-vencidos" role="tabpanel">
                 <div class="card">
                   <div class="card-header bg-danger text-white">
-                    <h4 class="card-title mb-0">⚠️ Pagos Vencidos</h4>
+                    <h4 class="card-title mb-0"><i class="mdi mdi-alert mr-2"></i>Pagos Vencidos</h4>
                   </div>
                   <div class="card-body">
-                    <div class="alert alert-danger" role="alert">
-                      <i class="mdi mdi-alert-circle mr-2"></i>
-                      <strong>¡Atención!</strong> Tienes 1 pago vencido. Por favor, realiza el pago lo antes posible para evitar sanciones.
-                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover">
-                        <thead class="table-light">
+                        <thead>
                           <tr>
                             <th>Concepto</th>
                             <th>Monto</th>
@@ -322,18 +298,29 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class="table-danger">
-                            <td><strong>Renta Espacio - Mayo Adicional</strong></td>
-                            <td><span class="font-weight-bold">$1,200.00</span></td>
-                            <td>30/05/2026</td>
-                            <td><span class="badge badge-danger">15 días vencido</span></td>
-                            <td><span class="badge badge-overdue">Vencido</span></td>
-                            <td>
-                              <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#registrarPagoModal" title="Pagar inmediatamente">
-                                <i class="mdi mdi-alert"></i> Pagar Ahora
-                              </button>
-                            </td>
-                          </tr>
+                          <?php if (!empty($pagosVencidos)): ?>
+                            <?php foreach ($pagosVencidos as $pago): ?>
+                              <tr>
+                                <td><strong><?= e((string) $pago['concepto']) ?></strong></td>
+                                <td><span class="font-weight-bold">$<?= number_format((float) $pago['monto'], 2) ?></span></td>
+                                <td><?= !empty($pago['fecha_vencimiento']) ? date('d/m/Y', strtotime((string) $pago['fecha_vencimiento'])) : '-' ?></td>
+                                <td><span class="badge badge-danger">Rechazado</span></td>
+                                <td><span class="badge badge-overdue">Vencido</span></td>
+                                <td>
+                                  <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#registrarPagoModal" title="Registrar pago">
+                                    <i class="mdi mdi-alert"></i> Pagar Ahora
+                                  </button>
+                                </td>
+                              </tr>
+                            <?php endforeach; ?>
+                          <?php else: ?>
+                            <tr>
+                              <td colspan="6" class="text-center text-muted py-5">
+                                <i class="mdi mdi-shield-check d-block" style="font-size:2.8rem"></i>
+                                No tienes pagos vencidos
+                              </td>
+                            </tr>
+                          <?php endif; ?>
                         </tbody>
                       </table>
                     </div>
@@ -402,6 +389,7 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
           </div>
           <div class="modal-body">
             <form id="formPago">
+              <?= csrf_input() ?>
               <div class="form-group">
                 <label for="concepto">Concepto del Pago <span class="text-danger">*</span></label>
                 <select class="form-control" id="concepto" name="concepto" required>
@@ -488,6 +476,29 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
           $('#registrarPagoModal').modal('hide');
           form.reset();
           document.getElementById('fecha_pago').valueAsDate = new Date();
+        }
+      }
+
+      async function marcarPagado(idPago) {
+        const form = document.getElementById('formPago');
+        const formData = new FormData(form);
+        formData.set('accion', 'marcar_pagado');
+        formData.set('id_pago', String(idPago));
+
+        try {
+          const respuesta = await fetch('index.php?menu=pagos', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: formData
+          });
+          const resultado = await respuesta.json();
+          if (!respuesta.ok || !resultado.exito) {
+            alert(resultado.mensaje || 'No fue posible actualizar el pago.');
+            return;
+          }
+          window.location.reload();
+        } catch (error) {
+          alert('No se pudo actualizar el pago.');
         }
       }
 
