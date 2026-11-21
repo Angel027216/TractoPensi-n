@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" role="img" aria-labelledby="title description">
+  <title id="title">Cargando</title>
+  <desc id="description">Un tractocamión azul avanza de izquierda a derecha por una carretera.</desc>
+  <style>
+    .truck {
+      animation: drive 3.2s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .road-dashes {
+      animation: road 1.1s linear infinite;
+    }
+
+    @keyframes drive {
+      from { transform: translateX(0); }
+      to { transform: translateX(510px); }
+    }
+
+    @keyframes road {
+      to { stroke-dashoffset: -72; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .truck,
+      .road-dashes {
+        animation: none;
+      }
+
+      .truck {
+        transform: translateX(240px);
+      }
+    }
+  </style>
+  <defs>
+    <linearGradient id="glass" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#57d4ff"/>
+      <stop offset="1" stop-color="#0876d8"/>
+    </linearGradient>
+    <linearGradient id="trailer" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#f4f9ff"/>
+      <stop offset="1" stop-color="#b9d8f6"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-50%" width="160%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="1" y="1" width="718" height="218" rx="22" fill="#06162d" stroke="#168bff" stroke-opacity=".48"/>
+
+  <g opacity=".18" fill="#53baff">
+    <circle cx="92" cy="48" r="2"/>
+    <circle cx="125" cy="62" r="1.5"/>
+    <circle cx="625" cy="44" r="2"/>
+    <circle cx="594" cy="68" r="1.5"/>
+  </g>
+
+  <path d="M56 133H664" fill="none" stroke="#6483a9" stroke-width="4" stroke-linecap="round" opacity=".38"/>
+  <path class="road-dashes" d="M70 133H650" fill="none" stroke="#67caff" stroke-width="3" stroke-linecap="round" stroke-dasharray="34 38" opacity=".9"/>
+
+  <g class="truck" filter="url(#glow)" stroke-linejoin="round">
+    <path d="M39 64h104l14 55H39z" fill="url(#trailer)" stroke="#d8efff" stroke-width="2"/>
+    <path d="M49 73h84v41H49z" fill="none" stroke="#94b7da" stroke-width="2"/>
+    <path d="M143 83h28l22 21v31h-64V99z" fill="#087be0" stroke="#6ccaff" stroke-width="2"/>
+    <path d="M153 89h16l15 15h-31z" fill="url(#glass)" stroke="#a9eaff" stroke-width="1.5"/>
+    <path d="M130 118h68v8h-68z" fill="#102f55"/>
+    <path d="M189 115h7v7h-7z" fill="#fff3a1"/>
+    <path d="M133 108h7v7h-7z" fill="#b9e8ff"/>
+    <path d="M158 128h31" fill="none" stroke="#bceaff" stroke-width="2"/>
+    <circle cx="70" cy="131" r="10" fill="#07101d" stroke="#a8d7ff" stroke-width="3"/>
+    <circle cx="70" cy="131" r="3" fill="#53c4ff"/>
+    <circle cx="158" cy="131" r="10" fill="#07101d" stroke="#a8d7ff" stroke-width="3"/>
+    <circle cx="158" cy="131" r="3" fill="#53c4ff"/>
+    <circle cx="183" cy="131" r="8" fill="#07101d" stroke="#a8d7ff" stroke-width="3"/>
+    <circle cx="183" cy="131" r="2.5" fill="#53c4ff"/>
+  </g>
+
+  <text x="360" y="184" fill="#eaf4ff" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="600" text-anchor="middle">
+    Cargando<tspan fill="#19b9ff">...</tspan>
+  </text>
+</svg>

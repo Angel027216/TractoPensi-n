@@ -113,6 +113,79 @@ if ($menu === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if ($menu === 'recuperar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf_token();
+    $emailRecuperacion = trim((string) ($_POST['email'] ?? ''));
+    $mensajeRecuperacion = 'Si existe una cuenta con ese correo, recibirás un enlace para restablecer la contraseña. Revisa también la carpeta de correo no deseado.';
+
+    try {
+        $urlBase = url_base_aplicacion();
+        $usuarioModel = new Usuario((new Database())->getConnection());
+        $usuarioModel->asegurarTablaRestablecimiento();
+
+        if (filter_var($emailRecuperacion, FILTER_VALIDATE_EMAIL)) {
+            $usuario = $usuarioModel->obtenerPorEmail($emailRecuperacion);
+            if ($usuario && $usuarioModel->guardarTokenRestablecimiento(
+                (int) $usuario['id'],
+                hash('sha256', $tokenRecuperacion = bin2hex(random_bytes(32))),
+                date('Y-m-d H:i:s', time() + 3600)
+            )) {
+                $enlace = $urlBase . '/index.php?menu=restablecer&token=' . rawurlencode($tokenRecuperacion);
+                $asunto = 'Restablece tu contraseña - Tracto Pensión San Leonardo';
+                $mensaje = "Recibimos una solicitud para restablecer la contraseña de tu cuenta.\n\n"
+                    . "Abre este enlace para crear una nueva contraseña:\n{$enlace}\n\n"
+                    . "El enlace vence en una hora y solo puede utilizarse una vez. "
+                    . "Si no solicitaste el cambio, ignora este correo.";
+
+                if (!enviar_correo_texto((string) $usuario['email'], $asunto, $mensaje)) {
+                    $usuarioModel->eliminarRestablecimiento((int) $usuario['id']);
+                    logger('No se pudo enviar un correo de recuperación de contraseña.');
+                }
+            }
+        }
+    } catch (RuntimeException $e) {
+        logger('Configuración inválida para enlaces de recuperación: ' . $e->getMessage());
+        $errorRecuperacion = 'No se pudo iniciar la recuperación. Inténtalo más tarde o contacta al administrador.';
+    } catch (PDOException $e) {
+        logger('Error de base de datos durante la recuperación de contraseña: ' . $e->getMessage());
+        $errorRecuperacion = 'No se pudo procesar la solicitud. Inténtalo más tarde.';
+    }
+}
+
+if ($menu === 'restablecer') {
+    header('Referrer-Policy: no-referrer');
+    $tokenRestablecimiento = $_POST['token'] ?? $_GET['token'] ?? '';
+    $tokenRestablecimiento = is_string($tokenRestablecimiento) ? $tokenRestablecimiento : '';
+    $tokenValidoFormato = preg_match('/^[a-f0-9]{64}$/i', $tokenRestablecimiento) === 1;
+    $tokenRestablecimientoValido = false;
+    $errorRestablecimiento = '';
+    $usuarioModel = new Usuario((new Database())->getConnection());
+    $usuarioModel->asegurarTablaRestablecimiento();
+    $tokenHash = $tokenValidoFormato ? hash('sha256', $tokenRestablecimiento) : '';
+    $tokenRestablecimientoValido = $tokenValidoFormato
+        && (bool) $usuarioModel->obtenerRestablecimientoPorHash($tokenHash);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verify_csrf_token();
+        $passwordNueva = (string) ($_POST['password'] ?? '');
+        $passwordConfirmacion = (string) ($_POST['confirmar_password'] ?? '');
+
+        if (!$tokenRestablecimientoValido) {
+            $errorRestablecimiento = 'El enlace no es válido o ya venció. Solicita uno nuevo.';
+        } elseif (strlen($passwordNueva) < 8 || strlen($passwordNueva) > 128) {
+            $errorRestablecimiento = 'La contraseña debe tener entre 8 y 128 caracteres.';
+        } elseif ($passwordNueva !== $passwordConfirmacion) {
+            $errorRestablecimiento = 'Las contraseñas no coinciden.';
+        } elseif ($usuarioModel->actualizarPasswordConToken($tokenHash, password_hash($passwordNueva, PASSWORD_DEFAULT))) {
+            $_SESSION['mensajeLogin'] = 'Contraseña actualizada correctamente. Inicia sesión con tu nueva contraseña.';
+            redirect('index.php?menu=login');
+        } else {
+            $tokenRestablecimientoValido = false;
+            $errorRestablecimiento = 'El enlace ya no es válido. Solicita uno nuevo.';
+        }
+    }
+}
+
 $menusProtegidos = ['panel', 'micamion', 'apartarespacio', 'pagos', 'respaldo', 'historial', 'accesos', 'pensionados', 'linea', 'control_diario', 'perfil', 'password'];
 if (in_array($menu, $menusProtegidos, true) && !isset($_SESSION['usuario_id'])) {
     redirect('index.php?menu=login');
@@ -188,6 +261,12 @@ else if ($menu=='verificar'){
 }
 else if ($menu=='registro'){
     include 'views/RegistroLoginView.php';
+}
+else if ($menu === 'recuperar') {
+    include 'views/RecuperarPasswordView.php';
+}
+else if ($menu === 'restablecer') {
+    include 'views/RestablecerPasswordView.php';
 }
 else if ($menu=='panel'){
     $panelModel = new PanelModel((new Database())->getConnection());

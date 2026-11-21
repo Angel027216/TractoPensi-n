@@ -57,7 +57,7 @@
                 <input type="checkbox" id="login-remember">
                 <span>Mantener sesión iniciada</span>
               </label>
-              <a href="#" class="login-forgot">¿Olvidaste tu contraseña?</a>
+              <a href="index.php?menu=recuperar" class="login-forgot">¿Olvidaste tu contraseña?</a>
             </div>
 
             <button type="submit" class="login-submit">

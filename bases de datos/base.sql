@@ -58,6 +58,15 @@ CREATE TABLE usuarios (
                 UNIQUE KEY uq_usuarios_id_usuario (id_usuario)
 );
 
+CREATE TABLE password_resets (
+                user_id INT NOT NULL,
+                token_hash CHAR(64) NOT NULL,
+                expires_at DATETIME NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                PRIMARY KEY (user_id),
+                KEY idx_password_resets_expires_at (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE pensionados (
                 id_pensionado INT AUTO_INCREMENT NOT NULL,

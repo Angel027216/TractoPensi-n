@@ -64,8 +64,17 @@ function verify_csrf_token(): void
 
 function enviar_codigo_verificacion(string $email, string $codigo): bool
 {
+    $asunto = 'Código de verificación - Tracto Pensión San Leonardo';
+    $mensaje = "Tu código de verificación es: {$codigo}\n\n"
+        . "Este código vence en 10 minutos. Si no solicitaste iniciar sesión, ignora este correo.";
+
+    return enviar_correo_texto($email, $asunto, $mensaje);
+}
+
+function enviar_correo_texto(string $email, string $asunto, string $mensaje): bool
+{
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        logger('No se pudo enviar el código 2FA: correo inválido.');
+        logger('No se pudo enviar un correo del sistema: correo inválido.');
         return false;
     }
 
@@ -77,10 +86,6 @@ function enviar_codigo_verificacion(string $email, string $codigo): bool
     $env = require $envPath;
     $remitente = $env['MAIL_FROM'] ?? 'no-reply@tractopension.local';
     $nombreRemitente = $env['MAIL_FROM_NAME'] ?? 'Tracto Pension San Leonardo';
-    $asunto = 'Código de verificación - Tracto Pensión San Leonardo';
-    $mensaje = "Tu código de verificación es: {$codigo}\n\n"
-        . "Este código vence en 10 minutos. Si no solicitaste iniciar sesión, ignora este correo.";
-
     $usuarioSmtp = (string) ($env['MAIL_USERNAME'] ?? $env['MAIL_SMTP_USER'] ?? $remitente);
     $passwordSmtp = (string) ($env['MAIL_SMTP_PASSWORD'] ?? $env['MAIL_PASSWORD'] ?? '');
     if ($passwordSmtp !== '') {
@@ -109,6 +114,46 @@ function enviar_codigo_verificacion(string $email, string $codigo): bool
     }
 
     return $enviado;
+}
+
+function url_base_aplicacion(): string
+{
+    $envPath = APP_ROOT . '/env.local.php';
+    if (!file_exists($envPath)) {
+        $envPath = APP_ROOT . '/env.php';
+    }
+
+    $env = require $envPath;
+    $urlConfigurada = trim((string) ($env['APP_URL'] ?? ''));
+    if ($urlConfigurada !== '') {
+        $partes = parse_url($urlConfigurada);
+        if (
+            !is_array($partes)
+            || !in_array($partes['scheme'] ?? '', ['http', 'https'], true)
+            || empty($partes['host'])
+            || isset($partes['query'])
+            || isset($partes['fragment'])
+        ) {
+            throw new RuntimeException('APP_URL debe ser una URL HTTP o HTTPS válida.');
+        }
+
+        return rtrim($urlConfigurada, '/');
+    }
+
+    $host = strtolower((string) ($_SERVER['SERVER_NAME'] ?? ''));
+    if (!in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+        throw new RuntimeException('Configura APP_URL para generar enlaces de recuperación seguros.');
+    }
+
+    $https = !empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off';
+    $esquema = $https ? 'https' : 'http';
+    $puerto = (int) ($_SERVER['SERVER_PORT'] ?? ($https ? 443 : 80));
+    $puertoPredeterminado = $https ? 443 : 80;
+    $puertoUrl = $puerto === $puertoPredeterminado ? '' : ':' . $puerto;
+    $ruta = str_replace('\\', '/', dirname((string) ($_SERVER['SCRIPT_NAME'] ?? '/')));
+    $ruta = $ruta === '/' || $ruta === '.' ? '' : '/' . trim($ruta, '/');
+
+    return $esquema . '://' . $host . $puertoUrl . $ruta;
 }
 
 function enviar_por_smtp_gmail(

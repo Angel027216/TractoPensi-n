@@ -74,6 +74,93 @@ class Usuario
         return $stmt->fetch();
     }
 
+    public function asegurarTablaRestablecimiento(): void
+    {
+        $this->db->exec(
+            "CREATE TABLE IF NOT EXISTS password_resets (
+                user_id INT NOT NULL PRIMARY KEY,
+                token_hash CHAR(64) NOT NULL,
+                expires_at DATETIME NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                KEY idx_password_resets_expires_at (expires_at)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+        );
+    }
+
+    public function guardarTokenRestablecimiento(int $id, string $tokenHash, string $venceEn): bool
+    {
+        $stmt = $this->db->prepare(
+            "SELECT created_at FROM password_resets
+             WHERE user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 MINUTE)"
+        );
+        $stmt->execute([$id]);
+        if ($stmt->fetch()) {
+            return false;
+        }
+
+        $this->db->prepare("DELETE FROM password_resets WHERE user_id = ?")->execute([$id]);
+        $stmt = $this->db->prepare(
+            "INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (?, ?, ?)"
+        );
+
+        return $stmt->execute([$id, $tokenHash, $venceEn]);
+    }
+
+    public function obtenerRestablecimientoPorHash(string $tokenHash): array|false
+    {
+        $stmt = $this->db->prepare(
+            "SELECT user_id, expires_at FROM password_resets
+             WHERE token_hash = ? AND expires_at > NOW()"
+        );
+        $stmt->execute([$tokenHash]);
+
+        return $stmt->fetch();
+    }
+
+    public function eliminarRestablecimiento(int $id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM password_resets WHERE user_id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function actualizarPasswordConToken(string $tokenHash, string $passwordHash): bool
+    {
+        $this->db->beginTransaction();
+
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT user_id FROM password_resets
+                 WHERE token_hash = ? AND expires_at > NOW()
+                 FOR UPDATE"
+            );
+            $stmt->execute([$tokenHash]);
+            $userId = $stmt->fetchColumn();
+
+            if ($userId === false) {
+                $this->db->commit();
+                return false;
+            }
+
+            $stmt = $this->db->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
+            $stmt->execute([$passwordHash, (int) $userId]);
+            if ($stmt->rowCount() !== 1) {
+                throw new RuntimeException('No fue posible actualizar la contraseña del usuario.');
+            }
+
+            $stmt = $this->db->prepare("DELETE FROM password_resets WHERE user_id = ?");
+            $stmt->execute([(int) $userId]);
+            $this->db->commit();
+
+            return true;
+        } catch (Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            throw $e;
+        }
+    }
+
     public function actualizarFoto(int $id, string $foto): bool
     {
         $columna = $this->db->query("SHOW COLUMNS FROM usuarios LIKE 'foto'")->fetch();
