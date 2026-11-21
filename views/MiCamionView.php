@@ -280,25 +280,6 @@ if (formularioCamion) {
     });
 }
 
-<<<<<<< HEAD
-document.getElementById('formCamion').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const respuesta = await fetch(this.action, {
-        method: 'POST',
-        body: new FormData(this),
-        headers: { 'Accept': 'application/json' }
-    });
-    const resultado = await respuesta.json();
-
-    alert(resultado.mensaje);
-    if (resultado.exito) {
-        window.location.reload();
-    }
-});
-
-=======
->>>>>>> 98314a1111e7c58410f573087043d9af0f06f650
 </script>
 
             <!-- Footer -->

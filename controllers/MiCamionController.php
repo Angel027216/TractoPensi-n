@@ -24,7 +24,8 @@ class MiCamionController {
             && in_array($seccionSolicitada, ['registrar', 'visualizar'], true)
             ? $seccionSolicitada
             : 'visualizar';
-        $mensajeCamion = '';
+        $mensajeCamion = $_SESSION['mensaje_camion'] ?? '';
+        unset($_SESSION['mensaje_camion']);
         $camionRegistradoQuery = $_GET['camion_registrado'] ?? null;
         $idCamionRegistrado = is_string($camionRegistradoQuery)
             ? filter_var($camionRegistradoQuery, FILTER_VALIDATE_INT)
@@ -165,6 +166,20 @@ class MiCamionController {
             'id_camion' => $idCamion,
             'placa' => $placa,
         ]);
+
+        $accept = (string) ($_SERVER['HTTP_ACCEPT'] ?? '');
+        if (strpos($accept, 'application/json') === false) {
+            $_SESSION['mensaje_camion'] = 'El camión se guardó y ya aparece en tu lista.';
+            header(
+                'Location: index.php?menu=micamion&seccion=visualizar&camion_registrado='
+                . $idCamion
+                . '#camion-' . $idCamion,
+                true,
+                303
+            );
+            exit;
+        }
+
         $this->responderJson([
             'exito' => true,
             'mensaje' => 'Camión registrado correctamente.',
