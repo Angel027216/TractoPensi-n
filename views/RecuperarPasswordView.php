@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/login.css">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
     <link rel="shortcut icon" href="public/assets/images/favicon.png">
   </head>
   <body class="app-auth-page">
@@ -30,7 +30,7 @@
             <div class="alert alert-success login-alert" role="status"><?= e($mensajeRecuperacion) ?></div>
           <?php endif; ?>
 
-          <form class="login-form" method="post" action="index.php?menu=recuperar">
+          <form class="login-form" data-loading-overlay method="post" action="index.php?menu=recuperar">
             <?= csrf_input() ?>
             <div class="login-field">
               <label for="correo-recuperacion"><i class="mdi mdi-email-outline" aria-hidden="true"></i> Correo electrónico</label>
@@ -73,5 +73,6 @@
         <p class="login-visual-footer"><span></span>Tracto Pensión San Leonardo&nbsp; · &nbsp;Siempre contigo en el camino<span></span></p>
       </aside>
     </div>
+    <script src="public/assets/js/form-loading.js?v=loader-20261121"></script>
   </body>
 </html>

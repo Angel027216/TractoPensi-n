@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/login.css">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
     <link rel="shortcut icon" href="public/assets/images/favicon.png">
   </head>
   <body class="app-auth-page">
@@ -28,7 +28,7 @@
           <?php endif; ?>
 
           <?php if ($tokenRestablecimientoValido): ?>
-            <form class="login-form" method="post" action="index.php?menu=restablecer">
+            <form class="login-form" data-loading-overlay method="post" action="index.php?menu=restablecer">
               <?= csrf_input() ?>
               <input type="hidden" name="token" value="<?= e($tokenRestablecimiento) ?>">
               <div class="login-field">
@@ -80,5 +80,6 @@
         <p class="login-visual-footer"><span></span>Tracto Pensión San Leonardo&nbsp; · &nbsp;Siempre contigo en el camino<span></span></p>
       </aside>
     </div>
+    <script src="public/assets/js/form-loading.js?v=loader-20261121"></script>
   </body>
 </html>

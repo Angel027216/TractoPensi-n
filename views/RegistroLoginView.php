@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/login.css">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
     <link rel="shortcut icon" href="public/assets/images/favicon.png">
   </head>
   <body class="app-auth-page">
@@ -29,7 +29,7 @@
             </div>
           <?php endif; ?>
 
-          <form class="login-form" method="POST" action="index.php?menu=registro">
+          <form class="login-form" data-loading-overlay method="POST" action="index.php?menu=registro">
             <?= csrf_input() ?>
             <div class="login-field">
               <label for="nombre"><i class="mdi mdi-account" aria-hidden="true"></i> Nombre de usuario</label>
@@ -125,5 +125,6 @@
         });
       </script>
     <?php endif; ?>
+    <script src="public/assets/js/form-loading.js?v=loader-20261121"></script>
   </body>
 </html>

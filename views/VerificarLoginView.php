@@ -2,47 +2,74 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Verificación de inicio de sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verificación de inicio de sesión | Tracto Pensión</title>
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
   </head>
   <body class="app-auth-page">
-    <div class="container-scroller">
-      <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
-          <div class="row flex-grow">
-            <div class="col-lg-6 d-flex align-items-center justify-content-center">
-              <div class="auth-form-transparent text-left p-3">
-                <div class="brand-logo">
-                  <img src="public/assets/images/logotractopension.png" alt="Tracto Pensión">
-                </div>
-                <h4>Verifica tu inicio de sesión</h4>
-                <h6 class="font-weight-light">Enviamos un código de 6 dígitos a tu correo electrónico.</h6>
-                <?php if (!empty($errorVerificacion)): ?>
-                  <div class="alert alert-danger"><?= e($errorVerificacion) ?></div>
-                <?php endif; ?>
-                <form class="pt-3" method="post" action="index.php?menu=verificar">
-                  <?= csrf_input() ?>
-                  <div class="form-group">
-                    <label for="codigo">Código de verificación</label>
-                    <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" name="codigo" id="codigo" class="form-control form-control-lg" autocomplete="one-time-code" required>
-                  </div>
-                  <div class="my-3">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Verificar</button>
-                  </div>
-                </form>
-                <div class="text-center mt-4 font-weight-light">
-                  <a href="index.php?menu=logout" class="text-primary">Cancelar y cerrar sesión</a>
-                </div>
+    <div class="login-layout">
+      <main class="login-access">
+        <section class="login-card" aria-labelledby="verification-title">
+          <div class="login-brand">
+            <img src="public/assets/images/logotractopension.png" alt="Tracto Pensión San Leonardo">
+          </div>
+
+          <header class="login-intro">
+            <h1 id="verification-title">Verifica tu <span>inicio de sesión</span></h1>
+            <p>Enviamos un código de 6 dígitos a tu correo electrónico</p>
+          </header>
+
+          <?php if (!empty($errorVerificacion)): ?>
+            <div class="alert alert-danger login-alert" role="alert"><?= e($errorVerificacion) ?></div>
+          <?php endif; ?>
+
+          <form class="login-form" data-loading-overlay method="post" action="index.php?menu=verificar">
+            <?= csrf_input() ?>
+            <div class="login-field">
+              <label for="codigo"><i class="mdi mdi-shield-key-outline" aria-hidden="true"></i> Código de verificación</label>
+              <div class="login-input-wrap">
+                <i class="mdi mdi-numeric-6-circle-outline login-input-icon" aria-hidden="true"></i>
+                <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" name="codigo" id="codigo" placeholder="Ingresa el código de 6 dígitos" autocomplete="one-time-code" autofocus required>
               </div>
             </div>
-            <div class="col-lg-6 login-half-bg d-flex flex-row"></div>
+
+            <button type="submit" class="login-submit">
+              <i class="mdi mdi-shield-check-outline" aria-hidden="true"></i>
+              <span>Verificar</span>
+            </button>
+
+            <div class="login-divider" aria-hidden="true">
+              <span></span><i class="mdi mdi-truck"></i><span></span>
+            </div>
+
+            <p class="login-register"><a href="index.php?menu=logout">Cancelar y cerrar sesión</a></p>
+          </form>
+        </section>
+      </main>
+
+      <aside class="login-visual login-visual-no-truck">
+        <div class="login-benefits">
+          <div class="login-benefit">
+            <i class="mdi mdi-shield-check-outline" aria-hidden="true"></i>
+            <span>Acceso seguro</span>
+          </div>
+          <div class="login-benefit">
+            <i class="mdi mdi-settings" aria-hidden="true"></i>
+            <span>Control Operativo</span>
+          </div>
+          <div class="login-benefit">
+            <i class="mdi mdi-chart-bar" aria-hidden="true"></i>
+            <span>Administración Eficiente</span>
           </div>
         </div>
-      </div>
+
+        <p class="login-visual-footer"><span></span>Tracto Pensión San Leonardo&nbsp; · &nbsp;Siempre contigo en el camino<span></span></p>
+      </aside>
     </div>
-    <script src="public/assets/vendors/js/vendor.bundle.base.js"></script>
+
+    <script src="public/assets/js/form-loading.js?v=loader-20261121"></script>
   </body>
 </html>
