@@ -5,6 +5,11 @@ require_once 'views/includes/NavBarView.php';
 $ocupados = (int) ($panelData['occupancy']['occupied'] ?? 0);
 $disponibles = (int) ($panelData['occupancy']['available'] ?? 0);
 $totalEspacios = $ocupados + $disponibles;
+$meses = [
+  1 => 'enero', 2 => 'febrero', 3 => 'marzo', 4 => 'abril',
+  5 => 'mayo', 6 => 'junio', 7 => 'julio', 8 => 'agosto',
+  9 => 'septiembre', 10 => 'octubre', 11 => 'noviembre', 12 => 'diciembre',
+];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,6 +21,7 @@ $totalEspacios = $ocupados + $disponibles;
   <link rel="stylesheet" href="public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
   <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+  <link rel="stylesheet" href="public/assets/css/dashboard.css">
   <link rel="shortcut icon" href="public/assets/images/favicon.png">
 </head>
 <body class="app-dashboard">
@@ -31,7 +37,7 @@ $totalEspacios = $ocupados + $disponibles;
               <h1>Tracto Pensión<br><strong>San Leonardo</strong></h1>
               <p>Control y administración de tu pensión de tractocamiones</p>
             </div>
-            <img src="public/assets/images/truck-banner.svg" alt="Tractocamión de transporte" class="dashboard-truck">
+            <img src="public/assets/images/Dashboar1.png" alt="" class="dashboard-truck" aria-hidden="true" loading="eager" decoding="async">
           </section>
 
           <section class="dashboard-heading">
@@ -89,7 +95,7 @@ $totalEspacios = $ocupados + $disponibles;
           </section>
 
           <section class="dashboard-bottom">
-            <div><i class="mdi mdi-calendar-month"></i><strong><?= date('d') ?></strong><span><?= date('F Y') ?><small>Fecha actual</small></span></div>
+            <div><i class="mdi mdi-calendar-month"></i><strong><?= date('d') ?></strong><span><?= $meses[(int) date('n')] ?> <?= date('Y') ?><small>Fecha actual</small></span></div>
             <div><i class="mdi mdi-clock-outline"></i><strong><?= date('H:i') ?></strong><span>Hora del sistema</span></div>
             <div><i class="mdi mdi-circle"></i><strong>Sistema en línea</strong><span>Sin incidencias</span></div>
             <div class="dashboard-bottom-message">Tu pensión,<br><strong>nuestra prioridad</strong></div>

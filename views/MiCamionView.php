@@ -8,11 +8,10 @@ $camion = null;
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Tracto Pensión</title>
+    <title>Camiones | Tracto Pensión</title>
 
     <!-- plugins:css -->
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -25,12 +24,12 @@ $camion = null;
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-
+    <link rel="stylesheet" href="public/assets/css/dashboard.css">
+    <link rel="stylesheet" href="public/assets/css/camiones.css">
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
-
 </head>
 
-<body>
+<body class="app-dashboard app-camiones">
 
 <div class="container-scroller">
 
@@ -38,41 +37,6 @@ $camion = null;
     <?=NavBarView(); ?>
 
     <div class="container-fluid page-body-wrapper">
-
-        <!-- Configuración -->
-        <div id="settings-trigger">
-            <i class="mdi mdi-settings"></i>
-        </div>
-
-        <div id="theme-settings" class="settings-panel">
-
-            <i class="settings-close mdi mdi-close"></i>
-
-            <p class="settings-heading">SIDEBAR SKINS</p>
-
-            <div class="sidebar-bg-options selected" id="sidebar-default-theme">
-                <div class="img-ss rounded-circle bg-dark border mr-3"></div>
-                Default
-            </div>
-
-            <div class="sidebar-bg-options" id="sidebar-dark-theme">
-                <div class="img-ss rounded-circle bg-light border mr-3"></div>
-                Light
-            </div>
-
-            <p class="settings-heading mt-2">HEADER SKINS</p>
-
-            <div class="color-tiles mx-0 px-4">
-                <div class="tiles primary"></div>
-                <div class="tiles success"></div>
-                <div class="tiles warning"></div>
-                <div class="tiles danger"></div>
-                <div class="tiles info"></div>
-                <div class="tiles dark"></div>
-                <div class="tiles default light"></div>
-            </div>
-
-        </div>
 
         <!-- Sidebar -->
         <?=SideBarView(); ?>
@@ -82,67 +46,67 @@ $camion = null;
 
             <div class="content-wrapper">
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                    <div>
-                                        <h3 class="text-dark font-weight-bold mb-1">Camiones</h3>
-                                        <p class="text-muted mb-0">Registra camiones o consulta los que ya están guardados.</p>
-                                    </div>
-                                </div>
-                                <ul class="nav nav-pills mt-4">
-                                    <li class="nav-item">
-                                        <a class="nav-link <?= $seccionCamiones === 'registrar' ? 'active' : '' ?>" href="index.php?menu=micamion&amp;seccion=registrar">
-                                            <i class="mdi mdi-plus"></i> Registrar camión
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link <?= $seccionCamiones === 'visualizar' ? 'active' : '' ?>" href="index.php?menu=micamion&amp;seccion=visualizar">
-                                            <i class="mdi mdi-format-list-bulleted"></i> Visualizar camiones
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <section class="dashboard-hero camiones-hero">
+                    <div class="dashboard-hero-copy">
+                        <h1>Camiones</h1>
+                        <p>Registra camiones o consulta los que ya están guardados.</p>
                     </div>
-                </div>
+                </section>
 
                 <?php if ($mensajeCamion !== ''): ?>
-                    <div class="alert alert-success" role="status"><?= e($mensajeCamion) ?></div>
+                    <div class="camiones-alert" role="status"><i class="mdi mdi-check-circle"></i><?= e($mensajeCamion) ?></div>
                 <?php endif; ?>
 
-                <?php if ($seccionCamiones === 'registrar'): ?>
-                <div class="row">
-                    <div class="col-lg-5 col-md-12 mb-4">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-body text-center">
-                                <img src="public/assets/images/samples/1280x768/12.jpg"
-                                     alt="Camión"
-                                     class="img-fluid rounded shadow-sm"
-                                     style="max-height: 280px; object-fit: cover; width: 100%;">
-                            </div>
-                        </div>
+                <nav class="camiones-toolbar" aria-label="Opciones de camiones">
+                    <div class="camiones-tabs">
+                        <a class="camiones-tab <?= $seccionCamiones === 'registrar' ? 'active' : '' ?>" href="index.php?menu=micamion&amp;seccion=registrar">
+                            <i class="mdi mdi-plus"></i> Registrar camión
+                        </a>
+                        <a class="camiones-tab <?= $seccionCamiones === 'visualizar' ? 'active' : '' ?>" href="index.php?menu=micamion&amp;seccion=visualizar">
+                            <i class="mdi mdi-format-list-bulleted"></i> Visualizar camiones
+                        </a>
                     </div>
+                    <?php if ($seccionCamiones === 'visualizar' && $camiones): ?>
+                        <div class="camiones-filters">
+                            <label class="camiones-search">
+                                <i class="mdi mdi-magnify"></i>
+                                <input type="search" id="camionesSearch" placeholder="Buscar por placa, operador o marca..." aria-label="Buscar camiones">
+                            </label>
+                            <label class="camiones-status-filter">
+                                <i class="mdi mdi-filter-variant"></i>
+                                <select id="camionesStatusFilter" aria-label="Filtrar por estado">
+                                    <option value="">Todos los estados</option>
+                                    <option value="en_pension">En pensión</option>
+                                    <option value="fuera_de_pension">Fuera de pensión</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                </select>
+                            </label>
+                        </div>
+                    <?php endif; ?>
+                </nav>
 
-                    <div class="col-lg-7 col-md-12 mb-4">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-body">
-                                <h4 class="font-weight-bold mb-4" id="formularioCamion">Registrar camión</h4>
+                <?php if ($seccionCamiones === 'registrar'): ?>
+                <section class="camiones-card camiones-form-card">
+                    <header class="camiones-card-header">
+                        <div>
+                            <h2><i class="mdi mdi-truck-plus"></i> Registrar camión</h2>
+                            <p>Captura los datos de la unidad que ingresará con boleto.</p>
+                        </div>
+                    </header>
+                    <div class="camiones-card-body">
                                 <form method="POST" action="index.php?menu=micamion&amp;seccion=registrar" id="formCamion">
                                     <?= csrf_input(); ?>
                                     <input type="hidden" name="accion" value="guardar">
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
+                                    <div class="camiones-form-grid">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Nombre del operador o empresa</label>
                                             <input type="text" name="operador_empresa" class="form-control" maxlength="150" required>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Placa del tracto</label>
                                             <input type="text" name="placa" class="form-control" placeholder="23-45-TX o 345-RT-6" pattern="(?:[0-9]{2}-[0-9]{2}-[A-Za-z]{2}|[0-9]{3}-[A-Za-z]{2}-[0-9])" title="Usa el formato 23-45-TX o 345-RT-6" maxlength="10" autocapitalize="characters" required>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Marca</label>
                                             <select name="marca" class="form-control" required>
                                                 <option value="">Selecciona una marca</option>
@@ -151,11 +115,11 @@ $camion = null;
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Modelo</label>
                                             <input type="text" name="modelo" class="form-control" maxlength="100" required>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Color</label>
                                             <select name="color" class="form-control" required>
                                                 <option value="">Selecciona un color</option>
@@ -164,15 +128,15 @@ $camion = null;
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Fecha de Entrada</label>
                                             <input type="date" name="fecha" class="form-control">
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Hora de Entrada</label>
                                             <input type="time" name="hora" class="form-control">
                                         </div>
-                                        <div class="col-md-12 form-group">
+                                        <div class="camiones-field">
                                             <label class="font-weight-bold">Estado</label>
                                             <select name="estado" class="form-control">
                                                 <option value="en_pension" selected>En pensión</option>
@@ -181,70 +145,88 @@ $camion = null;
                                         </div>
                                     </div>
 
-                                    <div class="mt-4 d-flex flex-wrap">
-                                        <button type="submit" id="btnGuardar" class="btn btn-success rounded-pill mr-2 mb-2">
+                                    <div class="camiones-form-actions">
+                                        <button type="submit" id="btnGuardar" class="camiones-primary-button">
                                             <i class="mdi mdi-content-save"></i>
                                             Guardar camión
                                         </button>
+                                        <a class="camiones-secondary-button" href="index.php?menu=micamion&amp;seccion=visualizar">Cancelar</a>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
                     </div>
-                </div>
+                </section>
 
                 <?php else: ?>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-body">
-                                <h4 class="font-weight-bold mb-4">Camiones registrados</h4>
-                                <?php if ($camiones): ?>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Operador o empresa</th>
-                                                    <th>Placa</th>
-                                                    <th>Marca y modelo</th>
-                                                    <th>Línea</th>
-                                                    <th>Color</th>
-                                                    <th>Año</th>
-                                                    <th>Entrada</th>
-                                                    <th>Estado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($camiones as $camionRegistrado): ?>
-                                                    <tr
-                                                        id="camion-<?= (int) $camionRegistrado['id_camion'] ?>"
-                                                        <?= $idCamionRegistrado === (int) $camionRegistrado['id_camion'] ? 'class="table-success"' : '' ?>
-                                                    >
-                                                        <td><?= e((string) ($camionRegistrado['operador_empresa'] ?? '')) ?: '—' ?></td>
-                                                        <td><strong><?= e((string) $camionRegistrado['placa']) ?></strong></td>
-                                                        <td>
-                                                            <?= e(trim((string) ($camionRegistrado['marca'] ?? '') . ' ' . (string) $camionRegistrado['modelo'])) ?>
-                                                        </td>
-                                                        <td><?= e((string) ($camionRegistrado['nom_linea'] ?? '—')) ?></td>
-                                                        <td><?= e((string) ($camionRegistrado['color'] ?? '—')) ?></td>
-                                                        <td><?= e((string) ($camionRegistrado['anio'] ?? '—')) ?></td>
-                                                        <td>
-                                                            <?= e((string) ($camionRegistrado['fecha_entrada'] ?? '—')) ?>
-                                                            <?= e((string) ($camionRegistrado['hora_entrada'] ?? '')) ?>
-                                                        </td>
-                                                        <td><?= e(ucfirst(str_replace('_', ' ', (string) $camionRegistrado['estado']))) ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <?php else: ?>
-                                    <p class="text-muted mb-0">Todavía no hay camiones registrados en tu cuenta.</p>
-                                <?php endif; ?>
-                            </div>
+                <section class="camiones-card">
+                    <header class="camiones-table-header">
+                        <div>
+                            <h2><i class="mdi mdi-truck"></i> Camiones registrados</h2>
+                            <span>Total: <?= count($camiones) ?> camiones</span>
                         </div>
-                    </div>
-                </div>
+                    </header>
+                    <?php if ($camiones): ?>
+                        <div class="camiones-table-wrap">
+                            <table class="camiones-table" id="camionesTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Placa</th>
+                                        <th>Operador / Empresa</th>
+                                        <th>Marca y modelo</th>
+                                        <th>Línea</th>
+                                        <th>Color</th>
+                                        <th>Año</th>
+                                        <th>Entrada</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($camiones as $indiceCamion => $camionRegistrado):
+                                        $estadoCamion = strtolower((string) $camionRegistrado['estado']);
+                                        $nombreEstado = ucfirst(str_replace('_', ' ', (string) $camionRegistrado['estado']));
+                                        $claseEstado = $estadoCamion === 'en_pension'
+                                            ? 'success'
+                                            : ($estadoCamion === 'mantenimiento' ? 'warning' : 'info');
+                                        $fechaEntradaCamion = trim(
+                                            (string) ($camionRegistrado['fecha_entrada'] ?? '')
+                                            . ' '
+                                            . (string) ($camionRegistrado['hora_entrada'] ?? '')
+                                        );
+                                    ?>
+                                        <tr
+                                            id="camion-<?= (int) $camionRegistrado['id_camion'] ?>"
+                                            data-camion-row
+                                            data-estado="<?= e($estadoCamion) ?>"
+                                            <?= $idCamionRegistrado === (int) $camionRegistrado['id_camion'] ? 'class="camion-highlight"' : '' ?>
+                                        >
+                                            <td><?= $indiceCamion + 1 ?></td>
+                                            <td><strong><?= e((string) $camionRegistrado['placa']) ?></strong></td>
+                                            <td><?= e((string) ($camionRegistrado['operador_empresa'] ?? '—')) ?></td>
+                                            <td><?= e(trim((string) ($camionRegistrado['marca'] ?? '') . ' ' . (string) $camionRegistrado['modelo'])) ?></td>
+                                            <td><?= e((string) ($camionRegistrado['nom_linea'] ?? '—')) ?></td>
+                                            <td><?= e((string) ($camionRegistrado['color'] ?? '—')) ?></td>
+                                            <td><?= e((string) ($camionRegistrado['anio'] ?? '—')) ?></td>
+                                            <td><?= e($fechaEntradaCamion !== '' ? $fechaEntradaCamion : '—') ?></td>
+                                            <td><span class="camiones-status <?= $claseEstado ?>"><?= e($nombreEstado) ?></span></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            <div class="camiones-empty-filter" id="camionesEmptyFilter" hidden>No hay camiones que coincidan con la búsqueda.</div>
+                        </div>
+                        <footer class="camiones-table-footer">
+                            <span id="camionesSummary" aria-live="polite"></span>
+                            <nav class="camiones-pagination" id="camionesPagination" aria-label="Paginación de camiones"></nav>
+                        </footer>
+                    <?php else: ?>
+                        <div class="camiones-empty-state">
+                            <i class="mdi mdi-truck-outline"></i>
+                            <strong>Todavía no hay camiones registrados</strong>
+                            <span>Registra una unidad para verla en esta lista.</span>
+                            <a class="camiones-primary-button" href="index.php?menu=micamion&amp;seccion=registrar"><i class="mdi mdi-plus"></i> Registrar camión</a>
+                        </div>
+                    <?php endif; ?>
+                </section>
                 <?php endif; ?>
 
 <!-- SCRIPT -->
@@ -278,6 +260,84 @@ if (formularioCamion) {
             boton.disabled = false;
         }
     });
+}
+
+const camionesTabla = document.getElementById('camionesTable');
+if (camionesTabla) {
+    const filasCamiones = Array.from(camionesTabla.querySelectorAll('[data-camion-row]'));
+    const busquedaCamiones = document.getElementById('camionesSearch');
+    const filtroEstadoCamiones = document.getElementById('camionesStatusFilter');
+    const resumenCamiones = document.getElementById('camionesSummary');
+    const paginacionCamiones = document.getElementById('camionesPagination');
+    const vacioCamiones = document.getElementById('camionesEmptyFilter');
+    const filasPorPagina = 10;
+    let paginaCamiones = 1;
+
+    const renderizarCamiones = function() {
+        const termino = busquedaCamiones.value.trim().toLocaleLowerCase();
+        const estadoSeleccionado = filtroEstadoCamiones.value;
+        const filasFiltradas = filasCamiones.filter(function(fila) {
+            const coincideTexto = fila.textContent.toLocaleLowerCase().includes(termino);
+            const coincideEstado = !estadoSeleccionado || fila.dataset.estado === estadoSeleccionado;
+            return coincideTexto && coincideEstado;
+        });
+        const totalPaginas = Math.max(1, Math.ceil(filasFiltradas.length / filasPorPagina));
+        paginaCamiones = Math.min(paginaCamiones, totalPaginas);
+        const inicio = (paginaCamiones - 1) * filasPorPagina;
+        const fin = Math.min(inicio + filasPorPagina, filasFiltradas.length);
+
+        filasCamiones.forEach(function(fila) {
+            fila.hidden = true;
+        });
+        filasFiltradas.slice(inicio, fin).forEach(function(fila) {
+            fila.hidden = false;
+        });
+
+        resumenCamiones.textContent = filasFiltradas.length
+            ? 'Mostrando ' + (inicio + 1) + ' a ' + fin + ' de ' + filasFiltradas.length + ' camiones'
+            : 'No hay camiones para mostrar';
+        vacioCamiones.hidden = filasFiltradas.length > 0;
+        paginacionCamiones.replaceChildren();
+
+        if (totalPaginas <= 1) {
+            return;
+        }
+
+        const agregarBoton = function(etiqueta, destino, textoAlternativo, deshabilitado, activo) {
+            const boton = document.createElement('button');
+            boton.type = 'button';
+            boton.className = 'camiones-page-button' + (activo ? ' active' : '');
+            boton.textContent = etiqueta;
+            boton.setAttribute('aria-label', textoAlternativo);
+            if (activo) {
+                boton.setAttribute('aria-current', 'page');
+            }
+            boton.disabled = deshabilitado;
+            boton.addEventListener('click', function() {
+                paginaCamiones = destino;
+                renderizarCamiones();
+            });
+            paginacionCamiones.appendChild(boton);
+        };
+
+        agregarBoton('‹', paginaCamiones - 1, 'Página anterior', paginaCamiones === 1, false);
+        const primeraPagina = Math.max(1, Math.min(paginaCamiones - 2, totalPaginas - 4));
+        const ultimaPagina = Math.min(totalPaginas, primeraPagina + 4);
+        for (let pagina = primeraPagina; pagina <= ultimaPagina; pagina++) {
+            agregarBoton(String(pagina), pagina, 'Página ' + pagina, false, pagina === paginaCamiones);
+        }
+        agregarBoton('›', paginaCamiones + 1, 'Página siguiente', paginaCamiones === totalPaginas, false);
+    };
+
+    busquedaCamiones.addEventListener('input', function() {
+        paginaCamiones = 1;
+        renderizarCamiones();
+    });
+    filtroEstadoCamiones.addEventListener('change', function() {
+        paginaCamiones = 1;
+        renderizarCamiones();
+    });
+    renderizarCamiones();
 }
 
 </script>
