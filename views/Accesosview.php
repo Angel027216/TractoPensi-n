@@ -28,7 +28,7 @@ if(!isset($accesos) || !is_array($accesos)){
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/vendors/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
     <style>
       body.custom-bg { background:#e9ecef; }

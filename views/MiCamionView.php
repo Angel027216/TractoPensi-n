@@ -23,8 +23,8 @@ $camion = null;
     <link rel="stylesheet" href="public/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/dashboard.css">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=nav-20261121">
     <link rel="stylesheet" href="public/assets/css/camiones.css">
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
 </head>

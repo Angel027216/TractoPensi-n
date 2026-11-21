@@ -20,8 +20,8 @@ $meses = [
   <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
   <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-  <link rel="stylesheet" href="public/assets/css/dashboard.css">
+  <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+  <link rel="stylesheet" href="public/assets/css/dashboard.css?v=nav-20261121">
   <link rel="shortcut icon" href="public/assets/images/favicon.png">
 </head>
 <body class="app-dashboard">

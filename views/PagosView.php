@@ -28,7 +28,7 @@ $pagosRegistrados = (int) ($resumen['total'] ?? 0);
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="public/assets/images/favicon.png" />
     <style>

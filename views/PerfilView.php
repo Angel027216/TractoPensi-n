@@ -25,7 +25,7 @@ unset($_SESSION['mensaje_perfil'], $_SESSION['error_perfil']);
 
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
 
 </head>
 
