@@ -58,9 +58,11 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=control-20261122">
+    <link rel="stylesheet" href="public/assets/css/control-diario.css?v=control-20261122">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 </head>
-<body>
+<body class="app-dashboard app-control-diario">
 <div class="container-scroller">
     <?= NavBarView(); ?>
     <div class="container-fluid page-body-wrapper">
@@ -68,18 +70,21 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
         <?= SideBarView(); ?>
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="d-flex flex-wrap justify-content-between align-items-start mb-4">
-                    <div>
-                        <h2 class="text-dark font-weight-bold">
-                            <i class="mdi mdi-ticket-confirmation mr-2"></i>Control diario
-                        </h2>
-                        <p class="text-muted">Registro de boletos para camiones no pensionados.</p>
+                <section class="dashboard-hero control-diario-hero">
+                    <div class="dashboard-hero-copy">
+                        <span class="dashboard-kicker"><i class="mdi mdi-ticket-confirmation"></i> CONTROL DIARIO</span>
+                        <h1>Control diario</h1>
+                        <p>Registro de boletos para camiones no pensionados.</p>
                     </div>
-                    <a class="btn btn-outline-success mt-2" href="index.php?menu=control_diario&amp;vista=fondo">
-                        Fondo actual:
-                        <strong><?= $fondoControlDiario ? '$' . e(number_format((float) $fondoControlDiario['saldo_actual'], 2)) : 'Sin configurar' ?></strong>
+                    <img src="public/assets/images/Dashboar1.png" alt="" class="dashboard-truck" aria-hidden="true" loading="eager" decoding="async">
+                </section>
+
+                <section class="control-diario-heading">
+                    <a class="control-fondo-badge" href="index.php?menu=control_diario&amp;vista=fondo">
+                        <i class="mdi mdi-wallet-outline"></i>
+                        <span><small>Fondo actual</small><strong><?= $fondoControlDiario ? '$' . e(number_format((float) $fondoControlDiario['saldo_actual'], 2)) : 'Sin configurar' ?></strong></span>
                     </a>
-                </div>
+                </section>
 
                 <?php if ($mensajeControlDiario): ?>
                     <div class="alert alert-<?= e((string) $mensajeControlDiario['tipo']) ?>" role="alert">
@@ -99,6 +104,24 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                     </div>
                 <?php endif; ?>
 
+                <nav class="control-diario-toolbar" aria-label="Opciones de control diario">
+                    <div class="control-diario-tabs">
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'entrada' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=entrada"><i class="mdi mdi-ticket-plus"></i>Registrar boleto</a>
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'salida' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=salida"><i class="mdi mdi-cash-register"></i>Salida y cobro</a>
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'listado' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=listado"><i class="mdi mdi-format-list-bulleted"></i>Boletos del día</a>
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'reporte' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=reporte"><i class="mdi mdi-chart-bar"></i>Reporte diario</a>
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'fondo' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=fondo"><i class="mdi mdi-wallet"></i>Fondo de cambio</a>
+                        <a class="control-diario-tab <?= $vistaControlDiario === 'material' ? 'active' : '' ?>"
+                           href="index.php?menu=control_diario&amp;vista=material"><i class="mdi mdi-lan"></i>Material por turno</a>
+                    </div>
+                </nav>
+
+                <div class="control-diario-tabs-legacy d-none">
                 <ul class="nav nav-tabs mb-4">
                     <li class="nav-item">
                         <a class="nav-link <?= $vistaControlDiario === 'entrada' ? 'active' : '' ?>"
@@ -125,6 +148,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                            href="index.php?menu=control_diario&amp;vista=material">Material por turno</a>
                     </li>
                 </ul>
+                </div>
 
                 <?php if ($vistaControlDiario === 'entrada'): ?>
                     <div class="card border-0 shadow-sm">
@@ -623,7 +647,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
             <footer class="footer">
                 <div class="footer-inner-wraper">
                     <div class="d-flex justify-content-start">
-                        <span class="text-muted text-left d-block">Copyright &copy; 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.</span>
+                        <span class="text-muted text-left d-block">Copyright © 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.</span>
                     </div>
                 </div>
             </footer>

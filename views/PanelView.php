@@ -101,6 +101,13 @@ $meses = [
             <div class="dashboard-bottom-message">Tu pensión,<br><strong>nuestra prioridad</strong></div>
           </section>
         </div>
+        <footer class="footer">
+          <div class="footer-inner-wraper">
+            <div class="d-flex justify-content-start">
+              <span class="text-muted text-left d-block">Copyright © 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.</span>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   </div>

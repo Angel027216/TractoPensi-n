@@ -17,9 +17,11 @@ $camionesPensionados = is_array($camionesPensionados ?? null) ? $camionesPension
 		<link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
 		<link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
 		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+		<link rel="stylesheet" href="public/assets/css/dashboard.css?v=linea-20261122">
+		<link rel="stylesheet" href="public/assets/css/linea.css?v=linea-20261122">
 		<link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 	</head>
-	<body>
+	<body class="app-dashboard app-lineas">
 		<div class="container-scroller">
 			<?= NavBarView(); ?>
 
@@ -29,14 +31,14 @@ $camionesPensionados = is_array($camionesPensionados ?? null) ? $camionesPension
 
 				<div class="main-panel">
 					<div class="content-wrapper">
-						<div class="d-xl-flex justify-content-between align-items-start mb-4">
-							<div>
-								<h2 class="text-dark font-weight-bold mb-2">
-									<i class="mdi mdi-source-branch mr-2"></i>Lineas
-								</h2>
-								<p class="text-muted">Administra las lineas y consulta sus carros pensionados.</p>
+						<section class="dashboard-hero lineas-hero">
+							<div class="dashboard-hero-copy">
+								<span class="dashboard-kicker"><i class="mdi mdi-source-branch"></i> CONTROL DE TRANSPORTE</span>
+								<h1>Líneas</h1>
+								<p>Administra las líneas y consulta sus carros pensionados.</p>
 							</div>
-						</div>
+							<img src="public/assets/images/Dashboar1.png" alt="" class="dashboard-truck" aria-hidden="true" loading="eager" decoding="async">
+						</section>
 
 						<?php if (!empty($mensajeLinea)): ?>
 							<div class="alert alert-<?= htmlspecialchars($mensajeLinea['tipo']) ?>" role="alert">
@@ -197,11 +199,10 @@ $camionesPensionados = is_array($camionesPensionados ?? null) ? $camionesPension
 							</div>
 						<?php endif; ?>
 					</div>
-
 					<footer class="footer">
 						<div class="footer-inner-wraper">
 							<div class="d-flex justify-content-start">
-								<span class="text-muted text-left d-block">Copyright &copy; 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.</span>
+								<span class="text-muted text-left d-block">Copyright © 2025 Tracto Pensión San Leonardo. Todos los derechos reservados.</span>
 							</div>
 						</div>
 					</footer>

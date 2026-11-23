@@ -1,0 +1,222 @@
+.app-lineas .content-wrapper {
+  padding-top: 20px;
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(12, 72, 139, .13), transparent 34rem),
+    #071426;
+}
+
+.app-lineas .lineas-hero {
+  min-height: 220px;
+  margin-bottom: 17px;
+  padding: 22px clamp(22px, 3.8vw, 48px);
+  border-radius: 15px;
+}
+
+.app-lineas .lineas-hero .dashboard-truck {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 50%;
+  opacity: .92;
+  filter: saturate(.88) contrast(.96);
+}
+
+.app-lineas .lineas-hero h1 {
+  font-size: clamp(2.1rem, 3.4vw, 2.8rem);
+  font-style: italic;
+  letter-spacing: -.035em;
+}
+
+.app-lineas .lineas-hero p {
+  margin: 7px 0 0;
+  color: #91a7c3;
+  font-size: .82rem;
+}
+
+.app-lineas .lineas-heading {
+  display: flex;
+  align-items: center;
+  margin: 0 0 15px;
+}
+
+.app-lineas .lineas-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-lineas .lineas-heading-icon {
+  color: #3196ff;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.app-lineas .lineas-heading h2 {
+  margin: 0;
+  color: #e8f1ff;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.app-lineas .lineas-heading p {
+  margin: 2px 0 0;
+  color: #91a7c3;
+  font-size: .78rem;
+}
+
+.app-lineas .card {
+  overflow: hidden;
+  border: 1px solid rgba(38, 119, 207, .38) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, rgba(8, 30, 55, .98), rgba(7, 24, 44, .98)) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .18) !important;
+  color: #e8f1ff;
+}
+
+.app-lineas .card-title {
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(139, 173, 216, .13);
+  color: #edf5ff;
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+
+.app-lineas label {
+  color: #dceaff;
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.app-lineas .form-control {
+  min-height: 42px;
+  border: 1px solid rgba(104, 147, 196, .27) !important;
+  border-radius: 8px;
+  background: #081a2e !important;
+  color: #e5effc !important;
+  font-size: .88rem;
+}
+
+.app-lineas .form-control:focus {
+  border-color: #1687ff !important;
+  box-shadow: 0 0 0 3px rgba(22, 135, 255, .15);
+}
+
+.app-lineas .form-control::placeholder {
+  color: #91a7c3;
+  opacity: 1;
+}
+
+.app-lineas .btn-primary,
+.app-lineas .btn-info {
+  border-color: #1687ff;
+  background: linear-gradient(105deg, #0877f9, #0864db);
+  box-shadow: 0 7px 18px rgba(0, 105, 235, .26);
+  color: #fff;
+  font-weight: 700;
+}
+
+.app-lineas .table {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #b6c8df;
+  font-size: .84rem;
+}
+
+.app-lineas .table thead th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(71, 133, 201, .23);
+  background: linear-gradient(90deg, rgba(14, 53, 98, .86), rgba(10, 35, 69, .72)) !important;
+  color: #7db7f7;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.app-lineas .table tbody td {
+  border-top: 1px solid rgba(117, 153, 193, .1);
+  background: transparent;
+  color: #afc2da;
+}
+
+.app-lineas .table-responsive {
+  background: linear-gradient(145deg, rgba(15, 46, 86, .62), rgba(6, 22, 46, .72));
+  border-radius: 8px;
+}
+
+.app-lineas .table tbody tr:hover,
+.app-lineas .table .table-primary,
+.app-lineas .table-primary th,
+.app-lineas .table-primary td {
+  background: rgba(19, 105, 195, .16) !important;
+}
+
+.app-lineas .table tbody td strong,
+.app-lineas .text-dark {
+  color: #edf5ff !important;
+}
+
+.app-lineas .text-muted,
+.app-lineas .form-text {
+  color: #91a7c3 !important;
+}
+
+.app-lineas .alert {
+  border: 1px solid rgba(58, 143, 240, .25);
+  border-radius: 10px;
+  background: rgba(8, 41, 79, .76);
+  color: #dceaff;
+}
+
+.app-lineas .sidebar {
+  background: #081426;
+  border-right: 1px solid rgba(139, 173, 216, .13);
+}
+
+.app-lineas .sidebar-trailer {
+  height: 92px;
+  border: 0;
+  background-color: #081426;
+  background-image: url("../images/Dashboar1-sidebar.png?v=20261122");
+  background-position: center 62%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.app-lineas .sidebar-trailer img {
+  height: 92px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+  opacity: 1;
+  filter: saturate(1) contrast(1);
+  transform: none;
+}
+
+.app-lineas .footer {
+  display: block;
+  background: #071426;
+  border-top: 1px solid rgba(111, 174, 238, 0.12);
+}
+
+@media (max-width: 767px) {
+  .app-lineas .lineas-hero {
+    min-height: 112px;
+  }
+
+  .app-lineas .lineas-hero .dashboard-truck {
+    opacity: .88;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-lineas .content-wrapper {
+    padding: 14px 12px 22px;
+  }
+
+  .app-lineas .lineas-hero {
+    min-height: 100px;
+  }
+}

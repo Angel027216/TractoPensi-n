@@ -17,34 +17,39 @@ if (!isset($accesos) || !is_array($accesos)) {
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/vendors/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=accesos-20261122">
+    <link rel="stylesheet" href="public/assets/css/accesos.css?v=accesos-20261122">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
-    <style>
-      body.custom-bg { background:#e9ecef; }
-      .access-card { max-width:980px; margin:40px auto; }
-      .access-table thead th { text-align:center; color:#0b5394; }
-      .access-table tbody td { vertical-align:middle; text-align:center; }
-      .access-inner { background:#f5f5f5; border:3px solid #333; }
-      .page-title { font-size:34px; color:#0b5394; font-weight:700; margin-bottom:20px; }
-    </style>
   </head>
-  <body class="custom-bg">
+  <body class="app-dashboard app-accesos">
     <div class="container-scroller">
       <?=NavBarView(); ?>
       <div class="container-fluid page-body-wrapper">
         <?=SideBarView(); ?>
         <div class="main-panel">
           <div class="content-wrapper">
+            <section class="dashboard-hero accesos-hero">
+              <div class="dashboard-hero-copy">
+                <span class="dashboard-kicker"><i class="mdi mdi-door-open"></i> CONTROL DE ACCESOS</span>
+                <h1>Historial de accesos</h1>
+                <p>Consulta las entradas y salidas registradas de los camiones.</p>
+              </div>
+              <img src="public/assets/images/Dashboar1.png" alt="" class="dashboard-truck" aria-hidden="true" loading="eager" decoding="async">
+            </section>
 
-            <div class="access-card">
-              <div class="card shadow-sm">
-                <div class="card-body">
-                  <div class="page-title text-center">Historial de Accesos</div>
-                  <div class="card mt-3">
-                    <div class="card-body text-center">
-                      <h3 class="text-primary font-weight-bold">Estado de Accesos</h3>
-                      <div class="mt-4 p-4 access-inner">
-                        <div class="table-responsive">
-                          <table class="table access-table mb-0">
+            <section class="accesos-card">
+              <header class="accesos-card-header">
+                <div>
+                  <span class="accesos-card-icon"><i class="mdi mdi-format-list-bulleted"></i></span>
+                  <div>
+                    <h2>Estado de accesos</h2>
+                    <p>Registro actual de entradas y salidas</p>
+                  </div>
+                </div>
+              </header>
+              <div class="accesos-table-wrap">
+                <div class="table-responsive">
+                  <table class="table accesos-table mb-0">
                             <thead>
                               <tr>
                                 <th>Fecha</th>
@@ -90,11 +95,7 @@ if (!isset($accesos) || !is_array($accesos)) {
                           </table>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </section>
 
           </div>
           <!-- content-wrapper ends -->

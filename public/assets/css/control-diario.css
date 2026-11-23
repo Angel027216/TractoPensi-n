@@ -1,0 +1,361 @@
+.app-control-diario .content-wrapper {
+  padding-top: 20px;
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(12, 72, 139, .13), transparent 34rem),
+    #071426;
+}
+
+.app-control-diario .control-diario-hero {
+  min-height: 220px;
+  margin-bottom: 17px;
+  padding: 22px clamp(22px, 3.8vw, 48px);
+  border-radius: 15px;
+}
+
+.app-control-diario .control-diario-hero .dashboard-truck {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 50%;
+  opacity: .92;
+  filter: saturate(.88) contrast(.96);
+}
+
+.app-control-diario .control-diario-hero h1 {
+  font-size: clamp(2.1rem, 3.4vw, 2.8rem);
+  font-style: italic;
+  letter-spacing: -.035em;
+}
+
+.app-control-diario .control-diario-hero p {
+  margin: 7px 0 0;
+  color: #91a7c3;
+  font-size: .82rem;
+}
+
+.app-control-diario .control-diario-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 15px;
+}
+
+.app-control-diario .control-diario-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-control-diario .control-diario-heading-icon {
+  color: #3196ff;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.app-control-diario .control-diario-heading h2 {
+  margin: 0;
+  color: #e8f1ff;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.app-control-diario .control-diario-heading p {
+  margin: 2px 0 0;
+  color: #91a7c3;
+  font-size: .78rem;
+}
+
+.app-control-diario .control-fondo-badge {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 178px;
+  padding: 8px 13px;
+  border: 1px solid rgba(58, 143, 240, .24);
+  border-radius: 999px;
+  background: linear-gradient(100deg, rgba(18, 88, 167, .27), rgba(16, 42, 72, .55));
+  color: #dceaff;
+  text-decoration: none;
+}
+
+.app-control-diario .control-fondo-badge:hover {
+  border-color: rgba(82, 164, 255, .55);
+  color: #fff;
+  text-decoration: none;
+}
+
+.app-control-diario .control-fondo-badge > i {
+  color: #42d889;
+  font-size: 1.35rem;
+}
+
+.app-control-diario .control-fondo-badge span,
+.app-control-diario .control-fondo-badge small,
+.app-control-diario .control-fondo-badge strong {
+  display: block;
+}
+
+.app-control-diario .control-fondo-badge small {
+  color: #91a7c3;
+  font-size: .62rem;
+}
+
+.app-control-diario .control-fondo-badge strong {
+  color: #edf5ff;
+  font-size: .76rem;
+}
+
+.app-control-diario .control-diario-toolbar {
+  margin-bottom: 15px;
+}
+
+.app-control-diario .control-diario-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-control-diario .control-diario-tab {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid rgba(44, 131, 234, .28);
+  border-radius: 9px;
+  background: rgba(8, 41, 79, .76);
+  color: #d7e8ff;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.app-control-diario .control-diario-tab:hover {
+  border-color: rgba(63, 151, 255, .65);
+  background: rgba(16, 78, 143, .7);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.app-control-diario .control-diario-tab.active {
+  border-color: #1687ff;
+  background: linear-gradient(105deg, #0877f9, #0864db);
+  box-shadow: 0 7px 18px rgba(0, 105, 235, .26);
+  color: #fff;
+}
+
+.app-control-diario .card {
+  overflow: hidden;
+  border: 1px solid rgba(38, 119, 207, .38) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, rgba(8, 30, 55, .98), rgba(7, 24, 44, .98)) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .18) !important;
+  color: #e8f1ff;
+}
+
+.app-control-diario .card-body {
+  padding: 20px;
+}
+
+.app-control-diario .card-title {
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(139, 173, 216, .13);
+  color: #edf5ff;
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+
+.app-control-diario label {
+  color: #dceaff;
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.app-control-diario .form-control,
+.app-control-diario .input-group-text {
+  min-height: 42px;
+  border: 1px solid rgba(104, 147, 196, .27) !important;
+  border-radius: 8px;
+  background: #081a2e !important;
+  color: #e5effc !important;
+  font-size: .88rem;
+}
+
+.app-control-diario .input-group-prepend .input-group-text {
+  border-right: 0 !important;
+  border-radius: 8px 0 0 8px;
+}
+
+.app-control-diario .input-group .form-control {
+  border-left: 0 !important;
+  border-radius: 0 8px 8px 0;
+}
+
+.app-control-diario .form-control:focus {
+  border-color: #1687ff !important;
+  box-shadow: 0 0 0 3px rgba(22, 135, 255, .15);
+}
+
+.app-control-diario .form-control::placeholder {
+  color: #91a7c3;
+  opacity: 1;
+}
+
+.app-control-diario .form-control option {
+  background: #0c1d34;
+  color: #e5effc;
+}
+
+.app-control-diario .form-text,
+.app-control-diario .text-muted {
+  color: #91a7c3 !important;
+}
+
+.app-control-diario .btn-primary {
+  border-color: #1687ff;
+  background: linear-gradient(105deg, #0877f9, #0864db);
+  box-shadow: 0 7px 18px rgba(0, 105, 235, .26);
+  color: #fff;
+  font-weight: 700;
+}
+
+.app-control-diario .btn-info,
+.app-control-diario .btn-success {
+  font-weight: 700;
+}
+
+.app-control-diario .table-responsive {
+  border-radius: 8px;
+}
+
+.app-control-diario .table {
+  margin: 0;
+  color: #b6c8df;
+  font-size: .84rem;
+}
+
+.app-control-diario .table thead th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(71, 133, 201, .23);
+  background: rgba(5, 20, 38, .55);
+  color: #7db7f7;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.app-control-diario .table tbody td {
+  border-top: 1px solid rgba(117, 153, 193, .1);
+  color: #afc2da;
+}
+
+.app-control-diario .table tbody tr:hover {
+  background: rgba(19, 105, 195, .12);
+}
+
+.app-control-diario .table tbody td strong {
+  color: #edf5ff;
+}
+
+.app-control-diario .alert {
+  border: 1px solid rgba(58, 143, 240, .25);
+  border-radius: 10px;
+  background: rgba(8, 41, 79, .76);
+  color: #dceaff;
+}
+
+.app-control-diario .control-diario-bottom {
+  margin-top: 15px;
+}
+
+.app-control-diario .sidebar {
+  background: #081426;
+  border-right: 1px solid rgba(139, 173, 216, .13);
+}
+
+.app-control-diario .sidebar-trailer {
+  height: 92px;
+  border: 0;
+  background-color: #081426;
+  background-image: url("../images/Dashboar1-sidebar.png?v=20261122");
+  background-position: center 62%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.app-control-diario .sidebar-trailer img {
+  height: 92px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+  opacity: 1;
+  filter: saturate(1) contrast(1);
+  transform: none;
+}
+
+.app-control-diario .footer {
+  display: block;
+  background: #071426;
+  border-top: 1px solid rgba(111, 174, 238, 0.12);
+}
+
+@media (max-width: 991px) {
+  .app-control-diario .control-diario-heading {
+    align-items: flex-start;
+  }
+
+  .app-control-diario .control-diario-bottom {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-control-diario .control-diario-hero {
+    min-height: 112px;
+  }
+
+  .app-control-diario .control-fondo-badge {
+    min-width: 0;
+  }
+
+  .app-control-diario .control-diario-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-control-diario .control-diario-tab {
+    padding: 8px 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-control-diario .content-wrapper {
+    padding: 14px 12px 22px;
+  }
+
+  .app-control-diario .control-diario-hero {
+    min-height: 100px;
+  }
+
+  .app-control-diario .control-diario-heading {
+    align-items: flex-start;
+  }
+
+  .app-control-diario .control-fondo-badge {
+    display: none;
+  }
+
+  .app-control-diario .control-diario-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .app-control-diario .card-body {
+    padding: 15px;
+  }
+}

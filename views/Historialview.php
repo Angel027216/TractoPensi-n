@@ -32,10 +32,11 @@ if(!isset($historial) || !is_array($historial)){
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/historial.css?v=20261121">
     <!-- End layout styles -->
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />
   </head>
-  <body>
+  <body class="app-history">
     <div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
       
@@ -73,51 +74,63 @@ if(!isset($historial) || !is_array($historial)){
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-            <div class="d-xl-flex justify-content-between align-items-start mb-3">
-              <h2 class="text-dark font-weight-bold">Historial</h2>
-            </div>
+            <section class="history-hero">
+              <div class="history-hero-copy">
+                <span class="history-kicker"><i class="mdi mdi-history"></i> CONTROL DEL SISTEMA</span>
+                <h1>Historial de Actividad</h1>
+                <p>Visualiza el registro de actividades del sistema.</p>
+              </div>
+              <img src="public/assets/images/Dashboar1.png" alt="" class="history-hero-truck" aria-hidden="true" loading="eager" decoding="async">
+            </section>
 
-            <div class="row">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <h4 class="card-title mb-0">Registros de actividad</h4>
-                    </div>
-                    <div class="table-responsive">
-                      <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Usuario</th>
-                            <th>Acción</th>
-                            <th>Detalles</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php if(isset($historial) && is_array($historial) && count($historial) > 0): ?>
-                            <?php foreach($historial as $i => $row): ?>
-                              <tr>
-                                <td><?= htmlspecialchars($row['id'] ?? $i+1) ?></td>
-                                <td><?= htmlspecialchars($row['fecha'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($row['usuario'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($row['accion'] ?? '') ?></td>
-                                <td><?= htmlspecialchars($row['detalles'] ?? '') ?></td>
-                              </tr>
-                            <?php endforeach; ?>
-                          <?php else: ?>
-                            <tr>
-                              <td colspan="5" class="text-center">No hay registros en el historial.</td>
-                            </tr>
-                          <?php endif; ?>
-                        </tbody>
-                      </table>
-                    </div>
+            <section class="history-card">
+              <header class="history-card-header">
+                <div>
+                  <span class="history-card-icon"><i class="mdi mdi-format-list-bulleted"></i></span>
+                  <div>
+                    <h2>Registros de Actividad</h2>
+                    <p>Consulta los movimientos recientes de la pensión.</p>
                   </div>
                 </div>
+                <span class="history-status"><i class="mdi mdi-circle"></i> Sistema en línea</span>
+              </header>
+
+              <div class="table-responsive history-table-wrap">
+                <table class="table history-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha</th>
+                      <th>Usuario</th>
+                      <th>Acción</th>
+                      <th>Detalles</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if(isset($historial) && is_array($historial) && count($historial) > 0): ?>
+                      <?php foreach($historial as $i => $row): ?>
+                        <tr>
+                          <td><?= htmlspecialchars($row['id'] ?? $i+1) ?></td>
+                          <td><?= htmlspecialchars($row['fecha'] ?? '') ?></td>
+                          <td><?= htmlspecialchars($row['usuario'] ?? '') ?></td>
+                          <td><span class="history-action"><?= htmlspecialchars($row['accion'] ?? '') ?></span></td>
+                          <td><?= htmlspecialchars($row['detalles'] ?? '') ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php else: ?>
+                      <tr>
+                        <td colspan="5" class="history-empty">No hay registros en el historial.</td>
+                      </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
               </div>
-            </div>
+
+              <footer class="history-card-footer">
+                <span><i class="mdi mdi-information-outline"></i> Registro de actividad del sistema</span>
+                <span><?= count($historial) ?> registro<?= count($historial) === 1 ? '' : 's' ?></span>
+              </footer>
+            </section>
 
           </div>
           <!-- content-wrapper ends -->

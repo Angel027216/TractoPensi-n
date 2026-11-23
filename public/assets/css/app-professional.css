@@ -328,9 +328,41 @@ body.sidebar-icon-only .page-body-wrapper {
 }
 
 .sidebar .nav .sidebar-user-actions {
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-top: 0 !important;
   margin-top: 1.3rem !important;
   padding-top: 0.8rem !important;
+}
+
+.sidebar {
+  padding-bottom: 104px !important;
+}
+
+.sidebar .sidebar-user-menu {
+  padding-left: 1.25rem !important;
+}
+
+.sidebar .sidebar-user-menu .nav-link {
+  justify-content: flex-start;
+  padding-left: .35rem !important;
+}
+
+.sidebar .sidebar-trailer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 92px;
+  overflow: hidden;
+  border: 0;
+  background-color: #081426;
+  background-image: url("../images/Dashboar1-sidebar.png?v=20261122");
+  background-position: center 62%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.sidebar .sidebar-trailer img {
+  display: none;
 }
 
 .page-header {
@@ -493,11 +525,17 @@ label {
 }
 
 .footer {
-  background: transparent !important;
-  border-top: 1px solid var(--app-border) !important;
-  color: var(--app-muted) !important;
+  display: block !important;
+  background: #071426 !important;
+  border-top: 1px solid rgba(111, 174, 238, 0.12) !important;
+  color: #91a7c3 !important;
   font-size: 0.76rem !important;
   padding: 1.35rem 2.4rem !important;
+}
+
+.footer .text-muted,
+.footer span {
+  color: #91a7c3 !important;
 }
 
 .auth.auth-img-bg {

@@ -88,6 +88,7 @@ function SideBarView(){
             
             
           </ul>
+          <div class='sidebar-trailer' role='presentation' aria-hidden='true'></div>
         </nav>
     ";
 }

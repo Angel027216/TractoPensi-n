@@ -1,0 +1,133 @@
+.app-accesos .content-wrapper {
+  padding-top: 20px;
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(12, 72, 139, .13), transparent 34rem),
+    #071426;
+}
+
+.app-accesos .accesos-hero {
+  min-height: 220px;
+  margin-bottom: 17px;
+  padding: 22px clamp(22px, 3.8vw, 48px);
+  border-radius: 15px;
+}
+
+.app-accesos .accesos-hero h1 {
+  font-size: clamp(2.1rem, 3.4vw, 2.8rem);
+  font-style: italic;
+  letter-spacing: -.035em;
+}
+
+.app-accesos .accesos-hero p {
+  margin: 7px 0 0;
+  color: #b2c7df;
+  font-size: .82rem;
+}
+
+.app-accesos .accesos-hero .dashboard-truck {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 50%;
+  opacity: .92;
+  filter: saturate(.88) contrast(.96);
+}
+
+.app-accesos .accesos-card {
+  overflow: hidden;
+  border: 1px solid rgba(38, 119, 207, .38);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(8, 30, 55, .98), rgba(7, 24, 44, .98));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .18);
+  color: #e8f1ff;
+}
+
+.app-accesos .accesos-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(139, 173, 216, .13);
+  background: rgba(12, 38, 68, .68);
+}
+
+.app-accesos .accesos-card-header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-accesos .accesos-card-icon {
+  color: #3196ff;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.app-accesos .accesos-card-header h2 {
+  margin: 0;
+  color: #edf5ff;
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+
+.app-accesos .accesos-card-header p {
+  margin: 3px 0 0;
+  color: #91a7c3;
+  font-size: .76rem;
+}
+
+.app-accesos .accesos-table-wrap {
+  padding: 14px 18px 18px;
+}
+
+.app-accesos .accesos-table {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #b6c8df;
+  font-size: .84rem;
+}
+
+.app-accesos .accesos-table thead th {
+  border: 0;
+  background: linear-gradient(90deg, rgba(14, 53, 98, .86), rgba(10, 35, 69, .72));
+  color: #7db7f7;
+  font-size: .78rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.app-accesos .accesos-table tbody td {
+  padding: 12px;
+  border-top: 1px solid rgba(117, 153, 193, .1);
+  color: #afc2da;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.app-accesos .accesos-table tbody tr:hover td {
+  background: rgba(19, 105, 195, .12);
+}
+
+.app-accesos .accesos-table tbody td strong {
+  color: #edf5ff;
+}
+
+.app-accesos .sidebar {
+  background: #081426;
+  border-right: 1px solid rgba(139, 173, 216, .13);
+}
+
+.app-accesos .footer {
+  display: block;
+  background: #071426;
+  border-top: 1px solid rgba(111, 174, 238, 0.12);
+}
+
+@media (max-width: 767px) {
+  .app-accesos .accesos-hero {
+    min-height: 112px;
+  }
+}

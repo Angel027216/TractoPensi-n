@@ -18,9 +18,10 @@ foreach ($pensionados as $pensionado) {
 		<link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
 		<link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
 		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+		<link rel="stylesheet" href="public/assets/css/pensionados.css?v=20261122">
 		<link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 	</head>
-	<body>
+	<body class="app-pensionados">
 		<div class="container-scroller">
 			<?= NavBarView(); ?>
 
@@ -31,38 +32,51 @@ foreach ($pensionados as $pensionado) {
 
 				<div class="main-panel">
 					<div class="content-wrapper">
-						<div class="page-header">
-							<h3 class="page-title">
-								<i class="mdi mdi-account-group text-dark mr-2"></i>
-								Pensionados
-							</h3>
-						</div>
+						<section class="pensionados-hero">
+							<div class="pensionados-hero-copy">
+								<span class="pensionados-kicker"><i class="mdi mdi-account-group"></i> ADMINISTRACIÓN DE UNIDADES</span>
+								<h1>Pensionados</h1>
+								<p>Consulta las personas pensionadas agrupadas por su línea de transporte.</p>
+							</div>
+							<img src="public/assets/images/Dashboar1.png" alt="" class="pensionados-hero-truck" aria-hidden="true" loading="eager" decoding="async">
+						</section>
 
-						<div class="card border-0 shadow-sm">
-							<div class="card-body">
-								<h4 class="font-weight-bold mb-1">Consultar pensionados por línea</h4>
-								<p class="text-muted mb-4">Las personas pensionadas aparecen agrupadas por su línea de transporte.</p>
+						<section class="pensionados-search-card">
+							<div class="pensionados-section-heading">
+								<span class="pensionados-section-icon"><i class="mdi mdi-magnify"></i></span>
+								<div>
+									<h2>Consultar pensionados por línea</h2>
+									<p>Busca una línea para consultar sus unidades y el estado de sus pagos.</p>
+								</div>
+							</div>
 
-								<form method="get" action="index.php" class="form-row mb-4">
+								<form method="get" action="index.php" class="pensionados-search-form">
 									<input type="hidden" name="menu" value="pensionados">
-									<div class="col-md-9 mb-2">
-										<label for="buscarLinea" class="font-weight-bold">Nombre de la línea</label>
-										<input id="buscarLinea" type="search" name="buscar" class="form-control" value="<?= e($busquedaPensionados) ?>" placeholder="Escribe el nombre de una línea">
+									<div class="pensionados-search-field">
+										<label for="buscarLinea">Nombre de la línea</label>
+										<div class="pensionados-input-wrap">
+											<i class="mdi mdi-source-branch"></i>
+											<input id="buscarLinea" type="search" name="buscar" value="<?= e($busquedaPensionados) ?>" placeholder="Escribe el nombre de una línea">
+										</div>
 									</div>
-									<div class="col-md-3 d-flex align-items-end mb-2">
-										<button type="submit" class="btn btn-primary btn-block"><i class="mdi mdi-magnify mr-1"></i>Buscar</button>
+									<div class="pensionados-search-action">
+										<button type="submit"><i class="mdi mdi-magnify"></i>Buscar</button>
 									</div>
 								</form>
+						</section>
 
 								<?php if ($pensionadosPorLinea): ?>
 									<?php foreach ($pensionadosPorLinea as $nombreLinea => $camionesLinea): ?>
-										<div class="border rounded p-3 mb-3">
-											<div class="d-flex justify-content-between align-items-center mb-3">
-												<h5 class="font-weight-bold mb-0"><?= e($nombreLinea) ?></h5>
-												<span class="badge badge-light"><?= count($camionesLinea) ?> pensionados</span>
-											</div>
-											<div class="table-responsive">
-												<table class="table table-sm table-hover mb-0">
+										<section class="pensionados-line-card">
+											<header class="pensionados-line-header">
+												<div>
+													<span class="pensionados-line-icon"><i class="mdi mdi-source-branch"></i></span>
+													<h2><?= e($nombreLinea) ?></h2>
+												</div>
+												<span class="pensionados-count"><?= count($camionesLinea) ?> pensionado<?= count($camionesLinea) === 1 ? '' : 's' ?></span>
+											</header>
+											<div class="pensionados-table-wrap">
+												<table class="pensionados-table">
 													<thead><tr><th>Placa</th><th>Modelo</th><th>Pensionado</th><th>Estado</th><th>Próximo pago</th></tr></thead>
 													<tbody>
 														<?php foreach ($camionesLinea as $pensionado): ?>
@@ -70,20 +84,18 @@ foreach ($pensionados as $pensionado) {
 																<td><strong><?= e((string) $pensionado['placa']) ?></strong></td>
 																<td><?= e((string) $pensionado['modelo']) ?></td>
 																<td><?= e((string) ($pensionado['pensionado'] ?? 'Sin usuario')) ?></td>
-																<td><span class="badge badge-info"><?= e((string) $pensionado['estado_camion']) ?></span></td>
+																<td><span class="pensionados-status"><?= e((string) $pensionado['estado_camion']) ?></span></td>
 																<td><?= e((string) ($pensionado['proximo_pago'] ?? 'Pendiente de asignar')) ?></td>
 															</tr>
 														<?php endforeach; ?>
 													</tbody>
 												</table>
 											</div>
-										</div>
+										</section>
 									<?php endforeach; ?>
 								<?php else: ?>
-									<div class="text-center text-muted py-4">No hay pensionados para esa búsqueda.</div>
+									<div class="pensionados-empty"><i class="mdi mdi-account-search-outline"></i><strong>No hay pensionados para esa búsqueda.</strong><span>Prueba con otro nombre de línea.</span></div>
 								<?php endif; ?>
-							</div>
-						</div>
 					</div>
 
 					<footer class="footer">

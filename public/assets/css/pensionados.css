@@ -1,0 +1,405 @@
+.app-pensionados {
+  --pensionados-bg: #071426;
+  --pensionados-surface: #0c1d34;
+  --pensionados-border: rgba(75, 156, 239, .3);
+  --pensionados-text: #e8f1ff;
+  --pensionados-muted: #9ab0ca;
+}
+
+.app-pensionados,
+.app-pensionados .container-scroller,
+.app-pensionados .page-body-wrapper,
+.app-pensionados .main-panel {
+  background: var(--pensionados-bg);
+}
+
+.app-pensionados .content-wrapper {
+  min-height: calc(100vh - 70px);
+  padding: 20px clamp(16px, 2.2vw, 34px) 30px;
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(12, 72, 139, .25), transparent 34rem),
+    radial-gradient(ellipse at 12% 90%, rgba(6, 52, 112, .16), transparent 30rem),
+    var(--pensionados-bg);
+}
+
+.app-pensionados .pensionados-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 220px;
+  align-items: center;
+  overflow: hidden;
+  padding: 22px clamp(22px, 3vw, 38px);
+  border: 1px solid rgba(75, 156, 239, .38);
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(5, 20, 43, .96) 0%, rgba(5, 20, 43, .82) 34%, rgba(5, 20, 43, .16) 74%, rgba(5, 20, 43, .48) 100%),
+    linear-gradient(135deg, #123b70, #081a35);
+  box-shadow: 0 17px 38px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(164, 213, 255, .1);
+}
+
+.app-pensionados .pensionados-hero::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(20, 120, 255, .72) 0 7%, transparent 7% 11%, rgba(20, 120, 255, .22) 11% 15%, transparent 15%),
+    linear-gradient(180deg, transparent 70%, rgba(0, 7, 18, .4));
+  content: "";
+  pointer-events: none;
+}
+
+.app-pensionados .pensionados-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 53%;
+}
+
+.app-pensionados .pensionados-kicker {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  margin-bottom: 8px;
+  color: #63b2ff;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.app-pensionados .pensionados-hero h1 {
+  margin: 0;
+  color: #f3f8ff;
+  font-size: clamp(2.1rem, 3.4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, .35);
+}
+
+.app-pensionados .pensionados-hero p {
+  margin: 8px 0 0;
+  color: #bfd1e7;
+  font-size: .86rem;
+}
+
+.app-pensionados .pensionados-hero-truck {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: .88;
+  filter: saturate(.86) contrast(.94);
+}
+
+.app-pensionados .pensionados-search-card,
+.app-pensionados .pensionados-line-card {
+  border: 1px solid var(--pensionados-border);
+  border-radius: 15px;
+  background:
+    radial-gradient(ellipse at 90% 100%, rgba(9, 94, 192, .2), transparent 42%),
+    linear-gradient(145deg, rgba(15, 46, 86, .98), rgba(6, 22, 46, .98));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(164, 213, 255, .07);
+}
+
+.app-pensionados .pensionados-search-card {
+  margin-top: 18px;
+  padding: 19px 20px 20px;
+}
+
+.app-pensionados .pensionados-section-heading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 17px;
+}
+
+.app-pensionados .pensionados-section-icon,
+.app-pensionados .pensionados-line-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(55, 157, 255, .35);
+  background: rgba(19, 129, 239, .18);
+  color: #58b4ff;
+}
+
+.app-pensionados .pensionados-section-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  font-size: 1.35rem;
+}
+
+.app-pensionados .pensionados-section-heading h2 {
+  margin: 0;
+  color: #f0f6ff;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.app-pensionados .pensionados-section-heading p {
+  margin: 3px 0 0;
+  color: var(--pensionados-muted);
+  font-size: .75rem;
+}
+
+.app-pensionados .pensionados-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 225px;
+  gap: 10px;
+  align-items: end;
+}
+
+.app-pensionados .pensionados-search-field label {
+  display: block;
+  margin: 0 0 7px;
+  color: #dceaff;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.app-pensionados .pensionados-input-wrap {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 13px;
+  border: 1px solid rgba(73, 139, 218, .3);
+  border-radius: 9px;
+  background: rgba(4, 20, 41, .72);
+  color: #58b4ff;
+}
+
+.app-pensionados .pensionados-input-wrap input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #edf5ff;
+  font-size: .84rem;
+}
+
+.app-pensionados .pensionados-input-wrap input::placeholder {
+  color: #7893b4;
+}
+
+.app-pensionados .pensionados-search-action button {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #3997ff;
+  border-radius: 9px;
+  background: linear-gradient(105deg, #1687ff, #0864db);
+  box-shadow: 0 7px 18px rgba(0, 105, 235, .26);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.app-pensionados .pensionados-search-action button:hover {
+  background: linear-gradient(105deg, #3097ff, #0b70ed);
+}
+
+.app-pensionados .pensionados-line-card {
+  margin-top: 17px;
+  overflow: hidden;
+}
+
+.app-pensionados .pensionados-line-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 17px;
+  border-bottom: 1px solid rgba(131, 171, 218, .15);
+  background: linear-gradient(90deg, rgba(14, 53, 98, .86), rgba(10, 35, 69, .5));
+}
+
+.app-pensionados .pensionados-line-header > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.app-pensionados .pensionados-line-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.app-pensionados .pensionados-line-header h2 {
+  margin: 0;
+  color: #f0f6ff;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.app-pensionados .pensionados-count {
+  padding: 5px 10px;
+  border: 1px solid rgba(113, 174, 237, .25);
+  border-radius: 999px;
+  background: rgba(105, 147, 195, .16);
+  color: #c9dbef;
+  font-size: .7rem;
+  white-space: nowrap;
+}
+
+.app-pensionados .pensionados-table-wrap {
+  overflow-x: auto;
+  padding: 10px 16px 15px;
+}
+
+.app-pensionados .pensionados-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #e5eefb;
+}
+
+.app-pensionados .pensionados-table th {
+  padding: 10px;
+  border: 0;
+  color: #a9c2de;
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.app-pensionados .pensionados-table td {
+  padding: 13px 10px;
+  border-top: 1px solid rgba(131, 171, 218, .1);
+  color: #e1ecfa;
+  font-size: .8rem;
+}
+
+.app-pensionados .pensionados-table tbody tr:hover td {
+  background: rgba(32, 117, 213, .11);
+}
+
+.app-pensionados .pensionados-table td strong {
+  color: #f4f8ff;
+}
+
+.app-pensionados .pensionados-status {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #8137d4, #a33dd7);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.app-pensionados .pensionados-empty {
+  display: flex;
+  min-height: 210px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 17px;
+  border: 1px solid var(--pensionados-border);
+  border-radius: 15px;
+  background: rgba(9, 31, 59, .8);
+  color: var(--pensionados-muted);
+}
+
+.app-pensionados .pensionados-empty i {
+  color: #58b4ff;
+  font-size: 2rem;
+}
+
+.app-pensionados .pensionados-empty strong {
+  color: #edf5ff;
+}
+
+.app-pensionados .footer {
+  display: block !important;
+  background: #071426 !important;
+  border-top: 1px solid rgba(111, 174, 238, 0.12) !important;
+}
+
+.app-pensionados #settings-trigger {
+  background: #1478e8 !important;
+  border: 0 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(20, 120, 232, .32) !important;
+}
+
+.app-pensionados .sidebar {
+  padding-bottom: 104px !important;
+}
+
+.app-pensionados .sidebar .sidebar-user-actions {
+  margin-top: 1rem !important;
+  padding-top: .65rem !important;
+}
+
+.app-pensionados .sidebar .sidebar-user-menu {
+  padding-left: 1.25rem !important;
+}
+
+.app-pensionados .sidebar .sidebar-user-menu .nav-link {
+  justify-content: flex-start;
+  padding-left: .35rem !important;
+}
+
+.app-pensionados .sidebar-trailer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 92px;
+  overflow: hidden;
+  border: 0;
+  background-color: #081426;
+  background-image: url("../images/Dashboar1-sidebar.png?v=20261122");
+  background-position: center 62%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.app-pensionados .sidebar-trailer img {
+  display: block;
+  width: 100%;
+  height: 92px;
+  object-fit: cover;
+  object-position: center 62%;
+  opacity: 1;
+  filter: saturate(1) contrast(1);
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .app-pensionados .pensionados-hero {
+    min-height: 185px;
+  }
+
+  .app-pensionados .pensionados-hero-copy {
+    max-width: 86%;
+  }
+
+  .app-pensionados .pensionados-hero-truck {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .88;
+  }
+
+  .app-pensionados .pensionados-search-form {
+    grid-template-columns: 1fr;
+  }
+
+  .app-pensionados .pensionados-line-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
