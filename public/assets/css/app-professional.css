@@ -493,43 +493,59 @@ input:autofill,
 input:autofill:hover,
 input:autofill:focus,
 input:autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #fbfcfe inset;
-  -webkit-text-fill-color: #334155;
+  -webkit-box-shadow: 0 0 0 1000px #fbfcfe inset !important;
+  box-shadow: 0 0 0 1000px #fbfcfe inset !important;
+  -webkit-text-fill-color: #334155 !important;
+  background-color: #fbfcfe !important;
+  color: #334155 !important;
   caret-color: #334155;
 }
 
-.app-auth-page input:-webkit-autofill,
-.app-dashboard input:-webkit-autofill,
-.app-history input:-webkit-autofill,
-.app-pensionados input:-webkit-autofill,
-.app-profile-page input:-webkit-autofill,
-.app-auth-page input:-webkit-autofill:hover,
-.app-dashboard input:-webkit-autofill:hover,
-.app-history input:-webkit-autofill:hover,
-.app-pensionados input:-webkit-autofill:hover,
-.app-profile-page input:-webkit-autofill:hover,
-.app-auth-page input:-webkit-autofill:focus,
-.app-dashboard input:-webkit-autofill:focus,
-.app-history input:-webkit-autofill:focus,
-.app-pensionados input:-webkit-autofill:focus,
-.app-profile-page input:-webkit-autofill:focus,
-.app-auth-page input:-webkit-autofill:active,
-.app-dashboard input:-webkit-autofill:active,
-.app-history input:-webkit-autofill:active,
-.app-pensionados input:-webkit-autofill:active,
-.app-profile-page input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #081a2e inset;
-  -webkit-text-fill-color: #e8f1ff;
-  caret-color: #e8f1ff;
-}
-
-.app-auth-page input:autofill,
-.app-dashboard input:autofill,
-.app-history input:autofill,
-.app-pensionados input:autofill,
-.app-profile-page input:autofill {
-  box-shadow: 0 0 0 1000px #081a2e inset;
-  color: #e8f1ff;
+html body.app-auth-page input:-webkit-autofill,
+html body.app-auth-page input:-webkit-autofill:hover,
+html body.app-auth-page input:-webkit-autofill:focus,
+html body.app-auth-page input:-webkit-autofill:active,
+html body.app-auth-page input:autofill,
+html body.app-auth-page input:autofill:hover,
+html body.app-auth-page input:autofill:focus,
+html body.app-auth-page input:autofill:active,
+html body.app-dashboard input:-webkit-autofill,
+html body.app-dashboard input:-webkit-autofill:hover,
+html body.app-dashboard input:-webkit-autofill:focus,
+html body.app-dashboard input:-webkit-autofill:active,
+html body.app-dashboard input:autofill,
+html body.app-dashboard input:autofill:hover,
+html body.app-dashboard input:autofill:focus,
+html body.app-dashboard input:autofill:active,
+html body.app-history input:-webkit-autofill,
+html body.app-history input:-webkit-autofill:hover,
+html body.app-history input:-webkit-autofill:focus,
+html body.app-history input:-webkit-autofill:active,
+html body.app-history input:autofill,
+html body.app-history input:autofill:hover,
+html body.app-history input:autofill:focus,
+html body.app-history input:autofill:active,
+html body.app-pensionados input:-webkit-autofill,
+html body.app-pensionados input:-webkit-autofill:hover,
+html body.app-pensionados input:-webkit-autofill:focus,
+html body.app-pensionados input:-webkit-autofill:active,
+html body.app-pensionados input:autofill,
+html body.app-pensionados input:autofill:hover,
+html body.app-pensionados input:autofill:focus,
+html body.app-pensionados input:autofill:active,
+html body.app-profile-page input:-webkit-autofill,
+html body.app-profile-page input:-webkit-autofill:hover,
+html body.app-profile-page input:-webkit-autofill:focus,
+html body.app-profile-page input:-webkit-autofill:active,
+html body.app-profile-page input:autofill,
+html body.app-profile-page input:autofill:hover,
+html body.app-profile-page input:autofill:focus,
+html body.app-profile-page input:autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #081a2e inset !important;
+  box-shadow: 0 0 0 1000px #081a2e inset !important;
+  -webkit-text-fill-color: #e8f1ff !important;
+  background-color: #081a2e !important;
+  color: #e8f1ff !important;
   caret-color: #e8f1ff;
 }
 

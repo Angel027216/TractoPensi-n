@@ -78,11 +78,42 @@ function enviar_codigo_verificacion(string $email, string $codigo): bool
     $asunto = 'Código de verificación - Tracto Pensión San Leonardo';
     $mensaje = "Tu código de verificación es: {$codigo}\n\n"
         . "Este código vence en 10 minutos. Si no solicitaste iniciar sesión, ignora este correo.";
+    $codigoHtml = htmlspecialchars($codigo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $mensajeHtml = '<!doctype html>'
+        . '<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+        . '<title>Código de verificación</title></head>'
+        . '<body style="margin:0;padding:24px;background-color:#eef3f8;font-family:Arial,Helvetica,sans-serif;color:#19304b;">'
+        . '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">'
+        . '<tr><td align="center" style="padding:12px;">'
+        . '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:100%;max-width:600px;border-collapse:separate;border-spacing:0;background-color:#ffffff;border:1px solid #dce6f0;border-radius:16px;overflow:hidden;">'
+        . '<tr><td align="center" style="padding:28px 24px;background-color:#071a34;color:#ffffff;">'
+        . '<div style="font-size:13px;font-weight:bold;letter-spacing:2px;color:#72caff;text-transform:uppercase;">Tracto Pensión</div>'
+        . '<div style="margin-top:7px;font-size:23px;font-weight:bold;line-height:1.3;">San Leonardo</div>'
+        . '</td></tr>'
+        . '<tr><td style="padding:32px 32px 16px;">'
+        . '<h1 style="margin:0 0 12px;font-size:22px;line-height:1.3;color:#102b4c;">Verifica tu inicio de sesión</h1>'
+        . '<p style="margin:0;font-size:15px;line-height:1.6;color:#53677e;">Usa este código para continuar de forma segura:</p>'
+        . '</td></tr>'
+        . '<tr><td align="center" style="padding:12px 32px 24px;">'
+        . '<div style="display:inline-block;padding:16px 28px;border:1px solid #b9ddf7;border-radius:12px;background-color:#edf7ff;color:#075ca8;font-size:36px;font-weight:bold;letter-spacing:10px;line-height:1.2;">'
+        . $codigoHtml
+        . '</div></td></tr>'
+        . '<tr><td style="padding:0 32px 28px;">'
+        . '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-color:#fff7e6;border-left:4px solid #f0ad32;">'
+        . '<tr><td style="padding:14px 16px;color:#704d0a;font-size:15px;line-height:1.5;">'
+        . '<strong style="font-size:16px;">Importante: el código vence en 10 minutos.</strong><br>'
+        . 'Solicita uno nuevo si el plazo termina antes de que lo ingreses.'
+        . '</td></tr></table>'
+        . '<p style="margin:20px 0 0;font-size:13px;line-height:1.6;color:#687b90;">Si no solicitaste iniciar sesión, ignora este correo. No compartas este código con nadie.</p>'
+        . '</td></tr>'
+        . '<tr><td align="center" style="padding:18px 24px;border-top:1px solid #e6edf4;color:#8493a3;font-size:12px;">'
+        . 'Mensaje automático de Tracto Pensión San Leonardo.'
+        . '</td></tr></table></td></tr></table></body></html>';
 
-    return enviar_correo_texto($email, $asunto, $mensaje);
+    return enviar_correo_texto($email, $asunto, $mensaje, $mensajeHtml);
 }
 
-function enviar_correo_texto(string $email, string $asunto, string $mensaje): bool
+function enviar_correo_texto(string $email, string $asunto, string $mensaje, ?string $mensajeHtml = null): bool
 {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         logger('No se pudo enviar un correo del sistema: correo inválido.');
@@ -102,18 +133,25 @@ function enviar_correo_texto(string $email, string $asunto, string $mensaje): bo
     if ($passwordSmtp !== '') {
         $archivoCertificados = (string) ($env['MAIL_CA_FILE'] ?? '');
         $verificarCertificado = (bool) ($env['MAIL_VERIFY_SSL'] ?? true);
-        return enviar_por_smtp_gmail($email, $asunto, $mensaje, $remitente, $nombreRemitente, $usuarioSmtp, $passwordSmtp, $archivoCertificados, $verificarCertificado);
+        return enviar_por_smtp_gmail($email, $asunto, $mensaje, $remitente, $nombreRemitente, $usuarioSmtp, $passwordSmtp, $archivoCertificados, $verificarCertificado, $mensajeHtml);
     }
 
     $cabeceras = [
-        'From: "' . addcslashes($nombreRemitente, '"\\') . '" <' . $remitente . '>',
+        'From: =?UTF-8?B?' . base64_encode($nombreRemitente) . '?= <' . $remitente . '>',
         'Reply-To: ' . $remitente,
-        'Content-Type: text/plain; charset=UTF-8',
     ];
+
+    if ($mensajeHtml !== null) {
+        [$tipoContenido, $cuerpo] = crear_mensaje_multipart($mensaje, $mensajeHtml);
+        $cabeceras[] = $tipoContenido;
+        $mensaje = $cuerpo;
+    } else {
+        $cabeceras[] = 'Content-Type: text/plain; charset=UTF-8';
+    }
 
     $enviado = mail(
         $email,
-        $asunto,
+        '=?UTF-8?B?' . base64_encode($asunto) . '?=',
         $mensaje,
         implode("\r\n", $cabeceras),
         '-f' . $remitente
@@ -176,7 +214,8 @@ function enviar_por_smtp_gmail(
     string $usuario,
     string $password,
     string $archivoCertificados = '',
-    bool $verificarCertificado = true
+    bool $verificarCertificado = true,
+    ?string $mensajeHtml = null
 ): bool {
     $errorNumero = 0;
     $errorMensaje = '';
@@ -239,14 +278,21 @@ function enviar_por_smtp_gmail(
             && $enviar('DATA');
     }
     if ($correcto) {
+        $asuntoCodificado = '=?UTF-8?B?' . base64_encode($asunto) . '?=';
+        if ($mensajeHtml !== null) {
+            [$tipoContenido, $cuerpo] = crear_mensaje_multipart($mensaje, $mensajeHtml);
+        } else {
+            $tipoContenido = 'Content-Type: text/plain; charset=UTF-8';
+            $cuerpo = $mensaje;
+        }
+
         $cabeceras = [
-            'From: ' . $nombreRemitente . ' <' . $remitente . '>',
+            'From: =?UTF-8?B?' . base64_encode($nombreRemitente) . '?= <' . $remitente . '>',
             'To: <' . $destinatario . '>',
-            'Subject: ' . $asunto,
-            'Content-Type: text/plain; charset=UTF-8',
-            'Content-Transfer-Encoding: 8bit',
+            'Subject: ' . $asuntoCodificado,
+            $tipoContenido,
         ];
-        $contenido = implode("\r\n", $cabeceras) . "\r\n\r\n" . str_replace("\n.", "\n..", $mensaje);
+        $contenido = implode("\r\n", $cabeceras) . "\r\n\r\n" . str_replace("\n.", "\n..", $cuerpo);
         $correcto = $enviar($contenido . "\r\n.");
     }
 
@@ -258,6 +304,22 @@ function enviar_por_smtp_gmail(
     }
 
     return $correcto;
+}
+
+function crear_mensaje_multipart(string $mensaje, string $mensajeHtml): array
+{
+    $limite = '=_TractoPension_' . bin2hex(random_bytes(16));
+    $cuerpo = '--' . $limite . "\r\n"
+        . "Content-Type: text/plain; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: quoted-printable\r\n\r\n"
+        . quoted_printable_encode($mensaje) . "\r\n"
+        . '--' . $limite . "\r\n"
+        . "Content-Type: text/html; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: quoted-printable\r\n\r\n"
+        . quoted_printable_encode($mensajeHtml) . "\r\n"
+        . '--' . $limite . "--\r\n";
+
+    return ['Content-Type: multipart/alternative; boundary="' . $limite . '"', $cuerpo];
 }
 
 function preparar_verificacion_login(array $usuario): bool
