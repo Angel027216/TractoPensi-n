@@ -7,8 +7,8 @@
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-    <link rel="stylesheet" href="public/assets/css/login.css?v=crearcuenta-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=strong-password-20261125">
   </head>
   <body class="app-auth-page">
     <div class="login-layout">

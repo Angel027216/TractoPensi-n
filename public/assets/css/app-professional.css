@@ -485,6 +485,54 @@ label {
   opacity: 1;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fbfcfe inset;
+  -webkit-text-fill-color: #334155;
+  caret-color: #334155;
+}
+
+.app-auth-page input:-webkit-autofill,
+.app-dashboard input:-webkit-autofill,
+.app-history input:-webkit-autofill,
+.app-pensionados input:-webkit-autofill,
+.app-profile-page input:-webkit-autofill,
+.app-auth-page input:-webkit-autofill:hover,
+.app-dashboard input:-webkit-autofill:hover,
+.app-history input:-webkit-autofill:hover,
+.app-pensionados input:-webkit-autofill:hover,
+.app-profile-page input:-webkit-autofill:hover,
+.app-auth-page input:-webkit-autofill:focus,
+.app-dashboard input:-webkit-autofill:focus,
+.app-history input:-webkit-autofill:focus,
+.app-pensionados input:-webkit-autofill:focus,
+.app-profile-page input:-webkit-autofill:focus,
+.app-auth-page input:-webkit-autofill:active,
+.app-dashboard input:-webkit-autofill:active,
+.app-history input:-webkit-autofill:active,
+.app-pensionados input:-webkit-autofill:active,
+.app-profile-page input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #081a2e inset;
+  -webkit-text-fill-color: #e8f1ff;
+  caret-color: #e8f1ff;
+}
+
+.app-auth-page input:autofill,
+.app-dashboard input:autofill,
+.app-history input:autofill,
+.app-pensionados input:autofill,
+.app-profile-page input:autofill {
+  box-shadow: 0 0 0 1000px #081a2e inset;
+  color: #e8f1ff;
+  caret-color: #e8f1ff;
+}
+
 .table {
   color: var(--app-ink) !important;
 }

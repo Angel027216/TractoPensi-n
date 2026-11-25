@@ -21,19 +21,34 @@ class Usuario
         return $stmt->execute([trim($nombre), trim($email)]);
     }
 
-    public function registrar(string $nombre, string $email, string $password): int
+    public function registrar(string $nombre, string $email, string $password, string $tipoCuenta): int
     {
-        $this->asegurarColumnaPassword();
+        if (!in_array($tipoCuenta, ['propietario', 'trabajador'], true)) {
+            throw new InvalidArgumentException('El tipo de cuenta no es válido.');
+        }
 
-        $sql = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)";
+        $this->asegurarColumnaPassword();
+        $this->asegurarColumnaTipoCuenta();
+
+        $sql = "INSERT INTO usuarios (nombre, email, password, tipo_cuenta) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             trim($nombre),
             trim($email),
             password_hash($password, PASSWORD_DEFAULT),
+            $tipoCuenta,
         ]);
 
         return (int) $this->db->lastInsertId();
+    }
+
+    private function asegurarColumnaTipoCuenta(): void
+    {
+        $columna = $this->db->query("SHOW COLUMNS FROM usuarios LIKE 'tipo_cuenta'")->fetch();
+
+        if (!$columna) {
+            $this->db->exec("ALTER TABLE usuarios ADD COLUMN tipo_cuenta VARCHAR(30) NULL AFTER password");
+        }
     }
 
     private function asegurarColumnaPassword(): void

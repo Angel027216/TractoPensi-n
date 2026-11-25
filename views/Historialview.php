@@ -31,7 +31,7 @@ if(!isset($historial) || !is_array($historial)){
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
     <link rel="stylesheet" href="public/assets/css/historial.css?v=20261121">
     <!-- End layout styles -->
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121" />

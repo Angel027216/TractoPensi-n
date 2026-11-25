@@ -53,6 +53,17 @@ function csrf_input(): string
     return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
 }
 
+function password_cumple_requisitos(string $password): bool
+{
+    $longitudValida = preg_match('/\A.{9,128}\z/us', $password) === 1;
+    $complejidadValida = preg_match('/[A-Z]/', $password) === 1
+        && preg_match('/[a-z]/', $password) === 1
+        && preg_match('/[0-9]/', $password) === 1
+        && preg_match('/[^A-Za-z0-9\s]/', $password) === 1;
+
+    return $longitudValida && $complejidadValida;
+}
+
 function verify_csrf_token(): void
 {
     $token = $_POST['csrf_token'] ?? '';

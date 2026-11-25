@@ -19,7 +19,7 @@ require_once 'views/includes/NavBarView.php';
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
 
 </head>
 

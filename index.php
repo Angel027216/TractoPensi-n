@@ -76,6 +76,7 @@ if ($menu === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim((string) ($_POST['nombre'] ?? ''));
     $email = trim((string) ($_POST['email'] ?? ''));
     $password = (string) ($_POST['password'] ?? '');
+    $tipoCuenta = trim((string) ($_POST['tipo_cuenta'] ?? ''));
     $errores = [];
     $usuarioRepetido = false;
 
@@ -85,8 +86,11 @@ if ($menu === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = 'Ingresa un correo electrónico válido.';
     }
-    if (strlen($password) < 6) {
-        $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
+    if (!password_cumple_requisitos($password)) {
+        $errores[] = 'La contraseña debe tener entre 9 y 128 caracteres e incluir mayúsculas, minúsculas, números y al menos un símbolo.';
+    }
+    if (!in_array($tipoCuenta, ['propietario', 'trabajador'], true)) {
+        $errores[] = 'Selecciona un tipo de perfil válido.';
     }
     if (empty($_POST['terminos'])) {
         $errores[] = 'Debes aceptar los términos y condiciones.';
@@ -102,7 +106,7 @@ if ($menu === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($usuarioModel->obtenerPorEmail($email)) {
                 $errores[] = 'Ya existe una cuenta con ese correo electrónico.';
             } else {
-                $usuarioModel->registrar($nombre, $email, $password);
+                $usuarioModel->registrar($nombre, $email, $password, $tipoCuenta);
                 $_SESSION['mensajeLogin'] = 'Cuenta creada correctamente. Inicia sesión para verificar tu correo.';
                 redirect('index.php?menu=login');
             }
@@ -172,8 +176,8 @@ if ($menu === 'restablecer') {
 
         if (!$tokenRestablecimientoValido) {
             $errorRestablecimiento = 'El enlace no es válido o ya venció. Solicita uno nuevo.';
-        } elseif (strlen($passwordNueva) < 8 || strlen($passwordNueva) > 128) {
-            $errorRestablecimiento = 'La contraseña debe tener entre 8 y 128 caracteres.';
+        } elseif (!password_cumple_requisitos($passwordNueva)) {
+            $errorRestablecimiento = 'La contraseña debe tener entre 9 y 128 caracteres e incluir mayúsculas, minúsculas, números y al menos un símbolo.';
         } elseif ($passwordNueva !== $passwordConfirmacion) {
             $errorRestablecimiento = 'Las contraseñas no coinciden.';
         } elseif ($usuarioModel->actualizarPasswordConToken($tokenHash, password_hash($passwordNueva, PASSWORD_DEFAULT))) {

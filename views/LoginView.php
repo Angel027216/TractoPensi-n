@@ -6,8 +6,8 @@
     <title>Iniciar sesión | Tracto Pensión</title>
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=strong-password-20261125">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
   </head>
   <body class="app-auth-page">
@@ -37,7 +37,7 @@
               <label for="identificador"><i class="mdi mdi-account" aria-hidden="true"></i> Usuario</label>
               <div class="login-input-wrap">
                 <i class="mdi mdi-account-outline login-input-icon" aria-hidden="true"></i>
-                <input type="text" name="identificador" id="identificador" placeholder="Ingresa tu usuario" autocomplete="username" required>
+                <input type="text" name="identificador" id="identificador" placeholder="Ejemplo: Angel" autocomplete="username" required>
               </div>
             </div>
 
@@ -45,7 +45,7 @@
               <label for="login-password"><i class="mdi mdi-lock" aria-hidden="true"></i> Contraseña</label>
               <div class="login-input-wrap">
                 <i class="mdi mdi-lock-outline login-input-icon" aria-hidden="true"></i>
-                <input type="password" name="password" id="login-password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+                <input type="password" name="password" id="login-password" placeholder="Ejemplo: Tu contraseña" autocomplete="current-password" required>
                 <button class="login-password-toggle" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
                   <i class="mdi mdi-eye-off-outline" aria-hidden="true"></i>
                 </button>

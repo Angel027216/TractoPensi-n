@@ -16,7 +16,7 @@ $camionesPensionados = is_array($camionesPensionados ?? null) ? $camionesPension
 		<title>Lineas - Tracto Pensión</title>
 		<link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
 		<link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
 		<link rel="stylesheet" href="public/assets/css/dashboard.css?v=linea-20261122">
 		<link rel="stylesheet" href="public/assets/css/linea.css?v=linea-20261123">
 		<link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">

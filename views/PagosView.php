@@ -32,7 +32,7 @@ $pagosVencidos = array_values(array_filter($pagos, static fn($pago) => ($pago['e
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
     <link rel="stylesheet" href="public/assets/css/dashboard.css?v=pagos-20261121">
     <link rel="stylesheet" href="public/assets/css/pagos.css?v=pagos-exacto-20261121">
     <!-- End layout styles -->

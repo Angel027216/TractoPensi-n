@@ -6,8 +6,8 @@
     <title>Nueva contraseña | Tracto Pensión</title>
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="public/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="public/assets/css/login.css?v=loader-20261121">
+    <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=autofill-20261125">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=strong-password-20261125">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
   </head>
   <body class="app-auth-page">
@@ -20,7 +20,7 @@
 
           <header class="login-intro">
             <h1 id="reset-title">Crea una contraseña <span>nueva</span></h1>
-            <p>Usa al menos 8 caracteres para proteger tu cuenta</p>
+            <p>Usa al menos 9 caracteres, idealmente 12 o más, para proteger tu cuenta</p>
           </header>
 
           <?php if (!empty($errorRestablecimiento)): ?>
@@ -35,7 +35,11 @@
                 <label for="nueva-password"><i class="mdi mdi-lock" aria-hidden="true"></i> Nueva contraseña</label>
                 <div class="login-input-wrap">
                   <i class="mdi mdi-lock-outline login-input-icon" aria-hidden="true"></i>
-                  <input type="password" name="password" id="nueva-password" placeholder="Ingresa tu nueva contraseña" minlength="8" maxlength="128" autocomplete="new-password" required>
+                  <input type="password" name="password" id="nueva-password" placeholder="Ingresa tu nueva contraseña" minlength="9" maxlength="128" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{9,128}" title="Usa de 9 a 128 caracteres, con mayúsculas, minúsculas, números y un símbolo." autocomplete="new-password" required>
+                </div>
+                <div class="register-password-hint">
+                  <p>Combina mayúsculas, minúsculas, números y símbolos. Evita secuencias, palabras obvias y datos personales, y usa una contraseña distinta para cada cuenta.</p>
+                  <p class="register-password-example">Ejemplo de formato (no lo uses literalmente): <strong>Cafe-Luna-93!Libro</strong></p>
                 </div>
               </div>
 
@@ -43,7 +47,7 @@
                 <label for="confirmar-password"><i class="mdi mdi-lock-check-outline" aria-hidden="true"></i> Confirmar contraseña</label>
                 <div class="login-input-wrap">
                   <i class="mdi mdi-lock-outline login-input-icon" aria-hidden="true"></i>
-                  <input type="password" name="confirmar_password" id="confirmar-password" placeholder="Repite tu nueva contraseña" minlength="8" maxlength="128" autocomplete="new-password" required>
+                  <input type="password" name="confirmar_password" id="confirmar-password" placeholder="Repite tu nueva contraseña" minlength="9" maxlength="128" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{9,128}" title="Usa de 9 a 128 caracteres, con mayúsculas, minúsculas, números y un símbolo." autocomplete="new-password" required>
                 </div>
               </div>
 
