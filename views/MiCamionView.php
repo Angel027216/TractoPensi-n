@@ -97,6 +97,7 @@ $camion = null;
                                 <form method="POST" action="index.php?menu=micamion&amp;seccion=registrar" id="formCamion">
                                     <?= csrf_input(); ?>
                                     <input type="hidden" name="accion" value="guardar">
+                                    <input type="hidden" name="id_linea" value="<?= e((string) ($_GET['id_linea'] ?? '')) ?>">
                                     <div class="camiones-form-grid">
                                         <div class="camiones-field">
                                             <label class="font-weight-bold">Nombre del operador o empresa</label>

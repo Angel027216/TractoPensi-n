@@ -403,3 +403,113 @@
     flex-direction: column;
   }
 }
+
+.app-pensionados .pensionados-search-field label {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  font-size: 1.08rem;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+}
+
+.app-pensionados .pensionados-input-wrap input {
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.app-pensionados .pensionados-input-wrap input::placeholder {
+  color: #b7c9df;
+  font-size: 1rem;
+  opacity: 1;
+}
+
+.app-pensionados .pensionados-line-select-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 225px;
+  gap: 10px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+.app-pensionados .pensionados-input-wrap select {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.app-pensionados .pensionados-input-wrap select option {
+  background: #081a2e;
+  color: #ffffff;
+}
+
+.app-pensionados .pensionados-add-card {
+  margin-top: 17px;
+  padding: 19px 20px 20px;
+}
+
+.app-pensionados .pensionados-empty-inline {
+  margin: 0;
+  color: #b7c9df;
+  font-size: .92rem;
+}
+
+.app-pensionados .pensionados-remove-button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 173, 173, .28);
+  border-radius: 6px;
+  background: rgba(180, 55, 55, .18);
+  color: #ffd9d9;
+  font-size: .72rem;
+  cursor: pointer;
+}
+
+.app-pensionados .pensionados-remove-button:hover {
+  background: rgba(200, 65, 65, .36);
+  color: #ffffff;
+}
+
+.app-pensionados .pensionados-alert {
+  margin: 0 0 14px;
+  color: #ffffff;
+}
+
+.app-pensionados .pensionados-alert-warning {
+  border: 1px solid rgba(255, 193, 92, .38);
+  border-radius: 9px;
+  background: rgba(126, 82, 20, .32);
+  color: #ffe6af;
+  padding: 10px 12px;
+}
+
+.app-pensionados .pensionados-register-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 9px 14px;
+  border: 1px solid #3997ff;
+  border-radius: 9px;
+  background: linear-gradient(105deg, #1687ff, #0864db);
+  color: #ffffff;
+  font-size: .88rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.app-pensionados .pensionados-register-button:hover {
+  color: #ffffff;
+  text-decoration: none;
+  background: linear-gradient(105deg, #3097ff, #0b70ed);
+}
+
+@media (max-width: 767px) {
+  .app-pensionados .pensionados-line-select-form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -18,7 +18,7 @@ $camionesPensionados = is_array($camionesPensionados ?? null) ? $camionesPension
 		<link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
 		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
 		<link rel="stylesheet" href="public/assets/css/dashboard.css?v=linea-20261122">
-		<link rel="stylesheet" href="public/assets/css/linea.css?v=linea-20261122">
+		<link rel="stylesheet" href="public/assets/css/linea.css?v=linea-20261123">
 		<link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 	</head>
 	<body class="app-dashboard app-lineas">

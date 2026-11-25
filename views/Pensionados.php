@@ -2,6 +2,13 @@
 require_once 'views/includes/SideBarView.php';
 require_once 'views/includes/NavBarView.php';
 
+$lineasPensionados = is_array($lineasPensionados ?? null) ? $lineasPensionados : [];
+$lineaPensionadosId = (int) ($lineaPensionadosId ?? 0);
+$lineaPensionadosSeleccionada = is_array($lineaPensionadosSeleccionada ?? null) ? $lineaPensionadosSeleccionada : null;
+$camionesDisponiblesPensionados = is_array($camionesDisponiblesPensionados ?? null) ? $camionesDisponiblesPensionados : [];
+$mensajePensionados = is_string($mensajePensionados ?? null) ? $mensajePensionados : null;
+$errorBusquedaPensionados = is_string($errorBusquedaPensionados ?? null) ? $errorBusquedaPensionados : null;
+
 $pensionadosPorLinea = [];
 foreach ($pensionados as $pensionado) {
 	$nombreLinea = (string) ($pensionado['nom_linea'] ?? 'Sin línea');
@@ -18,7 +25,7 @@ foreach ($pensionados as $pensionado) {
 		<link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
 		<link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
 		<link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
-		<link rel="stylesheet" href="public/assets/css/pensionados.css?v=20261122">
+		<link rel="stylesheet" href="public/assets/css/pensionados.css?v=20261132">
 		<link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 	</head>
 	<body class="app-pensionados">
@@ -50,20 +57,100 @@ foreach ($pensionados as $pensionado) {
 								</div>
 							</div>
 
+								<?php if ($mensajePensionados): ?>
+									<div class="camiones-alert pensionados-alert" role="status">
+										<i class="mdi mdi-check-circle"></i><?= e($mensajePensionados) ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ($errorBusquedaPensionados): ?>
+									<div class="camiones-alert pensionados-alert pensionados-alert-warning" role="alert">
+										<i class="mdi mdi-alert-circle"></i><?= e($errorBusquedaPensionados) ?>
+									</div>
+								<?php endif; ?>
+
 								<form method="get" action="index.php" class="pensionados-search-form">
 									<input type="hidden" name="menu" value="pensionados">
 									<div class="pensionados-search-field">
 										<label for="buscarLinea">Nombre de la línea</label>
 										<div class="pensionados-input-wrap">
 											<i class="mdi mdi-source-branch"></i>
-											<input id="buscarLinea" type="search" name="buscar" value="<?= e($busquedaPensionados) ?>" placeholder="Escribe el nombre de una línea">
+											<input id="buscarLinea" type="search" name="buscar" value="<?= e($busquedaPensionados) ?>" list="lineasRegistradasPensionados" autocomplete="off" placeholder="Escribe el nombre de una línea">
 										</div>
+										<datalist id="lineasRegistradasPensionados">
+											<?php foreach ($lineasPensionados as $lineaPensionados): ?>
+												<option value="<?= e((string) $lineaPensionados['nom_linea']) ?>"></option>
+											<?php endforeach; ?>
+										</datalist>
 									</div>
 									<div class="pensionados-search-action">
 										<button type="submit"><i class="mdi mdi-magnify"></i>Buscar</button>
 									</div>
 								</form>
+
+								<form method="get" action="index.php" class="pensionados-line-select-form">
+									<input type="hidden" name="menu" value="pensionados">
+									<div class="pensionados-search-field">
+										<label for="id_linea_pensionados">Seleccionar línea registrada</label>
+										<div class="pensionados-input-wrap">
+											<i class="mdi mdi-format-list-bulleted"></i>
+											<select id="id_linea_pensionados" name="id_linea" required>
+												<option value="">Todas las líneas</option>
+												<?php foreach ($lineasPensionados as $lineaPensionados): ?>
+													<option value="<?= (int) $lineaPensionados['id_linea'] ?>" <?= (int) $lineaPensionados['id_linea'] === $lineaPensionadosId ? 'selected' : '' ?>>
+														<?= e((string) $lineaPensionados['nom_linea']) ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
+										</div>
+									</div>
+									<div class="pensionados-search-action">
+										<button type="submit"><i class="mdi mdi-eye"></i>Mostrar línea</button>
+									</div>
+								</form>
 						</section>
+
+						<?php if ($lineaPensionadosSeleccionada): ?>
+							<section class="pensionados-search-card pensionados-add-card">
+								<div class="pensionados-section-heading">
+									<span class="pensionados-section-icon"><i class="mdi mdi-truck-plus"></i></span>
+									<div>
+										<h2>Agregar camiones a <?= e((string) $lineaPensionadosSeleccionada['nom_linea']) ?></h2>
+										<p>Selecciona un camión registrado para asignarlo a esta línea.</p>
+									</div>
+								</div>
+								<?php if ($camionesDisponiblesPensionados): ?>
+									<form method="post" action="index.php?menu=pensionados&amp;id_linea=<?= $lineaPensionadosId ?>" class="pensionados-line-select-form">
+										<?= csrf_input(); ?>
+										<input type="hidden" name="accion" value="asignar_linea">
+										<input type="hidden" name="id_linea" value="<?= $lineaPensionadosId ?>">
+										<div class="pensionados-search-field">
+											<label for="camion_pensionados">Camión registrado</label>
+											<div class="pensionados-input-wrap">
+												<i class="mdi mdi-truck"></i>
+												<select id="camion_pensionados" name="id_camion" required>
+													<option value="">Selecciona un camión</option>
+													<?php foreach ($camionesDisponiblesPensionados as $camionDisponible): ?>
+														<option value="<?= (int) $camionDisponible['id_camion'] ?>">
+															<?= e((string) $camionDisponible['placa']) ?> - <?= e((string) $camionDisponible['modelo']) ?>
+															<?= $camionDisponible['nom_linea'] ? ' (' . e((string) $camionDisponible['nom_linea']) . ')' : ' (Sin línea)' ?>
+														</option>
+													<?php endforeach; ?>
+												</select>
+											</div>
+										</div>
+										<div class="pensionados-search-action">
+											<button type="submit"><i class="mdi mdi-plus"></i>Agregar a la línea</button>
+										</div>
+									</form>
+								<?php else: ?>
+										<p class="pensionados-empty-inline">No hay camiones disponibles para asignar.</p>
+								<?php endif; ?>
+										<a class="pensionados-register-button" href="index.php?menu=micamion&amp;seccion=registrar&amp;id_linea=<?= $lineaPensionadosId ?>">
+										<i class="mdi mdi-truck-plus"></i> Registrar camión pensionado
+										</a>
+							</section>
+						<?php endif; ?>
 
 								<?php if ($pensionadosPorLinea): ?>
 									<?php foreach ($pensionadosPorLinea as $nombreLinea => $camionesLinea): ?>
@@ -85,7 +172,20 @@ foreach ($pensionados as $pensionado) {
 																<td><?= e((string) $pensionado['modelo']) ?></td>
 																<td><?= e((string) ($pensionado['pensionado'] ?? 'Sin usuario')) ?></td>
 																<td><span class="pensionados-status"><?= e((string) $pensionado['estado_camion']) ?></span></td>
-																<td><?= e((string) ($pensionado['proximo_pago'] ?? 'Pendiente de asignar')) ?></td>
+																<td>
+																	<?= e((string) ($pensionado['proximo_pago'] ?? 'Pendiente de asignar')) ?>
+																	<?php if ($lineaPensionadosId > 0): ?>
+																		<form method="post" action="index.php?menu=pensionados&amp;id_linea=<?= $lineaPensionadosId ?>" class="d-inline">
+																			<?= csrf_input(); ?>
+																			<input type="hidden" name="accion" value="quitar_linea">
+																			<input type="hidden" name="id_linea" value="<?= $lineaPensionadosId ?>">
+																			<input type="hidden" name="id_camion" value="<?= (int) $pensionado['id_camion'] ?>">
+																			<button type="submit" class="pensionados-remove-button" onclick="return confirm('¿Retirar este camión de la línea?');">
+																				Quitar
+																			</button>
+																		</form>
+																	<?php endif; ?>
+																</td>
 															</tr>
 														<?php endforeach; ?>
 													</tbody>

@@ -38,6 +38,8 @@ $gastosFondoDelDia = array_sum(array_map(
     <link rel="stylesheet" href="public/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
+    <link rel="stylesheet" href="public/assets/css/dashboard.css?v=control-20261122">
+    <link rel="stylesheet" href="public/assets/css/control-diario.css?v=control-20261127">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
     <style>
         @media print {
@@ -64,7 +66,7 @@ $gastosFondoDelDia = array_sum(array_map(
         }
     </style>
 </head>
-<body>
+<body class="app-dashboard app-control-diario">
 <div class="container-scroller">
     <?= NavBarView(); ?>
     <div class="container-fluid page-body-wrapper">
@@ -74,7 +76,7 @@ $gastosFondoDelDia = array_sum(array_map(
             <div class="content-wrapper">
                 <div class="d-flex flex-wrap justify-content-between align-items-start mb-4">
                     <div>
-                        <h2 class="text-dark font-weight-bold">
+                        <h2 class="text-white font-weight-bold">
                             <i class="mdi mdi-chart-box-outline mr-2"></i>Reporte diario
                         </h2>
                         <p class="text-muted mb-0">
@@ -93,26 +95,16 @@ $gastosFondoDelDia = array_sum(array_map(
                     </div>
                 <?php endif; ?>
 
-                <ul class="nav nav-tabs mb-4 no-print">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=entrada">Registrar boleto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=salida">Salida y cobro</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=listado">Boletos del día</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.php?menu=control_diario&amp;vista=reporte">Reporte diario</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=fondo">Fondo de cambio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?menu=control_diario&amp;vista=material">Material por turno</a>
-                    </li>
-                </ul>
+                <nav class="control-diario-toolbar no-print" aria-label="Opciones de control diario">
+                    <div class="control-diario-tabs">
+                        <a class="control-diario-tab" href="index.php?menu=control_diario&amp;vista=entrada"><i class="mdi mdi-ticket-plus"></i>Registrar boleto</a>
+                        <a class="control-diario-tab" href="index.php?menu=control_diario&amp;vista=salida"><i class="mdi mdi-cash-register"></i>Salida y cobro</a>
+                        <a class="control-diario-tab" href="index.php?menu=control_diario&amp;vista=listado"><i class="mdi mdi-format-list-bulleted"></i>Boletos del día</a>
+                        <a class="control-diario-tab active" href="index.php?menu=control_diario&amp;vista=reporte"><i class="mdi mdi-chart-bar"></i>Reporte diario</a>
+                        <a class="control-diario-tab" href="index.php?menu=control_diario&amp;vista=fondo"><i class="mdi mdi-wallet"></i>Fondo de cambio</a>
+                        <a class="control-diario-tab" href="index.php?menu=control_diario&amp;vista=material"><i class="mdi mdi-lan"></i>Material por turno</a>
+                    </div>
+                </nav>
 
                 <form method="get" action="index.php" class="card border-0 shadow-sm mb-4 no-print">
                     <div class="card-body">
@@ -179,7 +171,7 @@ $gastosFondoDelDia = array_sum(array_map(
                 <section class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <h4 class="card-title">Cobros por tipo de tarifa</h4>
-                        <div class="table-responsive">
+                        <div class="table-responsive reporte-table">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
@@ -214,7 +206,7 @@ $gastosFondoDelDia = array_sum(array_map(
                 <section class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <h4 class="card-title">Entradas del día</h4>
-                        <div class="table-responsive">
+                        <div class="table-responsive reporte-table">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
@@ -247,7 +239,7 @@ $gastosFondoDelDia = array_sum(array_map(
                 <section class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <h4 class="card-title">Salidas del día</h4>
-                        <div class="table-responsive">
+                        <div class="table-responsive reporte-table">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
@@ -297,7 +289,7 @@ $gastosFondoDelDia = array_sum(array_map(
                                     <h4><?= e($formatoMonedaReporte($fondoReporte['saldo_actual'])) ?></h4>
                                 </div>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive reporte-table">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr><th>Hora</th><th>Concepto</th><th>Registró</th><th class="text-right">Monto</th></tr>
@@ -326,7 +318,7 @@ $gastosFondoDelDia = array_sum(array_map(
                 <section class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <h4 class="card-title">Material por turno</h4>
-                        <div class="table-responsive">
+                        <div class="table-responsive reporte-table">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>

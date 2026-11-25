@@ -10,7 +10,7 @@ class LineaController
 
     public function procesar(string $accion, array $datos): array
     {
-        $nombre = trim((string) ($datos['nom_linea'] ?? ''));
+        $nombre = preg_replace('/\s+/u', ' ', trim((string) ($datos['nom_linea'] ?? ''))) ?? trim((string) ($datos['nom_linea'] ?? ''));
         $id = (int) ($datos['id_linea'] ?? 0);
 
         if ($accion === 'eliminar' && $id > 0) {

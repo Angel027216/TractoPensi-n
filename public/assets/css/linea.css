@@ -220,3 +220,37 @@
     min-height: 100px;
   }
 }
+
+/* Texto blanco y legible en formularios, tablas y acciones */
+.app-lineas .card-title,
+.app-lineas label,
+.app-lineas .form-control,
+.app-lineas .form-control::placeholder,
+.app-lineas .table,
+.app-lineas .table thead th,
+.app-lineas .table tbody td,
+.app-lineas .table tbody td strong,
+.app-lineas .table tbody td span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  opacity: 1;
+}
+
+.app-lineas .form-text,
+.app-lineas .text-muted {
+  color: #b9cae0 !important;
+  -webkit-text-fill-color: #b9cae0;
+}
+
+.app-lineas .btn,
+.app-lineas .btn i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.app-lineas .table tbody tr:hover,
+.app-lineas .table tbody tr:hover > td {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  background: rgba(19, 105, 195, .32) !important;
+}

@@ -390,7 +390,58 @@ else if ($menu=='pensionados'){
     require_once 'models/PensionadosModel.php';
     $pensionadosModel = new PensionadosModel((new Database())->getConnection());
     $busquedaPensionados = trim((string) ($_GET['buscar'] ?? ''));
-    $pensionados = $pensionadosModel->listar($busquedaPensionados);
+    $lineaPensionadosId = (int) ($_GET['id_linea'] ?? 0);
+    $mensajePensionados = $_SESSION['mensaje_pensionados'] ?? null;
+    $errorBusquedaPensionados = null;
+    unset($_SESSION['mensaje_pensionados']);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verify_csrf_token();
+        $accionPensionados = (string) ($_POST['accion'] ?? '');
+        $idCamionPensionados = (int) ($_POST['id_camion'] ?? 0);
+        $idLineaPost = (int) ($_POST['id_linea'] ?? 0);
+
+        if ($accionPensionados === 'asignar_linea' && $idCamionPensionados > 0 && $idLineaPost > 0) {
+            $_SESSION['mensaje_pensionados'] = $pensionadosModel->asignarLinea($idCamionPensionados, $idLineaPost)
+                ? 'El camión fue asignado a la línea correctamente.'
+                : 'No fue posible asignar el camión a la línea.';
+            redirect('index.php?menu=pensionados&id_linea=' . $idLineaPost);
+        }
+
+        if ($accionPensionados === 'quitar_linea' && $idCamionPensionados > 0) {
+            $_SESSION['mensaje_pensionados'] = $pensionadosModel->quitarLinea($idCamionPensionados)
+                ? 'El camión fue retirado de la línea.'
+                : 'No fue posible retirar el camión de la línea.';
+            redirect('index.php?menu=pensionados&id_linea=' . $lineaPensionadosId);
+        }
+    }
+
+    $lineasPensionados = $pensionadosModel->listarLineas();
+    $lineaPensionadosSeleccionada = null;
+    if ($busquedaPensionados !== '') {
+        $lineaPensionadosSeleccionada = $pensionadosModel->buscarLineaExacta($busquedaPensionados);
+        if ($lineaPensionadosSeleccionada) {
+            $lineaPensionadosId = (int) $lineaPensionadosSeleccionada['id_linea'];
+        } else {
+            $lineaPensionadosId = 0;
+            $errorBusquedaPensionados = 'La línea no está registrada. Escribe exactamente el nombre agregado en la interfaz de Línea.';
+        }
+    }
+
+    foreach ($lineasPensionados as $lineaPensionados) {
+        if (!$busquedaPensionados && (int) $lineaPensionados['id_linea'] === $lineaPensionadosId) {
+            $lineaPensionadosSeleccionada = $lineaPensionados;
+            break;
+        }
+    }
+    if (!$lineaPensionadosSeleccionada) {
+        $lineaPensionadosId = 0;
+    }
+
+    $pensionados = $lineaPensionadosSeleccionada
+        ? $pensionadosModel->listar('', $lineaPensionadosId)
+        : ($busquedaPensionados === '' ? $pensionadosModel->listar('', 0) : []);
+    $camionesDisponiblesPensionados = $pensionadosModel->listarCamionesParaAsignar($lineaPensionadosId);
     include 'views/Pensionados.php';
 }
 

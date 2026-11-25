@@ -82,6 +82,20 @@ class MiCamionController {
         $fechaEntrada = $leerCampo('fecha');
         $horaEntrada = $leerCampo('hora');
         $estado = $leerCampo('estado') ?: 'en_pension';
+        $idLineaValor = filter_var($_POST['id_linea'] ?? null, FILTER_VALIDATE_INT);
+        $idLinea = $idLineaValor !== false && $idLineaValor > 0 ? (int) $idLineaValor : null;
+        if ($idLinea !== null) {
+            $stmtLinea = (new Database())->getConnection()->prepare(
+                'SELECT id_linea FROM linea WHERE id_linea = ?'
+            );
+            $stmtLinea->execute([$idLinea]);
+            if (!$stmtLinea->fetchColumn()) {
+                $this->responderJson([
+                    'exito' => false,
+                    'mensaje' => 'La línea seleccionada no está registrada.',
+                ], 422);
+            }
+        }
 
         if (
             !preg_match('/^\d{2}-[A-Z]{2}-\d[A-Z]$/', $placa)
@@ -147,7 +161,8 @@ class MiCamionController {
                 $color,
                 $fechaEntrada,
                 $hora,
-                $estado
+                $estado,
+                $idLinea
             );
         } catch (PDOException $e) {
             logger('Error al registrar un camión.', [

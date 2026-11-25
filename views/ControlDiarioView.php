@@ -59,7 +59,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
     <link rel="stylesheet" href="public/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="public/assets/css/demo_1/style.css?v=nav-20261121">
     <link rel="stylesheet" href="public/assets/css/dashboard.css?v=control-20261122">
-    <link rel="stylesheet" href="public/assets/css/control-diario.css?v=control-20261122">
+    <link rel="stylesheet" href="public/assets/css/control-diario.css?v=control-20261129">
     <link rel="icon" type="image/png" href="public/assets/images/iconopestaña.png?v=20261121">
 </head>
 <body class="app-dashboard app-control-diario">
@@ -254,7 +254,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                     </button>
                                 </div>
                             </form>
-                            <div class="table-responsive">
+                            <div class="table-responsive salida-cobro-table">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -536,7 +536,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                             <button class="btn btn-info btn-block" type="submit">Consultar</button>
                                         </div>
                                     </form>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive fondo-dia-table">
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
@@ -590,7 +590,7 @@ $formatoFechaControlDiario = static function (?string $fecha): string {
                                     </button>
                                 </div>
                             </form>
-                            <div class="table-responsive">
+                            <div class="table-responsive boletos-dia-table">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>

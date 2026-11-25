@@ -70,7 +70,8 @@ class MiCamionModel {
         string $color,
         ?string $fecha,
         ?string $hora,
-        string $estado
+        string $estado,
+        ?int $idLinea = null
     ): int {
         $columnaCaja = $this->db->query("SHOW COLUMNS FROM camiones LIKE 'placa_caja'")->fetch();
         if (!$columnaCaja) {
@@ -79,10 +80,11 @@ class MiCamionModel {
 
         $sql = "INSERT INTO camiones
                     (id_usuario, id_linea, operador_empresa, placa, placa_caja, marca, modelo, color, anio, fecha_entrada, hora_entrada, estado)
-                VALUES (?, NULL, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         if (!$stmt->execute([
             $id_usuario,
+            $idLinea,
             $operadorEmpresa,
             strtoupper($placa),
             strtoupper($placaCaja),
@@ -98,6 +100,14 @@ class MiCamionModel {
 
         $idCamion = (int) $this->db->lastInsertId();
         $this->registrarEntradaInicial($id_usuario, $idCamion, $fecha, $hora);
+
+        if ($idLinea !== null && $estado === 'en_pension') {
+            $stmt = $this->db->prepare(
+                'INSERT INTO pensionados (id_usuario, id_camion, estado_cuenta)
+                 VALUES (?, ?, ?)'
+            );
+            $stmt->execute([$id_usuario, $idCamion, 'al_corriente']);
+        }
 
         return $idCamion;
     }
